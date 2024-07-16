@@ -1,0 +1,57 @@
+#layout-prayerblockjsonviewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100vw - (100px * 2) - (24px * 2));
+    height: calc(100vh - (100px * 2) - (24px * 2));
+    transition-duration: 300ms;
+    padding: 24px;
+    margin: 100px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    /* invisible */
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(36px);
+    z-index: 2;
+}
+
+#layout-prayerblockjsonviewer.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+#layout-prayerblockjsonviewer ul {
+    border-radius: 4px;
+    padding: 12px !important;
+}
+
+#layout-prayerblockjsonviewer ul * {
+    font-size: 12px;
+    font-family: 'Courier New', Courier, monospace !important;
+}
+
+#layout-prayerblockjsonviewer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200vw;
+    height: 300vh;
+    transform: translate(-100vw, -100vw);
+    transition-duration: 300ms;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0;
+    z-index: 1;
+}
+
+
+#layout-prayerblockjsonviewer-overlay.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+    background-color: rgba(0, 0, 0, 0.4);
+}

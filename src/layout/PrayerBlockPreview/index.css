@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+#layout-prayerblockpreview {
+    width: 400px;
+    height: 600px;
+    background-color: #fff;
+    padding: 24px;
+    overflow-y: scroll;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    align-content: start;
+}
+
+#layout-prayerblockpreview * {
+    font-family: "EB Garamond", serif;
+}
+
+/* 
+PREVIEW BLOCK
+*/
+
+.preview-block {
+    position: relative;
+    border: 1px solid transparent;
+    min-height: 16px;
+}
+
+
+.preview-block:hover {
+    border: 1px solid #ddd;
+}
+
+.preview-block::after {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.preview-block:hover::after {
+    position: absolute;
+    content: "[blank]";
+    top: 0;
+    right: 0;
+    font-size: 10px;
+    transform: translateY(-8px);
+    background-color: white;
+    padding: 2px;
+}
+
+/* 
+PREVIEW BODY
+*/
+
+.preview-body:hover::after {
+    content: "BODY";
+}
+
+/* 
+PREVIEW TITLE
+*/
+
+.preview-centered-title{
+    text-align: center;
+    line-height: 24px;
+}
+
+.preview-centered-title:hover::after {
+    content: "CENTERED TITLE";
+}
+
+/* 
+PREVIEW TITLE
+*/
+
+.preview-info-text {
+    font-size: 12px;
+}
+
+.preview-info-text:hover::after {
+    content: "INFO TEXT";
+}
