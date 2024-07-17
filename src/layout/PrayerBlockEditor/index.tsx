@@ -10,6 +10,7 @@ import {
 import useConfirmModal from "../../hooks/useConfirmModal";
 import { useState } from "react";
 import PrayerBlockJSONViewer from "../PrayerBlockJSONViewer";
+import ColorsControls from "../ColorsControls";
 
 export default function PrayerBlockEditor() {
   const [JSONViewerIsVisible, setJSONViewerIsVisible] = useState(false);
@@ -28,11 +29,21 @@ export default function PrayerBlockEditor() {
 
   return (
     <>
+      {/**
+       *
+       */}
       <PrayerBlockJSONViewer
         visible={JSONViewerIsVisible}
         setVisible={setJSONViewerIsVisible}
       />
+
+      {/**
+       *
+       */}
       <div id="layout-prayerblockeditor">
+        {/**
+         *
+         */}
         <div id="layout-prayerblockeditor-controls">
           <button onClick={addBlock}>
             <RowsPlusBottom size={20} color="#000000" weight="duotone" />
@@ -43,7 +54,12 @@ export default function PrayerBlockEditor() {
           <button onClick={openJSONViewer}>
             <BracketsCurly size={20} weight="duotone" />
           </button>
+          <ColorsControls />
         </div>
+
+        {/**
+         *
+         */}
         {blocks &&
           blocks.map((block) => {
             return <BlockForm key={block.id} block={block} />;

@@ -50,6 +50,7 @@ export function generateNewBlock() {
     id: new Date().valueOf(),
     text: "",
     type: BlockType.BODY,
+    color: "#000000",
   };
 
   return _block;

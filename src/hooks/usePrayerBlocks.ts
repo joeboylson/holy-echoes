@@ -1,24 +1,28 @@
 import { useCallback, useEffect, useState } from "react";
-import { Block, ProviderValue } from "../types";
+import { Block, Color, ProviderValue } from "../types";
 import {
   generateNewBlock,
   getLocalStorageBlocks,
+  getLocalStorageColors,
   setLocalStorageBlocks,
 } from "../utils";
 import { debounce, indexOf, isEmpty } from "lodash";
 
 export const prayerBlockContextDefaultValue: ProviderValue = {
   blocks: [],
+  colors: [],
   addBlock: () => {},
   clearBlocks: () => {},
   updateBlock: (_updatedBlock: Block) => {},
   removeBlock: (_blockToRemove: Block) => {},
   moveBlockUp: (_block: Block) => {},
   moveBlockDown: (_block: Block) => {},
+  setColors: (_colors: Color[]) => {},
 };
 
 export function usePrayerBlocks() {
   const [blocks, setBlocks] = useState<Block[] | undefined>();
+  const [colors, setColors] = useState<Color[] | undefined>();
 
   useEffect(() => {
     /**
@@ -35,6 +39,17 @@ export function usePrayerBlocks() {
      */
     if (blocks) setLocalStorageBlocks(blocks);
   }, [blocks]);
+
+  useEffect(() => {
+    /**
+     * If no colors exist, check and see if there are any to load in from
+     * localstorage
+     */
+    if (!colors) {
+      const _colors = getLocalStorageColors() ?? [];
+      setColors(_colors);
+    }
+  }, [colors]);
 
   const addBlock = useCallback(() => {
     setBlocks((_blocks) => {
@@ -98,12 +113,14 @@ export function usePrayerBlocks() {
 
   const returnValue: ProviderValue = {
     blocks: blocks,
+    colors: colors,
     addBlock,
     clearBlocks,
     updateBlock,
     removeBlock,
     moveBlockUp,
     moveBlockDown,
+    setColors,
   };
   return returnValue;
 }

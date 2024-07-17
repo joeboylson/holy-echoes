@@ -18,10 +18,17 @@
     z-index: 2;
 }
 
+
 #layout-prayerblockjsonviewer.visible {
     opacity: 1;
     transform: translateY(0);
     pointer-events: all;
+}
+
+#layout-prayerblockjsonviewer-controls {
+    display: grid;
+    grid-template-columns: 20px 400px 20px;
+    gap: 6px;
 }
 
 #layout-prayerblockjsonviewer ul {
@@ -55,3 +62,4 @@
     pointer-events: all;
     background-color: rgba(0, 0, 0, 0.4);
 }
+

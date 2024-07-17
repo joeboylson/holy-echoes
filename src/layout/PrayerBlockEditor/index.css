@@ -14,6 +14,11 @@
     gap: 12px;
 }
 
+#layout-prayerblockeditor-controls button{
+    display: grid;
+    place-items: center;
+}
+
 .layout-blockform {
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -22,6 +27,14 @@
     grid-template-columns: 1fr 16px;
     background-color: #fff;
     gap: 8px;
+}
+
+.layout-blockform-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    align-items: start;
+    align-content: start;
 }
 
 .layout-blockform-content {
@@ -34,4 +47,9 @@
 .layout-blockform .editor-wrapper {
     border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+.layout-block-colorpicker-wrapper {
+    display: flex;
+    gap: 4px;
 }

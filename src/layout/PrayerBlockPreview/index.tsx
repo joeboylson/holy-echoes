@@ -13,6 +13,10 @@ export default function PrayerBlockPreview() {
     <div id="layout-prayerblockpreview">
       {blocks &&
         blocks.map((block) => {
+          const _style = {
+            color: block.color,
+          };
+
           switch (block.type) {
             /**
              *
@@ -20,6 +24,7 @@ export default function PrayerBlockPreview() {
             case BlockType.BODY:
               return (
                 <div
+                  style={_style}
                   className="preview-block preview-body"
                   dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
                 />
@@ -31,6 +36,7 @@ export default function PrayerBlockPreview() {
             case BlockType.TITLE:
               return (
                 <h1
+                  style={_style}
                   className="preview-block preview-centered-title"
                   dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
                 />
@@ -42,6 +48,7 @@ export default function PrayerBlockPreview() {
             case BlockType.INFO_TEXT:
               return (
                 <div
+                  style={_style}
                   className="preview-block preview-info-text"
                   dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
                 />

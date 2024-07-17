@@ -1,9 +1,10 @@
 import { MDXEditor } from "@mdxeditor/editor";
-import { Block, BlockType } from "../../types";
+import { Block, BlockType, Color } from "../../types";
 import { useCallback } from "react";
 import { usePrayerBlockContext } from "../../context/prayerBlocks";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
+import { getLocalStorageColors } from "../../utils";
 
 interface _props {
   block: Block;
@@ -12,6 +13,8 @@ interface _props {
 export default function BlockForm({ block }: _props) {
   const { updateBlock, removeBlock, moveBlockUp, moveBlockDown } =
     usePrayerBlockContext();
+
+  const colors = getLocalStorageColors();
 
   const handleTypeChange = useCallback(
     (event: SelectChangeEvent) => {
@@ -28,6 +31,13 @@ export default function BlockForm({ block }: _props) {
     [block, updateBlock]
   );
 
+  const handleColorChange = useCallback(
+    (color: Color) => {
+      updateBlock({ ...block, color });
+    },
+    [block, updateBlock]
+  );
+
   const handleRemoveBlock = () => removeBlock(block);
   const handleMoveBlockUp = () => moveBlockUp(block);
   const handleMoveBlockDown = () => moveBlockDown(block);
@@ -35,12 +45,36 @@ export default function BlockForm({ block }: _props) {
   return (
     <div className="layout-blockform">
       <div className="layout-blockform-content">
+        {/**
+         * COLOR
+         */}
+        <div className="layout-block-colorpicker-wrapper">
+          {colors?.map((color) => {
+            const _selected = block.color === color;
+            return (
+              <button
+                style={{ backgroundColor: color }}
+                className={`layout-colorscontrols-color ${
+                  _selected ? "selected" : ""
+                }`}
+                onClick={() => handleColorChange(color)}
+              ></button>
+            );
+          })}
+        </div>
+
+        {/**
+         * TYPE
+         */}
         <Select value={block.type} onChange={handleTypeChange} size="small">
           {Object.values(BlockType).map((blockType) => (
             <MenuItem value={blockType}>{blockType}</MenuItem>
           ))}
         </Select>
 
+        {/**
+         * INPUT
+         */}
         {block.type === BlockType.TITLE && (
           <>
             <p>Title:</p>
@@ -72,7 +106,7 @@ export default function BlockForm({ block }: _props) {
         )}
       </div>
 
-      <div>
+      <div className="layout-blockform-controls">
         <button onClick={handleMoveBlockUp}>
           <ArrowFatUp size={20} weight="duotone" />
         </button>
