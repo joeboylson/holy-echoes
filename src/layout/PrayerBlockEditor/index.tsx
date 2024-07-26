@@ -10,7 +10,7 @@ import {
 import useConfirmModal from "../../hooks/useConfirmModal";
 import { useState } from "react";
 import PrayerBlockJSONViewer from "../PrayerBlockJSONViewer";
-import ColorsControls from "../ColorsControls";
+import { Button } from "@mui/material";
 
 export default function PrayerBlockEditor() {
   const [JSONViewerIsVisible, setJSONViewerIsVisible] = useState(false);
@@ -27,6 +27,11 @@ export default function PrayerBlockEditor() {
     content: <i>This action cannot be reversed!</i>,
   });
 
+  const handleCopyCross = () => {
+    navigator.clipboard.writeText("᛭");
+    alert('"᛭" has been copied to the clipboard!');
+  };
+
   return (
     <>
       {/**
@@ -36,7 +41,6 @@ export default function PrayerBlockEditor() {
         visible={JSONViewerIsVisible}
         setVisible={setJSONViewerIsVisible}
       />
-
       {/**
        *
        */}
@@ -54,17 +58,33 @@ export default function PrayerBlockEditor() {
           <button onClick={openJSONViewer}>
             <BracketsCurly size={20} weight="duotone" />
           </button>
-          <ColorsControls />
+          <Button
+            onClick={handleCopyCross}
+            variant="contained"
+            color="primary"
+            size="small"
+          >
+            <p>Click here to copy "᛭" to the clipboard</p>
+          </Button>
+          {/* <ColorsControls /> */}
         </div>
 
-        {/**
-         *
-         */}
         {blocks &&
           blocks.map((block) => {
             return <BlockForm key={block.id} block={block} />;
           })}
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
+
       <ConfirmClearBlocksModal />
     </>
   );

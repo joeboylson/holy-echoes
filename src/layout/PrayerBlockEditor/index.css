@@ -9,7 +9,7 @@
     align-content: start;
 }
 
-#layout-prayerblockeditor-controls{
+#layout-prayerblockeditor-controls {
     display: flex;
     gap: 12px;
 }
@@ -42,6 +42,15 @@
     grid-template-columns: 1fr;
     gap: 8px;
     align-items: start;
+}
+
+.layout-blockform-content i, .layout-blockform-content b {
+    font-size: 14px;
+    color: #737373;
+}
+
+.layout-blockform-content i {
+    padding-left: 24px;
 }
 
 .layout-blockform .editor-wrapper {

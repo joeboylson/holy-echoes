@@ -1,5 +1,7 @@
 import { Block, BlockType } from "../types";
 
+export const blankRow = [{ value: "call" }, { value: "response" }];
+
 export const LOCALSTORAGE_BLOCKS_KEY = "prayer-formatter-blocks";
 
 // shorthand

@@ -3,13 +3,12 @@
     height: 100vh;
 
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* grid-template-rows: 3fr 1fr; */
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr;
 }
 
 #layout-app #left{
-    border-right: 1px solid #ddd
+    border-right: 1px solid #ddd;
 }
 
 #layout-app #right{

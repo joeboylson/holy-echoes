@@ -1,0 +1,23 @@
+.components-litanyinput {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    background-color:#f7f7f7;
+    border-radius: 4px;
+}
+
+.components-litanyinput-row {
+    display: grid;
+    grid-template-columns: 3fr 3fr 1fr 42px 20px 20px 20px;
+    gap: 8px;
+}
+
+.components-litanyinput-row > svg{
+    justify-self: center;
+}
+
+.components-litanyinput-row > * {
+    text-align: center;
+}
