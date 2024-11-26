@@ -39,6 +39,16 @@ export const prayersTable = {
   }),
 };
 
+export type PrayerBlock = {
+  id?: string;
+  text?: string;
+  order?: number;
+  blockType?: BlockType;
+
+  // TODO
+  extra?: any;
+};
+
 export const prayerBlocksTable = {
   prayerBlocks: i.entity({
     name: i.any(),

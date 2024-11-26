@@ -1,80 +1,72 @@
-import { MDXEditor } from "@mdxeditor/editor";
-import { Block, BlockExtra, BlockType } from "../../types";
-import { ChangeEvent, useCallback } from "react";
-import { usePrayerBlockContext } from "../../context/prayerBlocks";
-import {
-  InputAdornment,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
-import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
-import LitanyInput from "../../components/LitanyInput";
-import { LitanyRow } from "../../types/litany";
+import { useCallback } from "react";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { BlockType, db, PrayerBlock, TableNames } from "../../database";
 
 interface _props {
-  block: Block;
+  prayerBlock: PrayerBlock;
 }
 
-export default function BlockForm({ block }: _props) {
-  const { updateBlock, removeBlock, moveBlockUp, moveBlockDown } =
-    usePrayerBlockContext();
+export default function BlockForm({ prayerBlock }: _props) {
+  const result = db.useQuery({ [TableNames.BLOCKTYPES]: {} });
+  const blockTypes = (result?.data?.[TableNames.BLOCKTYPES] ??
+    []) as BlockType[];
+  const blockTypesNames = blockTypes.map((i) => i.name);
 
-  const handleTypeChange = useCallback(
-    (event: SelectChangeEvent) => {
-      const type = event.target.value as BlockType;
-      updateBlock({ ...block, type });
-    },
-    [block, updateBlock]
-  );
+  // const { updateBlock, removeBlock, moveBlockUp, moveBlockDown } =
+  //   usePrayerBlockContext();
 
-  const handleBodyChange = useCallback(
-    (text: string) => {
-      updateBlock({ ...block, text });
-    },
-    [block, updateBlock]
-  );
+  const handleTypeChange = useCallback((event: SelectChangeEvent) => {
+    const type = event.target.value;
+    console.log({ type });
+    // updateBlock({ ...block, type });
+  }, []);
 
-  const handleQuoteReferenceExtra = useCallback(
-    (quoteReference: string) => {
-      const extra: BlockExtra = { quoteReference };
-      updateBlock({ ...block, extra });
-    },
-    [block, updateBlock]
-  );
+  // const handleBodyChange = useCallback(
+  //   (text: string) => {
+  //     updateBlock({ ...block, text });
+  //   },
+  //   [block, updateBlock]
+  // );
 
-  const handleFileInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      if (!event.target.files) return;
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        if (!event.target) return;
+  // const handleQuoteReferenceExtra = useCallback(
+  //   (quoteReference: string) => {
+  //     const extra: BlockExtra = { quoteReference };
+  //     updateBlock({ ...block, extra });
+  //   },
+  //   [block, updateBlock]
+  // );
 
-        const imageUrl = event.target.result?.toString();
-        if (!imageUrl)
-          return alert("Something went wrong uploading that image");
+  // const handleFileInputChange = useCallback(
+  //   (event: ChangeEvent<HTMLInputElement>) => {
+  //     if (!event.target.files) return;
+  //     const file = event.target.files[0];
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = (event) => {
+  //       if (!event.target) return;
 
-        const extra: BlockExtra = { imageUrl };
-        updateBlock({ ...block, extra });
-      };
-    },
-    [block, updateBlock]
-  );
+  //       const imageUrl = event.target.result?.toString();
+  //       if (!imageUrl)
+  //         return alert("Something went wrong uploading that image");
 
-  const handleLitanyChange = useCallback(
-    (litanyData: LitanyRow[]) => {
-      const extra: BlockExtra = { litanyData };
-      updateBlock({ ...block, extra });
-    },
-    [block, updateBlock]
-  );
+  //       const extra: BlockExtra = { imageUrl };
+  //       updateBlock({ ...block, extra });
+  //     };
+  //   },
+  //   [block, updateBlock]
+  // );
 
-  const handleRemoveBlock = () => removeBlock(block);
-  const handleMoveBlockUp = () => moveBlockUp(block);
-  const handleMoveBlockDown = () => moveBlockDown(block);
+  // const handleLitanyChange = useCallback(
+  //   (litanyData: LitanyRow[]) => {
+  //     const extra: BlockExtra = { litanyData };
+  //     updateBlock({ ...block, extra });
+  //   },
+  //   [block, updateBlock]
+  // );
+
+  // const handleRemoveBlock = () => removeBlock(block);
+  // const handleMoveBlockUp = () => moveBlockUp(block);
+  // const handleMoveBlockDown = () => moveBlockDown(block);
 
   return (
     <div className="layout-blockform">
@@ -82,38 +74,33 @@ export default function BlockForm({ block }: _props) {
         {/**
          * TYPE
          */}
-        <Select value={block.type} onChange={handleTypeChange} size="small">
-          {Object.values(BlockType).map((blockType) => (
-            <MenuItem value={blockType}>{blockType}</MenuItem>
+        <Select
+          value={prayerBlock.blockType?.name}
+          onChange={handleTypeChange}
+          size="small"
+        >
+          {blockTypesNames.map((name) => (
+            <MenuItem value={name}>{name}</MenuItem>
           ))}
         </Select>
 
-        {/**
-         * INPUT
-         */}
-        {block.type === BlockType.TITLE && (
-          <>
+        {/* <>
             <i>The title will larger and in blue.</i>
             <div className="editor-wrapper">
               <MDXEditor markdown={block.text} onChange={handleBodyChange} />
             </div>
-          </>
-        )}
+          </> */}
 
-        {(block.type === BlockType.IMAGE ||
-          block.type === BlockType.IMAGE_SMALL) && (
-          <>
+        {/* <>
             <i>Upload a photo!</i>
             <input
               type="file"
               accept="image/*"
               onChange={handleFileInputChange}
             ></input>
-          </>
-        )}
+          </> */}
 
-        {block.type === BlockType.BODY && (
-          <>
+        {/* <>
             <i>
               This is standard body text. Italics, bold, and underline are fully
               available.
@@ -121,11 +108,9 @@ export default function BlockForm({ block }: _props) {
             <div className="editor-wrapper">
               <MDXEditor markdown={block.text} onChange={handleBodyChange} />
             </div>
-          </>
-        )}
+          </> */}
 
-        {block.type === BlockType.BODY_CENTERED && (
-          <>
+        {/* <>
             <i>
               This is standard body text, EXCEPT that it will center the text.
               Italics, bold, and underline are fully available.
@@ -133,11 +118,9 @@ export default function BlockForm({ block }: _props) {
             <div className="editor-wrapper">
               <MDXEditor markdown={block.text} onChange={handleBodyChange} />
             </div>
-          </>
-        )}
+          </> */}
 
-        {block.type === BlockType.INFO && (
-          <>
+        {/* <>
             <i>
               This block can be used to add prayer information before or after
               the prayer. Feel free to use bold, italics, and underline!
@@ -145,11 +128,9 @@ export default function BlockForm({ block }: _props) {
             <div className="editor-wrapper">
               <MDXEditor markdown={block.text} onChange={handleBodyChange} />
             </div>
-          </>
-        )}
+          </> */}
 
-        {block.type === BlockType.REFERENCE && (
-          <>
+        {/* <>
             <i>
               This block is meant to be used to add reference text for the
               Raccolta, or another text.
@@ -158,11 +139,9 @@ export default function BlockForm({ block }: _props) {
             <div className="editor-wrapper">
               <MDXEditor markdown={block.text} onChange={handleBodyChange} />
             </div>
-          </>
-        )}
+          </> */}
 
-        {block.type === BlockType.QUOTE && (
-          <>
+        {/* <>
             <i>
               Add the quote in the first box, and then the reference in the
               second box. This text will always render italics.
@@ -196,29 +175,18 @@ export default function BlockForm({ block }: _props) {
                 ),
               }}
             />
-          </>
-        )}
+          </> */}
 
-        {block.type === BlockType.LITANY && (
-          <>
+        {/* <>
             <i>Input a litany</i>
             <LitanyInput
               onChange={handleLitanyChange}
               data={block.extra?.litanyData}
             />
-          </>
-        )}
-
-        {/**
-         *
-         *
-         *
-         *
-         *
-         */}
+          </> */}
       </div>
 
-      <div className="layout-blockform-controls">
+      {/* <div className="layout-blockform-controls">
         <button onClick={handleMoveBlockUp}>
           <ArrowFatUp size={20} weight="duotone" />
         </button>
@@ -228,7 +196,7 @@ export default function BlockForm({ block }: _props) {
         <button onClick={handleRemoveBlock}>
           <TrashSimple size={20} color="#e20303" weight="duotone" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
