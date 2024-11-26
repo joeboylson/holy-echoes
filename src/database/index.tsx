@@ -11,6 +11,18 @@ export enum TableNames {
   BLOCKTYPES = "blockTypes",
 }
 
+export enum BlockTypes {
+  CENTERED_TITLE = "Centered Title",
+  BODY = "Body",
+  BODY_CENTERED = "Body Centered",
+  INFO_TEXT = "Info Text",
+  REFERENCE = "Reference",
+  QUOTE = "Quote",
+  IMAGE = "Image",
+  SMALL_IMAGE = "Small Image",
+  LITANY = "Litany",
+}
+
 const ONE: CardinalityKind = "one";
 const MANY: CardinalityKind = "many";
 
@@ -51,13 +63,14 @@ export type PrayerBlock = {
 
 export const prayerBlocksTable = {
   prayerBlocks: i.entity({
-    name: i.any(),
+    text: i.string(),
+    order: i.number(),
   }),
 };
 
 export type BlockType = {
   id?: string;
-  name?: string;
+  name?: BlockTypes;
   order?: number;
 };
 

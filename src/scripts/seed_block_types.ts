@@ -1,17 +1,5 @@
 import { id } from "@instantdb/react";
-import { db, TableNames, type BlockType } from "../database";
-
-const targetBlockTypes = [
-  "Centered Title",
-  "Body",
-  "Body Centered",
-  "Info Text",
-  "Reference",
-  "Quote",
-  "Image",
-  "Small Image",
-  "Litany",
-];
+import { BlockTypes, db, TableNames, type BlockType } from "../database";
 
 const { BLOCKTYPES } = TableNames;
 
@@ -20,7 +8,7 @@ export async function seed_block_types() {
   const blockTypes = result.data[BLOCKTYPES] as BlockType[];
   const blockTypesNames = blockTypes.map((i) => i.name);
 
-  const seedFunctions = targetBlockTypes.map(async (name, index) => {
+  const seedFunctions = Object.values(BlockTypes).map(async (name, index) => {
     const order = index + 1;
 
     if (!blockTypesNames.includes(name)) {

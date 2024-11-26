@@ -1,32 +1,84 @@
 import { useCallback } from "react";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { BlockType, db, PrayerBlock, TableNames } from "../../database";
+import {
+  BlockType,
+  BlockTypes,
+  db,
+  PrayerBlock,
+  TableNames,
+} from "../../database";
+import { MDXEditor } from "@mdxeditor/editor";
+import { debounce, indexOf } from "lodash";
+import { ArrowFatDown, ArrowFatUp } from "@phosphor-icons/react";
+
+const { BLOCKTYPES, PRAYERBLOCKS } = TableNames;
 
 interface _props {
   prayerBlock: PrayerBlock;
+  allPrayerBlocks: PrayerBlock[];
 }
 
-export default function BlockForm({ prayerBlock }: _props) {
-  const result = db.useQuery({ [TableNames.BLOCKTYPES]: {} });
-  const blockTypes = (result?.data?.[TableNames.BLOCKTYPES] ??
-    []) as BlockType[];
-  const blockTypesNames = blockTypes.map((i) => i.name);
+export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
+  const { data } = db.useQuery({ [BLOCKTYPES]: {} });
+  const blockTypes = (data?.[BLOCKTYPES] ?? []) as BlockType[];
 
-  // const { updateBlock, removeBlock, moveBlockUp, moveBlockDown } =
-  //   usePrayerBlockContext();
+  const handleTypeChange = useCallback(
+    (event: SelectChangeEvent) => {
+      const _id = prayerBlock.id;
+      if (!_id) return;
 
-  const handleTypeChange = useCallback((event: SelectChangeEvent) => {
-    const type = event.target.value;
-    console.log({ type });
-    // updateBlock({ ...block, type });
-  }, []);
+      const blockTypeId = event.target.value;
+      if (!blockTypeId) return;
 
-  // const handleBodyChange = useCallback(
-  //   (text: string) => {
-  //     updateBlock({ ...block, text });
-  //   },
-  //   [block, updateBlock]
-  // );
+      db.transact([db.tx[PRAYERBLOCKS][_id].link({ blockType: blockTypeId })]);
+    },
+    [prayerBlock]
+  );
+
+  const handleBodyChange = debounce((text: string) => {
+    const _id = prayerBlock.id;
+    if (!_id) return;
+
+    db.transact([db.tx[PRAYERBLOCKS][_id].update({ text })]);
+  }, 1000);
+
+  const moveBlockUp = useCallback(() => {
+    const _id = prayerBlock.id;
+    if (!_id) return;
+
+    const currentIndex = indexOf(allPrayerBlocks, prayerBlock);
+    if (currentIndex === 0) return;
+
+    const prayerBlockPrev = allPrayerBlocks[currentIndex - 1];
+    const prevId = prayerBlockPrev.id;
+    if (!prevId) return;
+
+    const currentOrder = prayerBlock.order;
+
+    db.transact([
+      db.tx[PRAYERBLOCKS][_id].update({ order: prayerBlockPrev.order }),
+      db.tx[PRAYERBLOCKS][prevId].update({ order: currentOrder }),
+    ]);
+  }, [allPrayerBlocks, prayerBlock]);
+
+  const moveBlockDown = useCallback(() => {
+    const _id = prayerBlock.id;
+    if (!_id) return;
+
+    const currentIndex = indexOf(allPrayerBlocks, prayerBlock);
+    if (currentIndex === allPrayerBlocks.length - 1) return;
+
+    const prayerBlockNext = allPrayerBlocks[currentIndex + 1];
+    const nextId = prayerBlockNext.id;
+    if (!nextId) return;
+
+    const currentOrder = prayerBlock.order;
+
+    db.transact([
+      db.tx[PRAYERBLOCKS][_id].update({ order: prayerBlockNext.order }),
+      db.tx[PRAYERBLOCKS][nextId].update({ order: currentOrder }),
+    ]);
+  }, [allPrayerBlocks, prayerBlock]);
 
   // const handleQuoteReferenceExtra = useCallback(
   //   (quoteReference: string) => {
@@ -75,21 +127,26 @@ export default function BlockForm({ prayerBlock }: _props) {
          * TYPE
          */}
         <Select
-          value={prayerBlock.blockType?.name}
+          value={prayerBlock.blockType?.id ?? ""}
           onChange={handleTypeChange}
           size="small"
         >
-          {blockTypesNames.map((name) => (
-            <MenuItem value={name}>{name}</MenuItem>
+          {blockTypes.map((blockType) => (
+            <MenuItem value={blockType.id}>{blockType.name}</MenuItem>
           ))}
         </Select>
 
-        {/* <>
+        {prayerBlock.blockType?.name === BlockTypes.CENTERED_TITLE && (
+          <>
             <i>The title will larger and in blue.</i>
             <div className="editor-wrapper">
-              <MDXEditor markdown={block.text} onChange={handleBodyChange} />
+              <MDXEditor
+                markdown={prayerBlock.text ?? ""}
+                onChange={handleBodyChange}
+              />
             </div>
-          </> */}
+          </>
+        )}
 
         {/* <>
             <i>Upload a photo!</i>
@@ -186,17 +243,17 @@ export default function BlockForm({ prayerBlock }: _props) {
           </> */}
       </div>
 
-      {/* <div className="layout-blockform-controls">
-        <button onClick={handleMoveBlockUp}>
+      <div className="layout-blockform-controls">
+        <button onClick={moveBlockUp}>
           <ArrowFatUp size={20} weight="duotone" />
         </button>
-        <button onClick={handleMoveBlockDown}>
+        <button onClick={moveBlockDown}>
           <ArrowFatDown size={20} weight="duotone" />
         </button>
-        <button onClick={handleRemoveBlock}>
+        {/* <button onClick={handleRemoveBlock}>
           <TrashSimple size={20} color="#e20303" weight="duotone" />
-        </button>
-      </div> */}
+        </button> */}
+      </div>
     </div>
   );
 }
