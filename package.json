@@ -6,6 +6,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
+    "@instantdb/react": "^0.15.8",
     "@mdxeditor/editor": "^3.8.0",
     "@mui/material": "^5.15.19",
     "@phosphor-icons/react": "^2.1.6",
@@ -26,6 +27,7 @@
     "react-scripts": "5.0.1",
     "react-spreadsheet": "^0.9.5",
     "scheduler": "^0.23.2",
+    "ts-node": "^10.9.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
