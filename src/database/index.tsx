@@ -45,9 +45,17 @@ export const oneToMany = (
   };
 };
 
+export type Prayer = {
+  id?: string;
+  name?: string;
+  order?: number;
+  prayerBlocks?: PrayerBlock[];
+};
+
 export const prayersTable = {
-  prayers: i.entity({
-    name: i.any(),
+  [TableNames.PRAYERS]: i.entity({
+    name: i.string(),
+    order: i.number(),
   }),
 };
 
@@ -62,7 +70,7 @@ export type PrayerBlock = {
 };
 
 export const prayerBlocksTable = {
-  prayerBlocks: i.entity({
+  [TableNames.PRAYERBLOCKS]: i.entity({
     text: i.string(),
     order: i.number(),
   }),
@@ -75,7 +83,7 @@ export type BlockType = {
 };
 
 export const blockTypesTable = {
-  blockTypes: i.entity({
+  [TableNames.BLOCKTYPES]: i.entity({
     name: i.string(),
     order: i.number(),
   }),
@@ -105,9 +113,5 @@ const schema = initGraph(
   }
 );
 
-export const db = init_experimental({
-  appId,
-  schema,
-});
-
+export const db = init_experimental({ appId, schema });
 export type DB = typeof db;
