@@ -29,12 +29,9 @@ export type Block = {
 
 export type ProviderValue = {
   blocks?: Block[];
-  colors?: Color[];
   addBlock: () => void;
-  clearBlocks: () => void;
   updateBlock: (_updatedBlock: Block) => void;
   removeBlock: (_blockToRemove: Block) => void;
   moveBlockUp: (_block: Block) => void;
   moveBlockDown: (_block: Block) => void;
-  setColors: (_colors: Color[]) => void;
 };
