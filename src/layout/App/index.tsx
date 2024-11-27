@@ -1,18 +1,37 @@
-import "./index.css";
-import PrayerBlockEditor from "../PrayerBlockEditor";
-import PrayerBlockPreview from "../PrayerBlockPreview";
-import PrayerList from "../PrayerList";
+import Admin from "../../pages/Admin";
+import Home from "../../pages/Home";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+
+export enum Pages {
+  INDEX = "/",
+  HOME = "/home",
+  ADMIN = "/admin",
+  SELECTED_PRAYER = "/admin/prayer/:prayerId",
+}
+
+const router = createBrowserRouter([
+  {
+    path: Pages.INDEX,
+    element: <Navigate to={Pages.HOME} replace />,
+  },
+  {
+    path: Pages.HOME,
+    element: <Home />,
+  },
+  {
+    path: Pages.ADMIN,
+    element: <Admin />,
+  },
+  {
+    path: Pages.SELECTED_PRAYER,
+    element: <Admin />,
+  },
+]);
 
 export default function App() {
-  return (
-    <div id="layout-app">
-      <PrayerList />
-      <div id="left">
-        <PrayerBlockEditor />
-      </div>
-      <div id="right">
-        <PrayerBlockPreview />
-      </div>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }

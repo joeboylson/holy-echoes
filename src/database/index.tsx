@@ -49,6 +49,7 @@ export type Prayer = {
   id?: string;
   name?: string;
   order?: number;
+  published?: boolean;
   prayerBlocks?: PrayerBlock[];
 };
 
@@ -56,6 +57,7 @@ export const prayersTable = {
   [TableNames.PRAYERS]: i.entity({
     name: i.string(),
     order: i.number(),
+    published: i.boolean(),
   }),
 };
 

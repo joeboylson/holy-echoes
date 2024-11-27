@@ -2,26 +2,36 @@ import "./index.css";
 import "@mdxeditor/editor/style.css";
 import BlockForm from "./blockForm";
 import { RowsPlusBottom } from "@phosphor-icons/react";
-import { db, PrayerBlock, TableNames } from "../../database";
+import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
-import { orderBy } from "lodash";
+import { first, orderBy } from "lodash";
+import { useParams } from "react-router-dom";
 
-const { PRAYERBLOCKS } = TableNames;
+const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
 export default function PrayerBlockEditor() {
-  const result = db.useQuery({
-    [PRAYERBLOCKS]: { blockType: {} },
-  });
+  const { prayerId } = useParams();
 
-  const prayerBlocks = (result?.data?.[PRAYERBLOCKS] ?? []) as PrayerBlock[];
+  const result = db.useQuery(
+    prayerId
+      ? {
+          [PRAYERS]: {
+            [PRAYERBLOCKS]: { blockType: {} },
+            $: { where: { id: prayerId } },
+          },
+        }
+      : null
+  );
+
+  const prayers = (result.data?.[PRAYERS] ?? []) as Prayer[];
+  const prayerBlocks = first(prayers)?.prayerBlocks as PrayerBlock[];
 
   async function addNewPrayerBlock() {
-    const newPrayerBlock: PrayerBlock = {
-      order: prayerBlocks.length,
-    };
+    const newPrayerBlock: PrayerBlock = { order: prayerBlocks.length };
+    const link = { prayer: prayerId };
 
     await db.transact([
-      db.tx[PRAYERBLOCKS][id()].update({ ...newPrayerBlock }),
+      db.tx[PRAYERBLOCKS][id()].update({ ...newPrayerBlock }).link({ ...link }),
     ]);
   }
 

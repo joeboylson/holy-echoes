@@ -2,9 +2,9 @@ import { RowsPlusBottom } from "@phosphor-icons/react";
 import styled from "styled-components";
 import { db, Prayer, TableNames } from "../../database";
 import { id } from "@instantdb/react";
+import PrayerListItem from "./PrayerListItem";
 
 const StyledPrayerList = styled.div`
-  border-right: 1px solid #ddd;
   padding: 12px;
   display: grid;
   grid-template-columns: 1fr;
@@ -15,6 +15,10 @@ const StyledPrayerList = styled.div`
     border-bottom: 1px solid #ddd;
     padding-bottom: 8px;
   }
+
+  a {
+    padding: 8px 0;
+  }
 `;
 
 const PrayerListItemsWrapper = styled.div`
@@ -23,13 +27,16 @@ const PrayerListItemsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   align-content: start;
-  justify-items: start;
-  gap: 12px;
+  gap: 4px;
 `;
 
 const { PRAYERS } = TableNames;
 
-export default function PrayerList() {
+interface _props {
+  allowAdmin?: boolean;
+}
+
+export default function PrayerList({ allowAdmin = false }: _props) {
   const { data } = db.useQuery({ [PRAYERS]: {} });
 
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
@@ -43,16 +50,18 @@ export default function PrayerList() {
     <StyledPrayerList>
       <b>Prayer List</b>
 
-      <div>
-        <button onClick={addNewPrayer}>
-          <RowsPlusBottom size={20} color="#000000" weight="duotone" />
-        </button>
-      </div>
+      {allowAdmin && (
+        <div>
+          <button onClick={addNewPrayer}>
+            <RowsPlusBottom size={20} color="#000000" weight="duotone" />
+          </button>
+        </div>
+      )}
 
       <PrayerListItemsWrapper>
-        {prayers.map((prayer) => {
-          return <a href="">{prayer.name}</a>;
-        })}
+        {prayers.map((prayer) => (
+          <PrayerListItem prayer={prayer} />
+        ))}
       </PrayerListItemsWrapper>
     </StyledPrayerList>
   );
