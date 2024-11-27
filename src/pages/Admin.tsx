@@ -9,7 +9,7 @@ const StyledAdmin = styled.div`
   height: 100vh;
 
   display: grid;
-  grid-template-columns: 500px 1fr 500px;
+  grid-template-columns: 500px 1fr 300px;
   grid-template-rows: 1fr;
 `;
 

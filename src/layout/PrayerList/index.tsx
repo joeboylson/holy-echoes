@@ -60,7 +60,7 @@ export default function PrayerList({ allowAdmin = false }: _props) {
 
       <PrayerListItemsWrapper>
         {prayers.map((prayer) => (
-          <PrayerListItem prayer={prayer} />
+          <PrayerListItem prayer={prayer} key={prayer.id} />
         ))}
       </PrayerListItemsWrapper>
     </StyledPrayerList>

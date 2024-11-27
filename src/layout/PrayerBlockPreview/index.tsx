@@ -1,129 +1,180 @@
-import { PrayerBlock } from "../../database";
+import { first, orderBy } from "lodash";
+import {
+  BlockTypes,
+  db,
+  Prayer,
+  PrayerBlock,
+  TableNames,
+} from "../../database";
 import "./index.css";
 import "@mdxeditor/editor/style.css";
+import { useParams } from "react-router-dom";
+import markdownit from "markdown-it";
 
-// import markdownit from "markdown-it";
-// const md = markdownit();
+const { PRAYERBLOCKS, PRAYERS } = TableNames;
+const {
+  BODY,
+  BODY_CENTERED,
+  CENTERED_TITLE,
+  IMAGE,
+  INFO_TEXT,
+  LITANY,
+  QUOTE,
+  REFERENCE,
+  SMALL_IMAGE,
+} = BlockTypes;
+
+const md = markdownit({ html: true });
 
 export default function PrayerBlockPreview() {
-  // TODO
-  const prayerBlocks = [] as PrayerBlock[];
+  const { prayerId } = useParams();
+
+  const { data, isLoading } = db.useQuery(
+    prayerId
+      ? {
+          [PRAYERS]: {
+            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
+            $: { where: { id: prayerId } },
+          },
+        }
+      : null
+  );
+
+  const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
+  const prayerBlocks = first(prayers)?.prayerBlocks as PrayerBlock[];
 
   return (
     <div id="layout-prayerblockpreview">
-      {prayerBlocks.map((prayerBlock) => {
-        return <pre>{JSON.stringify(prayerBlock, undefined, 2)};</pre>;
+      {!isLoading &&
+        prayerBlocks.map((prayerBlock) => {
+          const blockTypeName = prayerBlock.blockType?.name;
+          const imageUrl = prayerBlock.imageUrl;
+          const text = prayerBlock.text ?? "";
+          const reference = prayerBlock.reference ?? "";
 
-        // switch (block.type) {
-        //   case BlockType.BODY:
-        //     return (
-        //       <div
-        //         className="preview-block preview-body"
-        //         dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
-        //       />
-        //     );
+          switch (blockTypeName) {
+            case BODY:
+              return (
+                <div
+                  key={prayerBlock.id}
+                  className="preview-block preview-body"
+                  dangerouslySetInnerHTML={{ __html: md.render(text) }}
+                />
+              );
 
-        //   case BlockType.BODY_CENTERED:
-        //     return (
-        //       <div
-        //         className="preview-block preview-body preview-body-centered"
-        //         dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
-        //       />
-        //     );
+            case BODY_CENTERED:
+              return (
+                <div
+                  key={prayerBlock.id}
+                  className="preview-block preview-body preview-body-centered"
+                  dangerouslySetInnerHTML={{ __html: md.render(text) }}
+                />
+              );
 
-        //   case BlockType.TITLE:
-        //     return (
-        //       <h1
-        //         className="preview-block preview-centered-title"
-        //         dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
-        //       />
-        //     );
+            case CENTERED_TITLE:
+              return (
+                <h1
+                  key={prayerBlock.id}
+                  className="preview-block preview-centered-title"
+                  dangerouslySetInnerHTML={{ __html: md.render(text) }}
+                />
+              );
 
-        //   case BlockType.INFO:
-        //     return (
-        //       <div
-        //         className="preview-block preview-info"
-        //         dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
-        //       />
-        //     );
+            case INFO_TEXT:
+              return (
+                <div
+                  key={prayerBlock.id}
+                  className="preview-block preview-info"
+                  dangerouslySetInnerHTML={{ __html: md.render(text) }}
+                />
+              );
 
-        //   case BlockType.REFERENCE:
-        //     return (
-        //       <div
-        //         className="preview-block preview-reference"
-        //         dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
-        //       />
-        //     );
+            case REFERENCE:
+              return (
+                <div
+                  key={prayerBlock.id}
+                  className="preview-block preview-reference"
+                  dangerouslySetInnerHTML={{ __html: md.render(text) }}
+                />
+              );
 
-        //   case BlockType.QUOTE:
-        //     return (
-        //       <div className="preview-quote-wrapper">
-        //         <div
-        //           className="preview-block preview-quote"
-        //           dangerouslySetInnerHTML={{ __html: md.render(block.text) }}
-        //         />
-        //         <p className="preview-quote-reference">
-        //           — {block.extra?.quoteReference}
-        //         </p>
-        //       </div>
-        //     );
+            case QUOTE:
+              return (
+                <div className="preview-quote-wrapper" key={prayerBlock.id}>
+                  <div
+                    className="preview-block preview-quote"
+                    dangerouslySetInnerHTML={{ __html: md.render(`"${text}"`) }}
+                  />
+                  <p className="preview-quote-reference">— {reference}</p>
+                </div>
+              );
 
-        //   case BlockType.IMAGE:
-        //     return (
-        //       <div className="preview-block preview-image">
-        //         <img src={block.extra?.imageUrl} alt="" />
-        //       </div>
-        //     );
+            case IMAGE:
+              return (
+                <div
+                  className="preview-block preview-image"
+                  key={prayerBlock.id}
+                >
+                  <img src={imageUrl} alt="" />
+                </div>
+              );
 
-        //   case BlockType.IMAGE_SMALL:
-        //     return (
-        //       <div className="preview-block preview-image-small">
-        //         <img src={block.extra?.imageUrl} alt="" />
-        //       </div>
-        //     );
+            case SMALL_IMAGE:
+              return (
+                <div
+                  className="preview-block preview-image-small"
+                  key={prayerBlock.id}
+                >
+                  <img src={imageUrl} alt="" />
+                </div>
+              );
 
-        //   case BlockType.LITANY:
-        //     return (
-        //       <div className="preview-block preview-litany">
-        //         {block.extra?.litanyData?.map((i) => {
-        //           const {
-        //             call: c,
-        //             response: r,
-        //             superscript: s,
-        //             useNewLine: br,
-        //           } = i;
+            case LITANY:
+              const orderedLitanyBlocks = orderBy(
+                prayerBlock?.litanyBlocks,
+                "order"
+              );
 
-        //           if (!c && !r && !s)
-        //             return (
-        //               <i>
-        //                 (empty line) <br />{" "}
-        //               </i>
-        //             );
+              return (
+                <div
+                  className="preview-block preview-litany"
+                  key={prayerBlock.id}
+                >
+                  {orderedLitanyBlocks.map((i) => {
+                    const { call, response, superscript, inline } = i;
 
-        //           return (
-        //             <div className="preview-litany-row">
-        //               <p>
-        //                 {c}
-        //                 &nbsp;
-        //                 {br && (
-        //                   <>
-        //                     <br />
-        //                     &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        //                   </>
-        //                 )}
-        //                 {r && `${r}`}
-        //                 {s && <sup>{s}</sup>}
-        //               </p>
-        //             </div>
-        //           );
-        //         })}
-        //       </div>
-        //     );
+                    if (!call && !response && !superscript)
+                      return (
+                        <i>
+                          (empty line)
+                          <br />
+                        </i>
+                      );
 
-        //   default:
-        //     return <p>(no type selected)</p>;
-        // }
-      })}
+                    return (
+                      <div className="preview-litany-row">
+                        <p>
+                          {call}
+                          &nbsp;
+                          {!inline && (
+                            <>
+                              <br />
+                              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                            </>
+                          )}
+                          {response && `${response}`}
+                          {superscript && <sup>&nbsp;{superscript}</sup>}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+
+            default:
+              return <p>(no type selected)</p>;
+          }
+        })}
     </div>
   );
 }

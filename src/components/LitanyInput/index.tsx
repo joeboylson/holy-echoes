@@ -1,126 +1,93 @@
 import "./index.css";
-import { useCallback, useEffect, useState } from "react";
-import { LitanyRow } from "../../types/litany";
+import { useCallback } from "react";
 import { Checkbox, TextField } from "@mui/material";
 import {
-  ArrowElbowDownLeft,
   ArrowFatDown,
   ArrowFatUp,
   RowsPlusBottom,
-  TextSuperscript,
   TrashSimple,
-  UserSound,
-  UsersFour,
 } from "@phosphor-icons/react";
-import { indexOf } from "lodash";
+import { debounce, first, isEqual, last, orderBy } from "lodash";
+import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
+import { id } from "@instantdb/react";
+import { moveBlockDown, moveBlockUp } from "../../utils";
+import { LitanyRow, LitanyRowWrapper, RowHeader } from "./StyledComponents";
+
+const { PRAYERBLOCKS, LITANYBLOCKS } = TableNames;
 
 interface _props {
-  data?: LitanyRow[];
-  onChange: (data: LitanyRow[]) => void;
+  prayerBlockId?: string;
 }
 
-export default function LitanyInput({ data, onChange }: _props) {
-  const [rows, setRows] = useState<LitanyRow[]>();
-
-  useEffect(() => {
-    if (rows === undefined) setRows(data);
-  }, [data, rows]);
-
-  const handleOnChange = useCallback(
-    (_data: LitanyRow[]) => {
-      setRows(_data);
-      onChange(_data);
-    },
-    [onChange]
+export default function LitanyInput({ prayerBlockId }: _props) {
+  const { data } = db.useQuery(
+    prayerBlockId
+      ? {
+          [PRAYERBLOCKS]: {
+            [LITANYBLOCKS]: {},
+            $: { where: { id: prayerBlockId } },
+          },
+        }
+      : null
   );
+
+  const prayerBlocks = (data?.[PRAYERBLOCKS] ?? []) as PrayerBlock[];
+  const litanyBlocks = first(prayerBlocks)?.litanyBlocks as LitanyBlock[];
+  const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
+  const numberOfItems = orderedLitanyBlocks.length;
 
   const handleAddNewRow = useCallback(() => {
-    const newRow: LitanyRow = { id: new Date().valueOf() };
-    const newData: LitanyRow[] = [...(data ?? []), newRow];
-    handleOnChange(newData);
-  }, [handleOnChange, data]);
+    if (!prayerBlockId) return;
 
-  const handleUpdateRow = useCallback(
-    (_row: LitanyRow) => {
-      if (!data) return;
-      const newData = data?.map((i) => (i.id === _row.id ? _row : i));
-      handleOnChange(newData);
-    },
-    [handleOnChange, data]
-  );
+    const _id = id();
+    const order = numberOfItems;
+    db.transact([
+      db.tx[LITANYBLOCKS][_id]
+        .update({ order })
+        .link({ prayerBlock: prayerBlockId }),
+    ]);
+  }, [prayerBlockId, numberOfItems]);
 
-  const handleMoveRowUp = useCallback(
-    (_row: LitanyRow) => {
-      if (!data) return;
-      const rowIndex = indexOf(data, _row);
-      if (rowIndex === 0) return data;
-      const reorderedRows = data.filter((i) => i.id !== _row.id);
-      if (!reorderedRows) return data;
-      reorderedRows.splice(rowIndex - 1, 0, _row);
-      handleOnChange(reorderedRows);
+  const handleChange = debounce(
+    (litanyBlockId?: string, data?: Partial<LitanyBlock>) => {
+      if (!litanyBlockId) return;
+      db.transact([db.tx[LITANYBLOCKS][litanyBlockId].update({ ...data })]);
     },
-    [data, handleOnChange]
-  );
-
-  const handleMoveRowDown = useCallback(
-    (_row: LitanyRow) => {
-      if (!data) return;
-      const rowIndex = indexOf(data, _row);
-      if (rowIndex === data?.length - 1) return rowIndex;
-      const reorderedRows = data.filter((i) => i.id !== _row.id);
-      if (!reorderedRows) return data;
-      reorderedRows.splice(rowIndex + 1, 0, _row);
-      handleOnChange(reorderedRows);
-    },
-    [data, handleOnChange]
-  );
-
-  const handleRemoveRow = useCallback(
-    (_row: LitanyRow) => {
-      if (!data) return;
-      const filteredRows = data.filter((i) => i.id !== _row.id);
-      if (!filteredRows) return;
-      handleOnChange(filteredRows);
-    },
-    [data, handleOnChange]
+    500
   );
 
   return (
-    <div className="components-litanyinput">
-      <div className="components-litanyinput-row">
-        <UserSound size={20} weight="duotone" />
-        <UsersFour size={20} weight="duotone" />
-        <TextSuperscript size={20} weight="duotone" />
-        <ArrowElbowDownLeft size={20} weight="duotone" />
-      </div>
+    <LitanyRowWrapper>
+      <LitanyRow>
+        <RowHeader>Call</RowHeader>
+        <RowHeader>Response</RowHeader>
+        <RowHeader>Call Superscript</RowHeader>
+        <RowHeader>Inline Response</RowHeader>
+      </LitanyRow>
 
-      {rows?.map((i) => {
-        const updateRowCall = (call: string) => {
-          const _row: LitanyRow = { ...i, call };
-          handleUpdateRow(_row);
-        };
+      {orderedLitanyBlocks?.map((i) => {
+        const litanyBlockId = i.id;
 
-        const updateRowResponse = (response: string) => {
-          const _row: LitanyRow = { ...i, response };
-          handleUpdateRow(_row);
-        };
+        const updateRowCall = (call: string) =>
+          handleChange(litanyBlockId, { call });
 
-        const updateRowSuperscript = (superscript: string) => {
-          const _row: LitanyRow = { ...i, superscript };
-          handleUpdateRow(_row);
-        };
+        const updateRowResponse = (response: string) =>
+          handleChange(litanyBlockId, { response });
 
-        const updateRowUsesNewLine = (useNewLine: boolean) => {
-          const _row: LitanyRow = { ...i, useNewLine };
-          handleUpdateRow(_row);
-        };
+        const updateRowSuperscript = (superscript: string) =>
+          handleChange(litanyBlockId, { superscript });
 
-        const moveRowUp = () => handleMoveRowUp(i);
-        const moveRowDown = () => handleMoveRowDown(i);
-        const removeRow = () => handleRemoveRow(i);
+        const updateRowIsInline = (inline: boolean) =>
+          handleChange(litanyBlockId, { inline });
+
+        const moveUp = () => moveBlockUp(i, orderedLitanyBlocks, LITANYBLOCKS);
+        const moveDown = () =>
+          moveBlockDown(i, orderedLitanyBlocks, LITANYBLOCKS);
+
+        const removeRow = () => alert("TODO");
 
         return (
-          <div className="components-litanyinput-row" key={i.id}>
+          <LitanyRow key={i.id}>
             {/* Call */}
             <TextField
               size="small"
@@ -150,27 +117,37 @@ export default function LitanyInput({ data, onChange }: _props) {
 
             <div>
               <Checkbox
-                onChange={(e) => updateRowUsesNewLine(e.target.checked)}
-                checked={i.useNewLine}
+                onChange={(e) => updateRowIsInline(e.target.checked)}
+                defaultChecked={i.inline}
               />
             </div>
 
-            <button onClick={moveRowUp}>
-              <ArrowFatUp size={20} weight="duotone" />
-            </button>
-            <button onClick={moveRowDown}>
-              <ArrowFatDown size={20} weight="duotone" />
-            </button>
+            {isEqual(i, first(orderedLitanyBlocks)) ? (
+              <span />
+            ) : (
+              <button onClick={moveUp}>
+                <ArrowFatUp size={20} weight="duotone" />
+              </button>
+            )}
+
+            {isEqual(i, last(orderedLitanyBlocks)) ? (
+              <span />
+            ) : (
+              <button onClick={moveDown}>
+                <ArrowFatDown size={20} weight="duotone" />
+              </button>
+            )}
+
             <button onClick={removeRow}>
               <TrashSimple size={20} color="#e20303" weight="duotone" />
             </button>
-          </div>
+          </LitanyRow>
         );
       })}
 
       <button onClick={handleAddNewRow}>
         <RowsPlusBottom size={20} color="#000000" weight="duotone" />
       </button>
-    </div>
+    </LitanyRowWrapper>
   );
 }

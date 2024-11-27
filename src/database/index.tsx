@@ -9,6 +9,7 @@ export enum TableNames {
   PRAYERS = "prayers",
   PRAYERBLOCKS = "prayerBlocks",
   BLOCKTYPES = "blockTypes",
+  LITANYBLOCKS = "litanyBlocks",
 }
 
 export enum BlockTypes {
@@ -66,15 +67,17 @@ export type PrayerBlock = {
   text?: string;
   order?: number;
   blockType?: BlockType;
-
-  // TODO
-  extra?: any;
+  imageUrl?: string;
+  reference?: string;
+  litanyBlocks?: LitanyBlock[];
 };
 
 export const prayerBlocksTable = {
   [TableNames.PRAYERBLOCKS]: i.entity({
     text: i.string(),
     order: i.number(),
+    imageUrl: i.string(),
+    reference: i.string(),
   }),
 };
 
@@ -91,6 +94,25 @@ export const blockTypesTable = {
   }),
 };
 
+export type LitanyBlock = {
+  id?: string;
+  order?: number;
+  call?: string;
+  response?: string;
+  superscript?: string;
+  inline?: boolean;
+};
+
+export const litanyBlocksTable = {
+  [TableNames.LITANYBLOCKS]: i.entity({
+    order: i.number(),
+    call: i.string(),
+    response: i.string(),
+    superscript: i.string(),
+    inline: i.boolean(),
+  }),
+};
+
 export const prayerBlocksRelations = {
   hasOneBlockType: oneToMany(
     TableNames.PRAYERBLOCKS,
@@ -104,14 +126,24 @@ export const prayerBlocksRelations = {
   ),
 };
 
+export const litanyBlocksRelations = {
+  hasOnePrayerBlock: oneToMany(
+    TableNames.LITANYBLOCKS,
+    TableNames.PRAYERBLOCKS,
+    "prayerBlock"
+  ),
+};
+
 const schema = initGraph(
   {
     ...prayersTable,
     ...prayerBlocksTable,
     ...blockTypesTable,
+    ...litanyBlocksTable,
   },
   {
     ...prayerBlocksRelations,
+    ...litanyBlocksRelations,
   }
 );
 
