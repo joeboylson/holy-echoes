@@ -17,7 +17,7 @@ import { MDXEditor } from "@mdxeditor/editor";
 import { debounce } from "lodash";
 import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
 import LitanyInput from "../../components/LitanyInput";
-import { moveBlockDown, moveBlockUp } from "../../utils";
+import { moveBlockDown, moveBlockUp, removeBlock } from "../../utils";
 
 const { BLOCKTYPES, PRAYERBLOCKS } = TableNames;
 
@@ -106,6 +106,10 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
     if (!_id) return;
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ imageUrl: null })]);
   }, [prayerBlock]);
+
+  const deleteBlock = () => {
+    removeBlock(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
+  };
 
   return (
     <div className="layout-blockform">
@@ -256,7 +260,7 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
         <button onClick={moveDown}>
           <ArrowFatDown size={20} weight="duotone" />
         </button>
-        <button onClick={() => alert("TODO")}>
+        <button onClick={deleteBlock}>
           <TrashSimple size={20} color="#e20303" weight="duotone" />
         </button>
       </div>

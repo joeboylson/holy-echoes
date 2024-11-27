@@ -53,9 +53,30 @@ export function moveBlockDown(
   const nextOrder = prayerBlockNext.order;
   if (nextOrder === undefined) return console.info("no next order");
 
-  console.log(">>> do reorder");
   db.transact([
     db.tx[table][blockId].update({ order: nextOrder }),
     db.tx[table][nextBlockId].update({ order: currentOrder }),
   ]);
+}
+
+export function removeBlock(
+  block: Reorderable,
+  allBlocks: Reorderable[],
+  table: TableNames
+) {
+  const blockId = block.id;
+  if (!blockId) return console.error("no block id");
+
+  db.transact([db.tx[table][blockId].delete()]);
+
+  const updatedAllBlocks = allBlocks.filter((i) => i.id !== blockId);
+  normalizeOrder(updatedAllBlocks, table);
+}
+
+export function normalizeOrder(allBlocks: Reorderable[], table: TableNames) {
+  const reorderTransactions = allBlocks.map((i, order) =>
+    db.tx[table][i.id ?? ""].update({ order })
+  );
+
+  db.transact(reorderTransactions);
 }
