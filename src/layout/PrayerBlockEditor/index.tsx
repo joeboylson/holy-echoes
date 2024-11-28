@@ -1,18 +1,20 @@
 import "./index.css";
 import "@mdxeditor/editor/style.css";
 import BlockForm from "./blockForm";
-import { RowsPlusBottom } from "@phosphor-icons/react";
+import { RowsPlusBottom, TrashSimple } from "@phosphor-icons/react";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
 import { first, orderBy } from "lodash";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+import { cascadeDeletePrayer } from "../../utils";
+import { Pages } from "../App";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
 export default function PrayerBlockEditor() {
   const { prayerId } = useParams();
 
-  const result = db.useQuery(
+  const { data, isLoading } = db.useQuery(
     prayerId
       ? {
           [PRAYERS]: {
@@ -23,19 +25,31 @@ export default function PrayerBlockEditor() {
       : null
   );
 
-  const prayers = (result.data?.[PRAYERS] ?? []) as Prayer[];
-  const prayerBlocks = first(prayers)?.prayerBlocks as PrayerBlock[];
+  const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
+  const prayer = first(prayers);
+  const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
 
-  async function addNewPrayerBlock() {
-    const newPrayerBlock: PrayerBlock = { order: prayerBlocks.length };
+  function addNewPrayerBlock() {
+    const newPrayerBlock: PrayerBlock = { order: prayerBlocks?.length ?? 0 };
     const link = { prayer: prayerId };
 
-    await db.transact([
+    db.transact([
       db.tx[PRAYERBLOCKS][id()].update({ ...newPrayerBlock }).link({ ...link }),
     ]);
   }
 
+  function deletePrayer() {
+    if (prayer) {
+      db.transact([db.tx[PRAYERS][prayer?.id ?? ""].delete()]);
+      cascadeDeletePrayer(prayer);
+    }
+  }
+
   const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
+
+  if (!isLoading && !prayer) {
+    return <Navigate to={Pages.ADMIN} />;
+  }
 
   return (
     <>
@@ -43,6 +57,9 @@ export default function PrayerBlockEditor() {
         <div id="layout-prayerblockeditor-controls">
           <button onClick={addNewPrayerBlock}>
             <RowsPlusBottom size={20} color="#000000" weight="duotone" />
+          </button>
+          <button onClick={deletePrayer}>
+            <TrashSimple size={20} color="#e20303" weight="duotone" />
           </button>
         </div>
 

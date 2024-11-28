@@ -1,4 +1,5 @@
 import { ChangeEvent, useCallback } from "react";
+
 import {
   InputAdornment,
   MenuItem,
@@ -6,6 +7,7 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
+
 import {
   BlockType,
   BlockTypes,
@@ -13,11 +15,18 @@ import {
   PrayerBlock,
   TableNames,
 } from "../../database";
+
 import { MDXEditor } from "@mdxeditor/editor";
 import { debounce } from "lodash";
 import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
 import LitanyInput from "../../components/LitanyInput";
-import { moveBlockDown, moveBlockUp, removeBlock } from "../../utils";
+
+import {
+  moveBlockDown,
+  moveBlockUp,
+  removeBlock,
+  cascadeDeletePrayerBlock,
+} from "../../utils";
 
 const { BLOCKTYPES, PRAYERBLOCKS } = TableNames;
 
@@ -109,6 +118,7 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
 
   const deleteBlock = () => {
     removeBlock(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
+    cascadeDeletePrayerBlock(prayerBlock);
   };
 
   return (

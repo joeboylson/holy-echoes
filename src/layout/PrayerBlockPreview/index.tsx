@@ -46,6 +46,7 @@ export default function PrayerBlockPreview() {
   return (
     <div id="layout-prayerblockpreview">
       {!isLoading &&
+        prayerBlocks &&
         prayerBlocks.map((prayerBlock) => {
           const blockTypeName = prayerBlock.blockType?.name;
           const imageUrl = prayerBlock.imageUrl;

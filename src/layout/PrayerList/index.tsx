@@ -42,7 +42,11 @@ export default function PrayerList({ allowAdmin = false }: _props) {
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
 
   async function addNewPrayer() {
-    const newPrayer: Prayer = { order: prayers.length, name: "New Prayer" };
+    const newPrayer: Prayer = {
+      order: prayers?.length ?? 0,
+      name: "New Prayer",
+      published: false,
+    };
     await db.transact([db.tx[PRAYERS][id()].update({ ...newPrayer })]);
   }
 

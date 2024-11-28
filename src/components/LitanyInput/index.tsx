@@ -34,7 +34,7 @@ export default function LitanyInput({ prayerBlockId }: _props) {
   const prayerBlocks = (data?.[PRAYERBLOCKS] ?? []) as PrayerBlock[];
   const litanyBlocks = first(prayerBlocks)?.litanyBlocks as LitanyBlock[];
   const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
-  const numberOfItems = orderedLitanyBlocks.length;
+  const numberOfItems = orderedLitanyBlocks?.length ?? 0;
 
   const handleAddNewRow = useCallback(() => {
     if (!prayerBlockId) return;
