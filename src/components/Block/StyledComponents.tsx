@@ -69,6 +69,7 @@ export const BlockImageSmall = styled.img`
 `;
 
 export const LitanyWrapper = styled.div`
+  ${BaseBlockCSS}
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
