@@ -1,26 +1,18 @@
 import styled from "styled-components";
 import { db, Prayer, TableNames } from "../../database";
 import PrayerListItem from "./PrayerListItem";
+import { isEmpty } from "lodash";
+import { useMemo } from "react";
 
 const StyledPrayerList = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   align-content: start;
   gap: 12px;
-
-  b {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 8px;
-  }
-
-  a {
-    padding: 8px 0;
-  }
 `;
 
 const PrayerListItemsWrapper = styled.div`
   width: 100%;
-
   display: grid;
   grid-template-columns: 1fr;
   align-content: start;
@@ -30,17 +22,33 @@ const PrayerListItemsWrapper = styled.div`
 const { PRAYERS } = TableNames;
 
 interface _props {
-  allowAdmin?: boolean;
+  filterUnpublished?: boolean;
 }
 
-export default function PrayerList({ allowAdmin = false }: _props) {
-  const { data } = db.useQuery({ [PRAYERS]: {} });
+export default function PrayerList({ filterUnpublished = true }: _props) {
+  const filter = useMemo(() => {
+    if (!filterUnpublished) return {};
+
+    return {
+      where: {
+        published: true,
+      },
+    };
+  }, [filterUnpublished]);
+
+  const { data } = db.useQuery({
+    [PRAYERS]: {
+      $: filter,
+    },
+  });
 
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
 
   return (
     <StyledPrayerList>
       <PrayerListItemsWrapper>
+        {isEmpty(prayers) && <p>No prayers...</p>}
+
         {prayers.map((prayer) => (
           <PrayerListItem prayer={prayer} key={prayer.id} />
         ))}

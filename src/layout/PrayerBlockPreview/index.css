@@ -13,15 +13,6 @@
 
 /*#region Preview Block*/
 
-#layout-prayerblockpreview {
-    width: 200px;
-    height: 500px;
-    background-color: #fff;
-    padding: 24px;
-    overflow-x: hidden;
-    border-radius: 8px;
-}
-
 #layout-prayerblockpreview > *{
     margin-bottom: 8px;
 }

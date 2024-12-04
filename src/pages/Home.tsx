@@ -2,12 +2,13 @@ import styled from "styled-components";
 import PrayerList from "../layout/PrayerList";
 
 const StyledHome = styled.div`
-  width: 100vw;
-  height: 100vh;
-
+  width: calc(100vw - 48px);
+  height: calc(100vh - 48px);
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
 `;
 
 export default function Home() {

@@ -1,8 +1,7 @@
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
 import { first, orderBy } from "lodash";
-import { Navigate, useParams } from "react-router-dom";
-import { Pages } from "../App";
+import { useParams } from "react-router-dom";
 import PrayerControls from "../PrayerControls";
 import { BlocksWrapper, StyledPrayerBlockEditor } from "./StyledComponents";
 import AddNewButton from "../../components/AddNewButton";
@@ -21,7 +20,7 @@ export default function PrayerBlockEditor() {
             $: { where: { id: prayerId } },
           },
         }
-      : null
+      : {}
   );
 
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
@@ -39,31 +38,33 @@ export default function PrayerBlockEditor() {
 
   const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
 
-  if (!isLoading && !prayer) {
-    return <Navigate to={Pages.ADMIN} />;
-  }
-
   if (isLoading) return <span />;
 
   return (
     <StyledPrayerBlockEditor>
+      <PrayerControls
+        prayer={prayer}
+        allPrayers={prayers}
+        key={prayer?.id ?? "new"}
+      />
+
       {prayer && (
-        <PrayerControls prayer={prayer} allPrayers={prayers} key={prayer.id} />
+        <>
+          <BlocksWrapper>
+            {orderedPrayerBlocks.map((prayerBlock) => {
+              return (
+                <BlockForm
+                  key={prayerBlock.id}
+                  prayerBlock={prayerBlock}
+                  allPrayerBlocks={orderedPrayerBlocks}
+                />
+              );
+            })}
+          </BlocksWrapper>
+
+          <AddNewButton onClick={addNewPrayerBlock} itemName="Block" />
+        </>
       )}
-
-      <BlocksWrapper>
-        {orderedPrayerBlocks.map((prayerBlock) => {
-          return (
-            <BlockForm
-              key={prayerBlock.id}
-              prayerBlock={prayerBlock}
-              allPrayerBlocks={orderedPrayerBlocks}
-            />
-          );
-        })}
-      </BlocksWrapper>
-
-      <AddNewButton onClick={addNewPrayerBlock} itemName="Block" />
     </StyledPrayerBlockEditor>
   );
 }

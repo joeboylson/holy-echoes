@@ -147,5 +147,5 @@ const schema = initGraph(
   }
 );
 
-export const db = init_experimental({ appId, schema });
+export const db = init_experimental({ appId, schema, devtool: false });
 export type DB = typeof db;

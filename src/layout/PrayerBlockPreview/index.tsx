@@ -10,6 +10,7 @@ import "./index.css";
 import "@mdxeditor/editor/style.css";
 import { useParams } from "react-router-dom";
 import markdownit from "markdown-it";
+import { StyledPrayerBlockPreview } from "./StyledComponents";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 const {
@@ -26,7 +27,13 @@ const {
 
 const md = markdownit({ html: true });
 
-export default function PrayerBlockPreview() {
+interface _props {
+  filterUnpublished?: boolean;
+}
+
+export default function PrayerBlockPreview({
+  filterUnpublished = true,
+}: _props) {
   const { prayerId } = useParams();
 
   const { data, isLoading } = db.useQuery(
@@ -41,13 +48,19 @@ export default function PrayerBlockPreview() {
   );
 
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
-  const prayerBlocks = first(prayers)?.prayerBlocks as PrayerBlock[];
+  const prayer = first(prayers);
+  const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
+  const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
+
+  if (!prayer?.published && filterUnpublished) {
+    return <p>This page is under construction.</p>;
+  }
 
   return (
-    <div id="layout-prayerblockpreview">
+    <StyledPrayerBlockPreview>
       {!isLoading &&
-        prayerBlocks &&
-        prayerBlocks.map((prayerBlock) => {
+        orderedPrayerBlocks &&
+        orderedPrayerBlocks.map((prayerBlock) => {
           const blockTypeName = prayerBlock.blockType?.name;
           const imageUrl = prayerBlock.imageUrl;
           const text = prayerBlock.text ?? "";
@@ -176,6 +189,6 @@ export default function PrayerBlockPreview() {
               return <p>(no type selected)</p>;
           }
         })}
-    </div>
+    </StyledPrayerBlockPreview>
   );
 }
