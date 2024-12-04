@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { db, Prayer, TableNames } from "../../database";
+import { Prayer } from "../../database";
 import { Link, useParams } from "react-router-dom";
 import { Pages } from "../App";
 import { compact } from "lodash";
-import { useState } from "react";
-import { Switch } from "@mui/material";
 
 const StyledPrayerListItem = styled.div`
   border-radius: 8px;
