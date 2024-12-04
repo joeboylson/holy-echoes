@@ -3,9 +3,9 @@ import { id } from "@instantdb/react";
 import { first, orderBy } from "lodash";
 import { useParams } from "react-router-dom";
 import PrayerControls from "../PrayerControls";
+import BlockForm from "../BlockForm";
 import { BlocksWrapper, StyledPrayerBlockEditor } from "./StyledComponents";
 import AddNewButton from "../../components/AddNewButton";
-import BlockForm from "./BlockForm";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
