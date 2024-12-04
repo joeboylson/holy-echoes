@@ -1,4 +1,3 @@
-import "./index.css";
 import { useCallback } from "react";
 import { Checkbox, TextField } from "@mui/material";
 import {

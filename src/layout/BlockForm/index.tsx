@@ -31,6 +31,8 @@ import {
   BlockContent,
   BlockContentValues,
   BlockControls,
+  BlockInputCurrentImageWrapper,
+  BlockInputImage,
   MarkdownEditor,
   StyledBlockForm,
 } from "./StyledComponents";
@@ -156,16 +158,16 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
               {[IMAGE, SMALL_IMAGE].includes(blockTypeName) && (
                 <>
                   {imageUrl ? (
-                    <>
+                    <BlockInputCurrentImageWrapper>
                       <img src={imageUrl} alt="" />
                       <button onClick={handleClearImage}>Clear Image</button>
-                    </>
+                    </BlockInputCurrentImageWrapper>
                   ) : (
-                    <input
+                    <BlockInputImage
                       type="file"
                       accept="image/*"
                       onChange={handleUploadImage}
-                    ></input>
+                    />
                   )}
                 </>
               )}

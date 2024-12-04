@@ -21,7 +21,8 @@ const StyledPrayerListItem = styled.div`
   a {
     color: #222222;
     text-decoration: none;
-    padding: 0 8px;
+    padding: 0 16px;
+    line-height: 36px;
   }
 `;
 

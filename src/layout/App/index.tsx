@@ -1,5 +1,6 @@
 import Admin from "../../pages/Admin";
 import Home from "../../pages/Home";
+import Login from "../../pages/Login";
 import Prayer from "../../pages/Prayer";
 import {
   createBrowserRouter,
@@ -10,9 +11,10 @@ import {
 export enum Pages {
   INDEX = "/",
   HOME = "/home",
+  SELECTED_PRAYER = "/prayer/:prayerId",
   ADMIN = "/admin",
   SELECTED_ADMIN_PRAYER = "/admin/prayer/:prayerId",
-  SELECTED_PRAYER = "/prayer/:prayerId",
+  LOGIN = "/admin/login",
 }
 
 const router = createBrowserRouter([
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: Pages.SELECTED_PRAYER,
     element: <Prayer />,
+  },
+  {
+    path: Pages.LOGIN,
+    element: <Login />,
   },
 ]);
 

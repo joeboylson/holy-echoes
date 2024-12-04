@@ -17,14 +17,25 @@ const StyledPrayer = styled.div`
   justify-items: left;
 `;
 
+const BackLink = styled(Link)`
+  height: 36px;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 8px;
+  align-items: center;
+  background-color: #eee;
+  padding: 0 16px;
+  border-radius: 8px;
+`;
+
 export default function Prayer() {
   const { prayerId } = useParams();
 
   return (
     <StyledPrayer>
-      <Link to={Pages.HOME}>
+      <BackLink to={Pages.HOME}>
         <ArrowLeft /> Back
-      </Link>
+      </BackLink>
       {prayerId && <PrayerBlockPreview />}
     </StyledPrayer>
   );
