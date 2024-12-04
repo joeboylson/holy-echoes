@@ -1,13 +1,12 @@
-import "./index.css";
-import "@mdxeditor/editor/style.css";
-import BlockForm from "./blockForm";
-import { RowsPlusBottom, TrashSimple } from "@phosphor-icons/react";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
 import { first, orderBy } from "lodash";
 import { Navigate, useParams } from "react-router-dom";
-import { cascadeDeletePrayer } from "../../utils";
 import { Pages } from "../App";
+import PrayerControls from "../PrayerControls";
+import { BlocksWrapper, StyledPrayerBlockEditor } from "./StyledComponents";
+import AddNewButton from "../../components/AddNewButton";
+import BlockForm from "./BlockForm";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
@@ -29,20 +28,13 @@ export default function PrayerBlockEditor() {
   const prayer = first(prayers);
   const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
 
-  function addNewPrayerBlock() {
+  async function addNewPrayerBlock() {
     const newPrayerBlock: PrayerBlock = { order: prayerBlocks?.length ?? 0 };
     const link = { prayer: prayerId };
 
-    db.transact([
+    await db.transact([
       db.tx[PRAYERBLOCKS][id()].update({ ...newPrayerBlock }).link({ ...link }),
     ]);
-  }
-
-  function deletePrayer() {
-    if (prayer) {
-      db.transact([db.tx[PRAYERS][prayer?.id ?? ""].delete()]);
-      cascadeDeletePrayer(prayer);
-    }
   }
 
   const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
@@ -51,18 +43,15 @@ export default function PrayerBlockEditor() {
     return <Navigate to={Pages.ADMIN} />;
   }
 
-  return (
-    <>
-      <div id="layout-prayerblockeditor">
-        <div id="layout-prayerblockeditor-controls">
-          <button onClick={addNewPrayerBlock}>
-            <RowsPlusBottom size={20} color="#000000" weight="duotone" />
-          </button>
-          <button onClick={deletePrayer}>
-            <TrashSimple size={20} color="#e20303" weight="duotone" />
-          </button>
-        </div>
+  if (isLoading) return <span />;
 
+  return (
+    <StyledPrayerBlockEditor>
+      {prayer && (
+        <PrayerControls prayer={prayer} allPrayers={prayers} key={prayer.id} />
+      )}
+
+      <BlocksWrapper>
         {orderedPrayerBlocks.map((prayerBlock) => {
           return (
             <BlockForm
@@ -72,7 +61,9 @@ export default function PrayerBlockEditor() {
             />
           );
         })}
-      </div>
-    </>
+      </BlocksWrapper>
+
+      <AddNewButton onClick={addNewPrayerBlock} itemName="Block" />
+    </StyledPrayerBlockEditor>
   );
 }

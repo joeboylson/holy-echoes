@@ -16,7 +16,6 @@ import {
   TableNames,
 } from "../../database";
 
-import { MDXEditor } from "@mdxeditor/editor";
 import { debounce } from "lodash";
 import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
 import LitanyInput from "../../components/LitanyInput";
@@ -27,6 +26,14 @@ import {
   removeBlock,
   cascadeDeletePrayerBlock,
 } from "../../utils";
+
+import {
+  BlockContent,
+  BlockContentValues,
+  BlockControls,
+  MarkdownEditor,
+  StyledBlockForm,
+} from "./StyledComponents";
 
 const { BLOCKTYPES, PRAYERBLOCKS } = TableNames;
 
@@ -122,8 +129,8 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
   };
 
   return (
-    <div className="layout-blockform">
-      <div className="layout-blockform-content">
+    <StyledBlockForm>
+      <BlockContent>
         <Select
           value={prayerBlock.blockType?.id ?? ""}
           onChange={handleTypeChange}
@@ -136,144 +143,117 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
           ))}
         </Select>
 
-        {blockTypeName && (
-          <>
-            {blockTypeName === CENTERED_TITLE && (
-              <>
-                <i>The title will larger and in blue.</i>
-                <div className="editor-wrapper">
-                  <MDXEditor markdown={text} onChange={handleBodyChange} />
-                </div>
-              </>
-            )}
+        <BlockContentValues>
+          {blockTypeName && (
+            <>
+              {blockTypeName === CENTERED_TITLE && (
+                <>
+                  <i>Large centered title</i>
+                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
+                </>
+              )}
 
-            {[IMAGE, SMALL_IMAGE].includes(blockTypeName) && (
-              <>
-                <i>Upload a photo!</i>
-                {imageUrl ? (
-                  <>
-                    <img src={imageUrl} alt="" />
-                    <button onClick={handleClearImage}>Clear Image</button>
-                  </>
-                ) : (
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleUploadImage}
-                  ></input>
-                )}
-              </>
-            )}
+              {[IMAGE, SMALL_IMAGE].includes(blockTypeName) && (
+                <>
+                  {imageUrl ? (
+                    <>
+                      <img src={imageUrl} alt="" />
+                      <button onClick={handleClearImage}>Clear Image</button>
+                    </>
+                  ) : (
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleUploadImage}
+                    ></input>
+                  )}
+                </>
+              )}
 
-            {[BODY, BODY_CENTERED].includes(blockTypeName) && (
-              <>
-                {blockTypeName === BODY && (
+              {[BODY, BODY_CENTERED].includes(blockTypeName) && (
+                <>
                   <i>
-                    This is standard body text. Italics, bold, and underline are
-                    fully available.
+                    {blockTypeName === BODY_CENTERED ? "Centered" : "Standard"}
+                    &nbsp;body text.
                   </i>
-                )}
+                  <i>Use italics, bold, and underline.</i>
+                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
+                </>
+              )}
 
-                {blockTypeName === BODY_CENTERED && (
+              {blockTypeName === INFO_TEXT && (
+                <>
+                  <i>Small & centered information text.</i>
+                  <i>Use italics, bold, and underline.</i>
+                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
+                </>
+              )}
+
+              {blockTypeName === REFERENCE && (
+                <>
+                  <i>Small & centered reference text.</i>
+                  <i>ALWAYS italics.</i>
+                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
+                </>
+              )}
+
+              {blockTypeName === QUOTE && (
+                <>
                   <i>
-                    This is standard body text, EXCEPT that it will center the
-                    text. Italics, bold, and underline are fully available.
+                    Small left-justified quote with right-justified attribution.
                   </i>
-                )}
-                <div className="editor-wrapper">
-                  <MDXEditor markdown={text} onChange={handleBodyChange} />
-                </div>
-              </>
-            )}
+                  <i>Automatic quotations and attribution dash</i>
+                  <i>ALWAYS italics.</i>
+                  <TextField
+                    multiline
+                    size="small"
+                    defaultValue={text}
+                    onChange={(e) => handleBodyChange(`${e.target.value}`)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">"</InputAdornment>
+                      ),
+                      startAdornment: (
+                        <InputAdornment position="start">"</InputAdornment>
+                      ),
+                    }}
+                  />
+                  <TextField
+                    size="small"
+                    defaultValue={reference}
+                    onChange={(e) => handleReferenceChange(e.target.value)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">—</InputAdornment>
+                      ),
+                    }}
+                  />
+                </>
+              )}
+              {blockTypeName === LITANY && (
+                <>
+                  <i>Input a litany</i>
+                  <LitanyInput prayerBlockId={prayerBlock.id} />
+                </>
+              )}
+            </>
+          )}
+        </BlockContentValues>
+      </BlockContent>
 
-            {blockTypeName === INFO_TEXT && (
-              <>
-                <i>
-                  This block can be used to add prayer information before or
-                  after the prayer. Feel free to use bold, italics, and
-                  underline!
-                </i>
-                <div className="editor-wrapper">
-                  <MDXEditor markdown={text} onChange={handleBodyChange} />
-                </div>
-              </>
-            )}
-
-            {blockTypeName === REFERENCE && (
-              <>
-                <i>
-                  This block is meant to be used to add reference text for the
-                  Raccolta, or another text.
-                </i>
-                <i>This text will always render italics and never bold.</i>
-                <div className="editor-wrapper">
-                  <MDXEditor markdown={text} onChange={handleBodyChange} />
-                </div>
-              </>
-            )}
-
-            {blockTypeName === QUOTE && (
-              <>
-                <i>
-                  Add the quote in the first box, and then the reference in the
-                  second box. This text will always render italics.
-                </i>
-                <i>
-                  This first box will automatically add the quotation marks AND
-                  always render italics.
-                </i>
-                <TextField
-                  multiline
-                  size="small"
-                  defaultValue={text}
-                  onChange={(e) => handleBodyChange(`${e.target.value}`)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">"</InputAdornment>
-                    ),
-                    startAdornment: (
-                      <InputAdornment position="start">"</InputAdornment>
-                    ),
-                  }}
-                />
-                <i>
-                  No need to add the prefix dash "—". This will be done
-                  automatically! Italics, Bold, and underline are not available
-                  in this block.
-                </i>
-                <TextField
-                  size="small"
-                  defaultValue={reference}
-                  onChange={(e) => handleReferenceChange(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">—</InputAdornment>
-                    ),
-                  }}
-                />
-              </>
-            )}
-            {blockTypeName === LITANY && (
-              <>
-                <i>Input a litany</i>
-                <LitanyInput prayerBlockId={prayerBlock.id} />
-              </>
-            )}
-          </>
-        )}
-      </div>
-
-      <div className="layout-blockform-controls">
-        <button onClick={moveUp}>
-          <ArrowFatUp size={20} weight="duotone" />
-        </button>
-        <button onClick={moveDown}>
-          <ArrowFatDown size={20} weight="duotone" />
-        </button>
+      <BlockControls>
+        <div>
+          <button onClick={moveUp}>
+            <ArrowFatUp size={20} weight="duotone" />
+          </button>
+          <button onClick={moveDown}>
+            <ArrowFatDown size={20} weight="duotone" />
+          </button>
+        </div>
         <button onClick={deleteBlock}>
           <TrashSimple size={20} color="#e20303" weight="duotone" />
         </button>
-      </div>
-    </div>
+      </BlockControls>
+    </StyledBlockForm>
   );
 }

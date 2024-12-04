@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,200;0,300;0,400;0,700;0,800;1,400&display=swap');
 
+/* colors: https://designsystem.digital.gov/design-tokens/color/state-tokens/ */
+
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +12,8 @@
 body, #root {
     width: 100vw;
     height: 100vh;
-    background-color: #eee;
+    background-color: white;
+    overflow: hidden;
 }
 
 img {
@@ -18,16 +21,15 @@ img {
     width: 100%;
 }
 
-button {
-    padding: 0;
-    margin: 0;
-    outline: none;
-    border: 0;
-    background-color: transparent;
-}
-
 sup {
     vertical-align: top;
+}
+
+input {
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 0 12px;
 }
 
 .modal-body {
