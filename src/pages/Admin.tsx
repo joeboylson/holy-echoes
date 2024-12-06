@@ -5,7 +5,7 @@ import PrayerBlockPreview from "../layout/PrayerBlockPreview";
 import AuthenticatedWrapper from "../layout/AuthenticatedWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";
 import WindowTooSmall from "../components/WindowTooSmall";
-import { CaretLeft, CaretRight, Sidebar } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { useState } from "react";
 
 const StyledAdmin = styled.div`
