@@ -13,7 +13,7 @@ export const StyledPrayerBlockEditor = styled.div`
 export const BlocksWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 4px;
+  gap: 12px;
   align-content: start;
   padding: 0 36px;
 `;

@@ -6,13 +6,15 @@ export const StyledBlockForm = styled.div`
   grid-template-columns: 1fr 24px;
   gap: 4px;
   align-content: start;
-  padding-top: 24px;
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
 `;
 
 export const BlockContent = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 4px;
+  gap: 12px;
   align-content: start;
 
   i {
@@ -25,7 +27,8 @@ export const BlockContentValues = styled.div`
   grid-template-columns: 1fr;
   gap: 4px;
   align-content: start;
-  padding-left: 48px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 12px;
 `;
 
 export const MarkdownEditor = styled(MDXEditor)`

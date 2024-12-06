@@ -246,14 +246,14 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
       <BlockControls>
         <div>
           <button onClick={moveUp}>
-            <ArrowFatUp size={20} weight="duotone" />
+            <ArrowFatUp size={20} weight="duotone" color="var(--blue-10)" />
           </button>
           <button onClick={moveDown}>
-            <ArrowFatDown size={20} weight="duotone" />
+            <ArrowFatDown size={20} weight="duotone" color="var(--blue-10)" />
           </button>
         </div>
         <button onClick={deleteBlock}>
-          <TrashSimple size={20} color="#e20303" weight="duotone" />
+          <TrashSimple size={20} weight="duotone" color="var(--red-10)" />
         </button>
       </BlockControls>
     </StyledBlockForm>

@@ -4,8 +4,8 @@ import styled from "styled-components";
 const StyledNewButton = styled.button`
   display: flex;
   align-items: center;
-  background-color: #70e17b;
-  color: #222222;
+  background-color: var(--grass-10);
+  color: white;
   border: 0;
   outline: none;
   padding: 8px 16px;
@@ -15,6 +15,7 @@ const StyledNewButton = styled.button`
 
   > span {
     padding-right: 8px;
+    fill: white;
   }
 `;
 
@@ -27,7 +28,7 @@ export default function AddNewButton({ itemName, onClick }: _props) {
   return (
     <StyledNewButton onClick={onClick}>
       <span>Add New {itemName}</span>
-      <Plus size={16} color="#222222" />
+      <Plus size={16} />
     </StyledNewButton>
   );
 }

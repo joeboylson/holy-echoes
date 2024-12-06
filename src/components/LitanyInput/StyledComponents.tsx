@@ -4,6 +4,7 @@ export const LitanyRowWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 8px;
+  padding-top: 12px;
 `;
 
 export const LitanyRow = styled.div`

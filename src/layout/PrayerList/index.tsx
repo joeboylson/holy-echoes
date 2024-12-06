@@ -23,9 +23,13 @@ const { PRAYERS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
+  showFilters?: boolean;
 }
 
-export default function PrayerList({ filterUnpublished = true }: _props) {
+export default function PrayerList({
+  filterUnpublished = true,
+  showFilters = false,
+}: _props) {
   const filter = useMemo(() => {
     if (!filterUnpublished) return {};
 

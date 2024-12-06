@@ -6,16 +6,18 @@ import { compact } from "lodash";
 import { useMemo } from "react";
 
 const StyledPrayerListItem = styled.div`
+  position: relative;
   border-radius: 8px;
   overflow: hidden;
   height: 36px;
   align-items: center;
   display: grid;
   align-items: center;
+  background-color: #eee;
 
   &:hover,
   &.active {
-    background-color: #eee;
+    background-color: #ddd;
   }
 
   a {
@@ -24,6 +26,21 @@ const StyledPrayerListItem = styled.div`
     padding: 0 16px;
     line-height: 36px;
   }
+`;
+
+const UnpublishedTag = styled.p`
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 10px;
+  margin: 6px;
+  padding: 0 8px;
+  line-height: 24px;
+  pointer-events: none;
+  background-color: var(--blue-10);
+  color: white;
+  text-transform: uppercase;
+  border-radius: 36px;
 `;
 
 interface _props {
@@ -49,6 +66,7 @@ export default function PrayerListItem({ prayer }: _props) {
   return (
     <StyledPrayerListItem className={className}>
       <Link to={to}>{prayer.name ?? "No Name"}</Link>
+      {!prayer.published && <UnpublishedTag>Not Published</UnpublishedTag>}
     </StyledPrayerListItem>
   );
 }

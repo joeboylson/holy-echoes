@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledDeleteButton = styled.button`
   display: flex;
   align-items: center;
-  background-color: #b50909;
+  background-color: var(--red-10);
   color: white;
   border: 0;
   outline: none;
@@ -27,7 +27,7 @@ export default function DeleteButton({ itemName, onClick }: _props) {
   return (
     <StyledDeleteButton onClick={onClick}>
       <span>Delete {itemName}</span>
-      <TrashSimple size={16} color="#ffffff" />
+      <TrashSimple size={16} />
     </StyledDeleteButton>
   );
 }

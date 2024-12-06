@@ -1,16 +1,12 @@
 import { useCallback } from "react";
 import { Checkbox, TextField } from "@mui/material";
-import {
-  ArrowFatDown,
-  ArrowFatUp,
-  RowsPlusBottom,
-  TrashSimple,
-} from "@phosphor-icons/react";
+import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
 import { debounce, first, isEqual, last, orderBy } from "lodash";
 import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
 import { moveBlockDown, moveBlockUp } from "../../utils";
 import { LitanyRow, LitanyRowWrapper, RowHeader } from "./StyledComponents";
+import AddNewButton from "../AddNewButton";
 
 const { PRAYERBLOCKS, LITANYBLOCKS } = TableNames;
 
@@ -60,8 +56,8 @@ export default function LitanyInput({ prayerBlockId }: _props) {
       <LitanyRow>
         <RowHeader>Call</RowHeader>
         <RowHeader>Response</RowHeader>
-        <RowHeader>Call Superscript</RowHeader>
-        <RowHeader>Inline Response</RowHeader>
+        <RowHeader>Sup.</RowHeader>
+        <RowHeader>Inline?</RowHeader>
       </LitanyRow>
 
       {orderedLitanyBlocks?.map((i) => {
@@ -125,7 +121,7 @@ export default function LitanyInput({ prayerBlockId }: _props) {
               <span />
             ) : (
               <button onClick={moveUp}>
-                <ArrowFatUp size={20} weight="duotone" />
+                <ArrowFatUp size={20} weight="duotone" color="var(--blue-10)" />
               </button>
             )}
 
@@ -133,20 +129,22 @@ export default function LitanyInput({ prayerBlockId }: _props) {
               <span />
             ) : (
               <button onClick={moveDown}>
-                <ArrowFatDown size={20} weight="duotone" />
+                <ArrowFatDown
+                  size={20}
+                  weight="duotone"
+                  color="var(--blue-10)"
+                />
               </button>
             )}
 
             <button onClick={removeRow}>
-              <TrashSimple size={20} color="#e20303" weight="duotone" />
+              <TrashSimple size={20} weight="duotone" color="var(--red-10)" />
             </button>
           </LitanyRow>
         );
       })}
 
-      <button onClick={handleAddNewRow}>
-        <RowsPlusBottom size={20} color="#000000" weight="duotone" />
-      </button>
+      <AddNewButton onClick={handleAddNewRow} itemName="Row" />
     </LitanyRowWrapper>
   );
 }
