@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { WithChildren } from "../../types";
 import { db } from "../../database";
 import Header from "../Header";
+import { Pages } from "../App";
 
 const PageWrapper = styled.div`
   padding-top: 24px;
@@ -26,7 +27,7 @@ export default function AuthenticatedWrapper({ children }: WithChildren) {
 
   // TODO: improve error message screen
   if (authState.error) return <code>{authState.error.message}</code>;
-  if (!authState.user) return <Navigate to="/login" />;
+  if (!authState.user) return <Navigate to={Pages.LOGIN} />;
 
   return (
     <UserContext.Provider value={{ user: authState.user }}>
