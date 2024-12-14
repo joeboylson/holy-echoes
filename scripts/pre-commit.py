@@ -27,7 +27,8 @@ def write_version(filepath, new_version):
         content = file.read()
 
     # Replace all version number matches with the new version
-    updated_content = re.sub(version_pattern, new_version, content)
+    count = 1 if "package.json" in filepath else 0
+    updated_content = re.sub(version_pattern, new_version, content, count=count)
 
     # Write the updated content back to the file
     with open(filepath, "w") as file:
