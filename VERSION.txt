@@ -5,4 +5,4 @@
 
 (see scripts/pre-commit.py for more information)
 
-1.0.5
+1.0.6
