@@ -1,6 +1,6 @@
 {
   "name": "prayer-formatter",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": true,
   "dependencies": {
     "@capacitor/core": "^6.2.0",

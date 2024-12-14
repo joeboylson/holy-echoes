@@ -24,7 +24,6 @@ export default function LitanyBlock({ prayerBlock }: _props) {
     <LitanyWrapper>
       {orderedLitanyBlocks.map((i) => {
         const { call, response, superscript, inline } = i;
-        const responseStyle = { textIndent: "50px" } as CSSProperties;
 
         if (!call && !response && !superscript) return <span />;
 
