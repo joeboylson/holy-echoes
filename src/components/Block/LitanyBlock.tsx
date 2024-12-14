@@ -1,7 +1,6 @@
 import { orderBy } from "lodash";
 import { PrayerBlock } from "../../database";
 import { LitanyWrapper } from "./StyledComponents";
-import { CSSProperties } from "react";
 import styled from "styled-components";
 
 const IndentedResponseWrapper = styled.div`

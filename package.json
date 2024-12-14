@@ -1,8 +1,9 @@
 {
   "name": "prayer-formatter",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@capacitor/core": "^6.2.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
