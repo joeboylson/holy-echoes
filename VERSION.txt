@@ -1,0 +1,8 @@
+# IMPORTANT!
+# 1. DO NOT DELETE THIS FILE
+# 2. if you update this file manually, remember to update the version number across the entire project
+# 3. The version number MUST be the last line of the file.
+
+(see scripts/pre-commit.py for more information)
+
+1.0.0
