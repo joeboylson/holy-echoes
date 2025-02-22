@@ -1,19 +1,27 @@
 import styled, { css } from "styled-components";
 
-const OLG_GLORY_BLUE = "#0A3161";
-const BASE_TEXT = "#000000";
+// const OLG_GLORY_BLUE = "#0A3161";
+const BASE_TEXT = "#2c2c2c";
 
-const BASE_SIZE = "16px";
-const TITLE_SIZE = "20px";
-const SMALL_SIZE = "12px";
+const BASE_SIZE = "21px";
+const TITLE_SIZE = "34px";
+const SMALL_SIZE = "16px";
+
+const LINE_HEIGHT_RATIO_TITLE = 1.1;
+const LINE_HEIGHT_RATIO_TEXT = 1.3;
 
 export const BaseBlockCSS = css`
   min-height: 16px;
   color: ${BASE_TEXT};
   font-size: ${BASE_SIZE};
+  line-height: calc(${BASE_SIZE} * ${LINE_HEIGHT_RATIO_TEXT});
 
   * {
     font-family: "Neuton", serif !important;
+  }
+
+  &.space-above {
+    padding-top: 24px;
   }
 `;
 
@@ -30,18 +38,21 @@ export const CenteredTitle = styled.h1`
   ${BaseBlockCSS}
   text-align: center;
   font-size: ${TITLE_SIZE};
-  color: ${OLG_GLORY_BLUE};
+  line-height: calc(${TITLE_SIZE} * ${LINE_HEIGHT_RATIO_TITLE});
+  color: ${BASE_TEXT};
 `;
 
 export const InfoText = styled.div`
   ${BaseBlockCSS}
   font-size: ${SMALL_SIZE};
+  line-height: calc(${SMALL_SIZE} * ${LINE_HEIGHT_RATIO_TEXT});
   text-align: center;
 `;
 
 export const Reference = styled.div`
   ${BaseBlockCSS}
   font-size: ${SMALL_SIZE};
+  line-height: calc(${SMALL_SIZE} * ${LINE_HEIGHT_RATIO_TEXT});
   text-align: center;
   font-style: italic;
   font-weight: 100;
@@ -50,6 +61,7 @@ export const Reference = styled.div`
 export const Quote = styled.div`
   ${BaseBlockCSS}
   font-size: ${SMALL_SIZE};
+  line-height: calc(${SMALL_SIZE} * ${LINE_HEIGHT_RATIO_TEXT});
   font-style: italic;
   font-weight: 100;
 

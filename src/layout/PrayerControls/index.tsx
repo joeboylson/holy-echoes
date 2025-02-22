@@ -74,9 +74,9 @@ export default function PrayerControls({ prayer, allPrayers }: _props) {
           </ControlRow>
 
           <ControlRow>
-            <p>{prayer.published ? "Published" : "Not Published"}</p>
+            <p>{prayer.published ? "Published:" : "Not Published:"}</p>
             <Switch
-              defaultChecked={prayer.published}
+              checked={prayer.published}
               size="small"
               onChange={(e) => handleIsPublishedChange(e.target.checked)}
             />

@@ -104,6 +104,7 @@ export type PrayerBlock = {
   imageUrl?: string;
   reference?: string;
   litanyBlocks?: LitanyBlock[];
+  spaceAbove?: boolean;
 };
 
 export const prayerBlocksTable = {
@@ -112,6 +113,7 @@ export const prayerBlocksTable = {
     order: i.number(),
     imageUrl: i.string(),
     reference: i.string(),
+    spaceAbove: i.boolean(),
   }),
 };
 

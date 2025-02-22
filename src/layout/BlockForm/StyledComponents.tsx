@@ -22,6 +22,14 @@ export const BlockContent = styled.div`
   }
 `;
 
+export const SpaceAboveWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 4px;
+  height: 32px;
+  align-items: center;
+`;
+
 export const BlockContentValues = styled.div`
   display: grid;
   grid-template-columns: 1fr;

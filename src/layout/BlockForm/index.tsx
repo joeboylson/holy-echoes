@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Switch,
   TextField,
 } from "@mui/material";
 
@@ -34,6 +35,7 @@ import {
   BlockInputCurrentImageWrapper,
   BlockInputImage,
   MarkdownEditor,
+  SpaceAboveWrapper,
   StyledBlockForm,
 } from "./StyledComponents";
 
@@ -80,21 +82,20 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
   const handleBodyChange = debounce((text: string) => {
     const _id = prayerBlock.id;
     if (!_id) return;
-
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ text })]);
   }, 1000);
+
+  const handleSpaceAboveChange = (spaceAbove: boolean) => {
+    const _id = prayerBlock.id;
+    if (!_id) return;
+    db.transact([db.tx[PRAYERBLOCKS][_id].update({ spaceAbove })]);
+  };
 
   const handleReferenceChange = debounce((reference: string) => {
     const _id = prayerBlock.id;
     if (!_id) return;
-
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ reference })]);
   }, 1000);
-
-  const moveUp = () => moveBlockUp(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
-
-  const moveDown = () =>
-    moveBlockDown(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
 
   const handleUploadImage = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +126,11 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ imageUrl: null })]);
   }, [prayerBlock]);
 
+  const moveUp = () => moveBlockUp(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
+
+  const moveDown = () =>
+    moveBlockDown(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
+
   const deleteBlock = () => {
     removeBlock(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
     cascadeDeletePrayerBlock(prayerBlock);
@@ -133,6 +139,19 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
   return (
     <StyledBlockForm>
       <BlockContent>
+        <SpaceAboveWrapper>
+          <p>
+            {prayerBlock.spaceAbove
+              ? "Has Spacing Above:"
+              : "No Spacing Above:"}
+          </p>
+          <Switch
+            checked={prayerBlock.spaceAbove}
+            size="small"
+            onChange={(e) => handleSpaceAboveChange(e.target.checked)}
+          />
+        </SpaceAboveWrapper>
+
         <Select
           value={prayerBlock.blockType?.id ?? ""}
           onChange={handleTypeChange}
@@ -232,6 +251,7 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
                   />
                 </>
               )}
+
               {blockTypeName === LITANY && (
                 <>
                   <i>Input a litany</i>

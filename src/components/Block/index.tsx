@@ -39,6 +39,7 @@ export default function Block({ prayerBlock }: _props) {
   const props = {
     key: prayerBlock.id,
     dangerouslySetInnerHTML: { __html: md.render(text) },
+    className: prayerBlock.spaceAbove ? "space-above" : "",
   };
 
   if (blockTypeName === BODY) return <Body {...props} />;

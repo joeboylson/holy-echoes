@@ -28,7 +28,9 @@ export default function PrayerBlockEditor() {
   const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
 
   async function addNewPrayerBlock() {
-    const newPrayerBlock: PrayerBlock = { order: prayerBlocks?.length ?? 0 };
+    const order = prayerBlocks?.length ?? 0;
+    const spaceAbove = order !== 0;
+    const newPrayerBlock: PrayerBlock = { order, spaceAbove };
     const link = { prayer: prayerId };
 
     await db.transact([
