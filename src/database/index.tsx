@@ -6,6 +6,7 @@ const initGraph = i.graph as any;
 
 export enum TableNames {
   $USERS = "$users",
+  ADMIN = "admin",
   PRAYERS = "prayers",
   PRAYERBLOCKS = "prayerBlocks",
   BLOCKTYPES = "blockTypes",
@@ -44,6 +45,39 @@ export const oneToMany = (
       label: table,
     },
   };
+};
+
+export const oneToOne = (
+  table: TableNames,
+  toTable: TableNames,
+  label: string
+) => {
+  return {
+    forward: {
+      on: table,
+      has: ONE,
+      label: label,
+    },
+    reverse: {
+      on: toTable,
+      has: ONE,
+      label: table,
+    },
+  };
+};
+
+type User = {
+  id?: string;
+  email?: string;
+};
+
+export type Admin = {
+  id?: string;
+  $user?: User;
+};
+
+export const adminTable = {
+  [TableNames.ADMIN]: i.entity({}),
 };
 
 export type Prayer = {
@@ -113,6 +147,10 @@ export const litanyBlocksTable = {
   }),
 };
 
+export const userRelations = {
+  hasOneUser: oneToOne(TableNames.$USERS, TableNames.ADMIN, "admin"),
+};
+
 export const prayerBlocksRelations = {
   hasOneBlockType: oneToMany(
     TableNames.PRAYERBLOCKS,
@@ -136,12 +174,14 @@ export const litanyBlocksRelations = {
 
 const schema = initGraph(
   {
+    ...adminTable,
     ...prayersTable,
     ...prayerBlocksTable,
     ...blockTypesTable,
     ...litanyBlocksTable,
   },
   {
+    ...userRelations,
     ...prayerBlocksRelations,
     ...litanyBlocksRelations,
   }
