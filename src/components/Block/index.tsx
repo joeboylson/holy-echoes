@@ -4,6 +4,7 @@ import LitanyBlock from "./LitanyBlock";
 import {
   BlockImage,
   BlockImageSmall,
+  BlockSpacer,
   Body,
   BodyCentered,
   CenteredTitle,
@@ -22,6 +23,7 @@ const {
   QUOTE,
   REFERENCE,
   SMALL_IMAGE,
+  SPACER,
 } = BlockTypes;
 
 const md = markdownit({ html: true });
@@ -67,6 +69,8 @@ export default function Block({ prayerBlock }: _props) {
 
   if (blockTypeName === LITANY)
     return <LitanyBlock prayerBlock={prayerBlock} />;
+
+  if (blockTypeName === SPACER) return <BlockSpacer height={text} />;
 
   return <span />;
 }

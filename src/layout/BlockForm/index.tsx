@@ -1,6 +1,7 @@
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, useMemo } from "react";
 
 import {
+  Input,
   InputAdornment,
   MenuItem,
   Select,
@@ -51,6 +52,7 @@ const {
   QUOTE,
   REFERENCE,
   SMALL_IMAGE,
+  SPACER,
 } = BlockTypes;
 
 interface _props {
@@ -136,21 +138,28 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
     cascadeDeletePrayerBlock(prayerBlock);
   };
 
+  const showSpacerAbove = useMemo(
+    () => blockTypeName !== SPACER,
+    [blockTypeName]
+  );
+
   return (
     <StyledBlockForm>
       <BlockContent>
-        <SpaceAboveWrapper>
-          <p>
-            {prayerBlock.spaceAbove
-              ? "Has Spacing Above:"
-              : "No Spacing Above:"}
-          </p>
-          <Switch
-            checked={prayerBlock.spaceAbove}
-            size="small"
-            onChange={(e) => handleSpaceAboveChange(e.target.checked)}
-          />
-        </SpaceAboveWrapper>
+        {showSpacerAbove && (
+          <SpaceAboveWrapper>
+            <p>
+              {prayerBlock.spaceAbove
+                ? "Has Spacing Above:"
+                : "No Spacing Above:"}
+            </p>
+            <Switch
+              checked={prayerBlock.spaceAbove}
+              size="small"
+              onChange={(e) => handleSpaceAboveChange(e.target.checked)}
+            />
+          </SpaceAboveWrapper>
+        )}
 
         <Select
           value={prayerBlock.blockType?.id ?? ""}
@@ -256,6 +265,22 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
                 <>
                   <i>Input a litany</i>
                   <LitanyInput prayerBlockId={prayerBlock.id} />
+                </>
+              )}
+
+              {blockTypeName === SPACER && (
+                <>
+                  <i>Add a custom spacer between other blocks</i>
+                  <Input
+                    defaultValue={text === "" ? 24 : text}
+                    size="small"
+                    onChange={(e) => handleBodyChange(e.target.value)}
+                    inputProps={{
+                      min: 0,
+                      max: 100,
+                      type: "number",
+                    }}
+                  />
                 </>
               )}
             </>

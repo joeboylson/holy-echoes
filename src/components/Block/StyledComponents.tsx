@@ -72,10 +72,12 @@ export const Quote = styled.div`
 `;
 
 export const BlockImage = styled.img`
+  ${BaseBlockCSS}
   width: 100%;
 `;
 
 export const BlockImageSmall = styled.img`
+  ${BaseBlockCSS}
   width: calc(100% * 0.68);
   margin: 0 auto;
 `;
@@ -85,4 +87,8 @@ export const LitanyWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
+`;
+
+export const BlockSpacer = styled.div<{ height: string }>`
+  height: ${(props) => props.height}px;
 `;
