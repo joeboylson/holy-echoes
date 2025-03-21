@@ -82,6 +82,12 @@ export const BlockImageSmall = styled.img`
   margin: 0 auto;
 `;
 
+export const BlockImageIcon = styled.img`
+  ${BaseBlockCSS}
+  width: 36px;
+  margin: 0 auto;
+`;
+
 export const LitanyWrapper = styled.div`
   ${BaseBlockCSS}
   display: grid;

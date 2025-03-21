@@ -3,6 +3,7 @@ import markdownit from "markdown-it";
 import LitanyBlock from "./LitanyBlock";
 import {
   BlockImage,
+  BlockImageIcon,
   BlockImageSmall,
   BlockSpacer,
   Body,
@@ -24,6 +25,7 @@ const {
   REFERENCE,
   SMALL_IMAGE,
   SPACER,
+  ICON,
 } = BlockTypes;
 
 const md = markdownit({ html: true });
@@ -41,6 +43,11 @@ export default function Block({ prayerBlock }: _props) {
   const props = {
     key: prayerBlock.id,
     dangerouslySetInnerHTML: { __html: md.render(text) },
+    className: prayerBlock.spaceAbove ? "space-above" : "",
+  };
+
+  const propsNoContent = {
+    key: prayerBlock.id,
     className: prayerBlock.spaceAbove ? "space-above" : "",
   };
 
@@ -62,15 +69,19 @@ export default function Block({ prayerBlock }: _props) {
   }
 
   if (blockTypeName === IMAGE)
-    return <BlockImage src={imageUrl} alt="" key={prayerBlock.id} />;
+    return <BlockImage src={imageUrl} alt="" {...propsNoContent} />;
 
   if (blockTypeName === SMALL_IMAGE)
-    return <BlockImageSmall src={imageUrl} alt="" key={prayerBlock.id} />;
+    return <BlockImageSmall src={imageUrl} alt="" {...propsNoContent} />;
+
+  if (blockTypeName === ICON)
+    return <BlockImageIcon src={imageUrl} alt="" {...propsNoContent} />;
 
   if (blockTypeName === LITANY)
-    return <LitanyBlock prayerBlock={prayerBlock} />;
+    return <LitanyBlock prayerBlock={prayerBlock} {...propsNoContent} />;
 
-  if (blockTypeName === SPACER) return <BlockSpacer height={text} />;
+  if (blockTypeName === SPACER)
+    return <BlockSpacer height={text} {...propsNoContent} />;
 
   return <span />;
 }

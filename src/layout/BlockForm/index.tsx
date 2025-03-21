@@ -53,6 +53,7 @@ const {
   REFERENCE,
   SMALL_IMAGE,
   SPACER,
+  ICON,
 } = BlockTypes;
 
 interface _props {
@@ -183,10 +184,10 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
                 </>
               )}
 
-              {[IMAGE, SMALL_IMAGE].includes(blockTypeName) && (
+              {[IMAGE, SMALL_IMAGE, ICON].includes(blockTypeName) && (
                 <>
                   {imageUrl ? (
-                    <BlockInputCurrentImageWrapper>
+                    <BlockInputCurrentImageWrapper blockType={blockTypeName}>
                       <img src={imageUrl} alt="" />
                       <button onClick={handleClearImage}>Clear Image</button>
                     </BlockInputCurrentImageWrapper>

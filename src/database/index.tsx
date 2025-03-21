@@ -24,6 +24,7 @@ export enum BlockTypes {
   SMALL_IMAGE = "Small Image",
   LITANY = "Litany",
   SPACER = "Spacer",
+  ICON = "Icon",
 }
 
 const ONE: CardinalityKind = "one";

@@ -1,5 +1,6 @@
 import { MDXEditor } from "@mdxeditor/editor";
 import styled from "styled-components";
+import { BlockTypes } from "../../database";
 
 export const StyledBlockForm = styled.div`
   display: grid;
@@ -58,10 +59,20 @@ export const BlockControls = styled.div`
   }
 `;
 
-export const BlockInputCurrentImageWrapper = styled.div`
+export const BlockInputCurrentImageWrapper = styled.div<{
+  blockType?: BlockTypes;
+}>`
   display: grid;
   grid-template-columns: 100px 1fr;
   gap: 12px;
+
+  ${(props) =>
+    props.blockType === BlockTypes.ICON &&
+    `
+    img {
+      width: 36px;
+    }  
+  `}
 `;
 
 export const BlockInputImage = styled.input`
