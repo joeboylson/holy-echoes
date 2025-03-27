@@ -9,6 +9,7 @@ const StyledHome = styled.div`
   padding: 24px;
   max-width: 600px;
   margin: 0 auto;
+  overflow-y: auto;
 `;
 
 export default function Home() {

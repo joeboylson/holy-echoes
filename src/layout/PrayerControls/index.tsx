@@ -16,11 +16,16 @@ const { PRAYERS } = TableNames;
 
 interface _props {
   prayer?: Prayer;
-  allPrayers?: Prayer[];
 }
 
-export default function PrayerControls({ prayer, allPrayers }: _props) {
+export default function PrayerControls({ prayer }: _props) {
   const navigate = useNavigate();
+
+  const { data, isLoading } = db.useQuery({
+    [PRAYERS]: {},
+  });
+
+  const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
 
   const handleNameChange = debounce((name: string) => {
     if (!prayer) return;
@@ -37,8 +42,9 @@ export default function PrayerControls({ prayer, allPrayers }: _props) {
   };
 
   async function addNewPrayer() {
-    if (!allPrayers) return;
-    const order = allPrayers?.length;
+    if (!prayers) return;
+
+    const order = prayers?.length;
     const newPrayer: Prayer = {
       order,
       name: `New Prayer`,
@@ -57,6 +63,8 @@ export default function PrayerControls({ prayer, allPrayers }: _props) {
     db.transact([db.tx[PRAYERS][prayer?.id ?? ""].delete()]);
     cascadeDeletePrayer(prayer);
   }
+
+  if (isLoading) return <span />;
 
   return (
     <StyledPrayerControls>

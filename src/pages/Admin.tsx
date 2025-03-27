@@ -13,7 +13,7 @@ const StyledAdmin = styled.div`
   height: calc(100vh - 48px - 24px - 50px - 12px);
   padding: 24px;
   display: grid;
-  grid-template-columns: 300px 1fr 400px;
+  grid-template-columns: 400px 1fr 400px;
   gap: 12px;
   overflow: hidden;
 
@@ -25,10 +25,13 @@ const StyledAdmin = styled.div`
 const PrayerListWrapper = styled.div`
   border-right: 1px solid #ddd;
   padding-right: 12px;
+  padding-bottom: 48px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
   align-content: start;
+  height: calc(100vh - 48px - 24px;);
+  overflow-y: auto;
 
   &.hide-prayer-list {
     border: 0;
@@ -63,7 +66,10 @@ export default function Admin() {
               <CaretLeft size={24} color="var(--blue-10)" weight="bold" />
             )}
           </TogglePrayerListButton>
-          {!hidePrayerList && <PrayerList filterUnpublished={false} />}
+
+          {!hidePrayerList && (
+            <PrayerList filterUnpublished={false} hideControls={false} />
+          )}
         </PrayerListWrapper>
         <PrayerBlockEditor />
         <PrayerBlockPreview filterUnpublished={false} />

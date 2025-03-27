@@ -44,11 +44,7 @@ export default function PrayerBlockEditor() {
 
   return (
     <StyledPrayerBlockEditor>
-      <PrayerControls
-        prayer={prayer}
-        allPrayers={prayers}
-        key={prayer?.id ?? "new"}
-      />
+      <PrayerControls prayer={prayer} key={prayer?.id ?? "new"} />
 
       {prayer && (
         <>
