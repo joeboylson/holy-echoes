@@ -15,13 +15,13 @@ export async function seed_block_types() {
       const result = await db.transact([
         db.tx[BLOCKTYPES][id()].update({ name, order }),
       ]);
-      console.log({ result });
+      console.debug({ result });
     } else {
       const _id = blockTypes.find((i) => i.name === name)?.id;
       const result = await db.transact([
         db.tx[BLOCKTYPES][_id ?? id()].update({ order }),
       ]);
-      console.log({ result });
+      console.debug({ result });
     }
   });
 

@@ -18,15 +18,11 @@ export function moveBlockUp(
 
   const prayerBlockPrev = allBlocks[currentIndex - 1];
 
-  console.log({ allBlocks });
-  console.log({ prayerBlockPrev });
-
   const prevBlockId = prayerBlockPrev.id;
   if (!prevBlockId) return console.error("no previous block id");
   const prevOrder = prayerBlockPrev.order;
   if (prevOrder === undefined) return console.info("no previous order");
 
-  console.log(">>> do reorder");
   db.transact([
     db.tx[table][blockId].update({ order: prevOrder }),
     db.tx[table][prevBlockId].update({ order: currentOrder }),

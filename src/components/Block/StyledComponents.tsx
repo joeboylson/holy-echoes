@@ -92,7 +92,11 @@ export const LitanyWrapper = styled.div`
   ${BaseBlockCSS}
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 16px;
+
+  p {
+    line-height: calc(21px * 1.1);
+  }
 `;
 
 export const BlockSpacer = styled.div<{ height: string }>`
