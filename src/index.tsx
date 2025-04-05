@@ -1,15 +1,12 @@
 import "./index.css";
 import "@mdxeditor/editor/style.css";
-import React from "react";
-import ReactDOM from "react-dom/client";
+
+import { createRoot } from "react-dom/client";
 import App from "./layout/App";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const rootElement = document.getElementById("root");
 
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(<App />);
+}
