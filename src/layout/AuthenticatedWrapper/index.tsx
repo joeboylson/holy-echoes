@@ -15,11 +15,11 @@ const PageWrapper = styled.div`
 `;
 
 interface UserContextType {
-  user: User | undefined;
+  user: User | null;
 }
 
 export const UserContext = createContext<UserContextType>({
-  user: undefined,
+  user: null,
 });
 
 export default function AuthenticatedWrapper({ children }: WithChildren) {
@@ -46,7 +46,7 @@ export default function AuthenticatedWrapper({ children }: WithChildren) {
   }, [userQuery]);
 
   // TODO: improve loading screen
-  if (userQuery.isLoading || authState.isLoading) return <p>Loading...</p>;
+  if (authState.isLoading) return <p>Loading...</p>;
 
   // TODO: improve error message screen
   if (authState.error) return <code>{authState.error.message}</code>;

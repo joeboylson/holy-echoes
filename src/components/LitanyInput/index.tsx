@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { Checkbox, TextField } from "@mui/material";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
 import { debounce, first, isEqual, last, orderBy } from "lodash";
 import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
@@ -84,35 +85,26 @@ export default function LitanyInput({ prayerBlockId }: _props) {
         return (
           <LitanyRow key={i.id}>
             {/* Call */}
-            <TextField
-              size="small"
+            <Textarea
               onChange={(e) => updateRowCall(e.target.value)}
               defaultValue={i.call}
-              variant="standard"
-              multiline
             />
 
             {/* Response */}
-            <TextField
-              size="small"
+            <Textarea
               onChange={(e) => updateRowResponse(e.target.value)}
               defaultValue={i.response}
-              variant="standard"
-              multiline
             />
 
             {/* Superscript */}
-            <TextField
-              size="small"
+            <Textarea
               onChange={(e) => updateRowSuperscript(e.target.value)}
               defaultValue={i.superscript}
-              variant="standard"
-              multiline
             />
 
             <div>
               <Checkbox
-                onChange={(e) => updateRowIsInline(e.target.checked)}
+                onCheckedChange={updateRowIsInline}
                 defaultChecked={i.inline}
               />
             </div>

@@ -1,15 +1,7 @@
 import { ChangeEvent, useCallback, useMemo } from "react";
-
-import {
-  Input,
-  InputAdornment,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Switch,
-  TextField,
-} from "@mui/material";
-
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import {
   BlockType,
   BlockTypes,
@@ -39,6 +31,7 @@ import {
   SpaceAboveWrapper,
   StyledBlockForm,
 } from "./StyledComponents";
+import { Switch } from "@/components/ui/switch";
 
 const { BLOCKTYPES, PRAYERBLOCKS } = TableNames;
 
@@ -70,13 +63,9 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
   const reference = prayerBlock.reference ?? "";
 
   const handleTypeChange = useCallback(
-    (event: SelectChangeEvent) => {
+    (blockTypeId: string) => {
       const _id = prayerBlock.id;
-      if (!_id) return;
-
-      const blockTypeId = event.target.value;
-      if (!blockTypeId) return;
-
+      if (!_id || !blockTypeId) return;
       db.transact([db.tx[PRAYERBLOCKS][_id].link({ blockType: blockTypeId })]);
     },
     [prayerBlock]
@@ -156,22 +145,22 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
             </p>
             <Switch
               checked={prayerBlock.spaceAbove}
-              size="small"
-              onChange={(e) => handleSpaceAboveChange(e.target.checked)}
+              onCheckedChange={handleSpaceAboveChange}
             />
           </SpaceAboveWrapper>
         )}
 
         <Select
           value={prayerBlock.blockType?.id ?? ""}
-          onChange={handleTypeChange}
-          size="small"
+          onValueChange={handleTypeChange}
         >
-          {blockTypes.map((blockType) => (
-            <MenuItem key={blockType.id} value={blockType.id}>
-              {blockType.name}
-            </MenuItem>
-          ))}
+          <SelectContent>
+            {blockTypes.map((blockType) => (
+              <SelectItem key={blockType.id} value={blockType.id ?? ""}>
+                {blockType.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
 
         <BlockContentValues>
@@ -235,29 +224,13 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
                   </i>
                   <i>Automatic quotations and attribution dash</i>
                   <i>ALWAYS italics.</i>
-                  <TextField
-                    multiline
-                    size="small"
+                  <Textarea
                     defaultValue={text}
                     onChange={(e) => handleBodyChange(`${e.target.value}`)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">"</InputAdornment>
-                      ),
-                      startAdornment: (
-                        <InputAdornment position="start">"</InputAdornment>
-                      ),
-                    }}
                   />
-                  <TextField
-                    size="small"
+                  <Input
                     defaultValue={reference}
                     onChange={(e) => handleReferenceChange(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">—</InputAdornment>
-                      ),
-                    }}
                   />
                 </>
               )}
@@ -274,13 +247,10 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
                   <i>Add a custom spacer between other blocks</i>
                   <Input
                     defaultValue={text === "" ? 24 : text}
-                    size="small"
                     onChange={(e) => handleBodyChange(e.target.value)}
-                    inputProps={{
-                      min: 0,
-                      max: 100,
-                      type: "number",
-                    }}
+                    min={0}
+                    max={100}
+                    type="number"
                   />
                 </>
               )}

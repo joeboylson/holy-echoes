@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Dialog } from "@/components/ui/dialog";
 import { Check } from "@phosphor-icons/react";
 import { ReactNode, useState } from "react";
 
@@ -35,16 +35,14 @@ export default function useConfirmModal({
 
   const ConfirmModal = () => {
     return (
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={style} className="modal-body">
-          <h2>{title}</h2>
-          {content}
+      <Dialog open={open}>
+        <h2>{title}</h2>
+        {content}
 
-          <button onClick={handleConfirm}>
-            <Check size={16} weight="bold" />
-          </button>
-        </Box>
-      </Modal>
+        <button onClick={handleConfirm}>
+          <Check size={16} weight="bold" />
+        </button>
+      </Dialog>
     );
   };
 

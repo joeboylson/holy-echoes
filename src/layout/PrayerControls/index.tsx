@@ -1,5 +1,4 @@
 import { db, Prayer, TableNames } from "../../database";
-import { debounce, Switch } from "@mui/material";
 import { id } from "@instantdb/react";
 import { Pages } from "../App";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +10,8 @@ import {
 } from "./StyledComponents";
 import { cascadeDeletePrayer } from "../../utils";
 import DeleteButton from "../../components/DeleteButton";
+import { debounce } from "lodash";
+import { Switch } from "@/components/ui/switch";
 
 const { PRAYERS } = TableNames;
 
@@ -85,8 +86,7 @@ export default function PrayerControls({ prayer }: _props) {
             <p>{prayer.published ? "Published:" : "Not Published:"}</p>
             <Switch
               checked={prayer.published}
-              size="small"
-              onChange={(e) => handleIsPublishedChange(e.target.checked)}
+              onCheckedChange={handleIsPublishedChange}
             />
           </ControlRow>
 

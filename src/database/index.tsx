@@ -1,6 +1,8 @@
-import { init_experimental, i, CardinalityKind } from "@instantdb/react";
+import { init, i, CardinalityKind } from "@instantdb/react";
 
-const appId = process.env.REACT_APP_INSTANT_APP_ID ?? "";
+const appId = import.meta.env.VITE_INSTANT_APP_ID ?? "";
+
+console.log({ appId });
 
 const initGraph = i.graph as any;
 
@@ -191,5 +193,5 @@ const schema = initGraph(
   }
 );
 
-export const db = init_experimental({ appId, schema, devtool: false });
+export const db = init({ appId, schema, devtool: false });
 export type DB = typeof db;

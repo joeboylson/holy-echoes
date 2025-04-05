@@ -1,6 +1,5 @@
 import "./index.css";
 import "@mdxeditor/editor/style.css";
-
 import { createRoot } from "react-dom/client";
 import App from "./layout/App";
 
