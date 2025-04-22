@@ -21,7 +21,7 @@ export const BaseBlockCSS = css`
   }
 
   &.space-above {
-    padding-top: 24px;
+    padding-top: 24px !important;
   }
 `;
 

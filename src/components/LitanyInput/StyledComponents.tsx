@@ -7,10 +7,12 @@ export const LitanyRowWrapper = styled.div`
   padding-top: 12px;
 `;
 
-export const LitanyRow = styled.div`
+export const StyledLitanyRow = styled.div`
   display: grid;
-  grid-template-columns: 3fr 3fr 1fr 42px 20px 20px 20px;
+  grid-template-columns: 3fr 3fr 1fr 1fr 36px;
   gap: 4px;
+  align-items: center;
+  justify-items: center;
 
   button {
     padding: 0;
@@ -18,8 +20,12 @@ export const LitanyRow = styled.div`
     background-color: transparent;
     border: none;
   }
+
+  &.header {
+    padding-right: 32px;
+  }
 `;
 
 export const RowHeader = styled.p`
-  font-size: 12px;
+  text-align: center;
 `;

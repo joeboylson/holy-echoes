@@ -40,15 +40,14 @@ export default function Block({ prayerBlock }: _props) {
   const imageUrl = prayerBlock.imageUrl;
   const reference = prayerBlock.reference ?? "";
 
-  const props = {
-    key: prayerBlock.id,
-    dangerouslySetInnerHTML: { __html: md.render(text) },
-    className: prayerBlock.spaceAbove ? "space-above" : "",
-  };
-
   const propsNoContent = {
     key: prayerBlock.id,
     className: prayerBlock.spaceAbove ? "space-above" : "",
+  };
+
+  const props = {
+    ...propsNoContent,
+    dangerouslySetInnerHTML: { __html: md.render(text) },
   };
 
   if (blockTypeName === BODY) return <Body {...props} />;

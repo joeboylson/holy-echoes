@@ -71,7 +71,7 @@ export default function Admin() {
           {!hidePrayerList && <PrayerList filterUnpublished={false} />}
         </PrayerListWrapper>
         <PrayerBlockEditor />
-        <PrayerBlockPreview filterUnpublished={false} />
+        <PrayerBlockPreview filterUnpublished={false} withPagination={false} />
       </StyledAdmin>
     </AuthenticatedWrapper>
   );

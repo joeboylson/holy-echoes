@@ -25,5 +25,6 @@ export const StyledReorderableContainer = styled.div`
     width: 24px;
     height: 24px;
     cursor: ns-resize;
+    padding-top: 2px;
   }
 `;

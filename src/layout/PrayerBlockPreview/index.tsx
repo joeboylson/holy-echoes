@@ -1,22 +1,28 @@
 import "@mdxeditor/editor/style.css";
 import Block from "../../components/Block";
 import ReorderableList from "../ReorderableList";
-import { first, orderBy } from "lodash";
+import { first, indexOf, nth, orderBy } from "lodash";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
-import { useParams } from "react-router-dom";
-import { StyledPrayerBlockPreview } from "./StyledComponents";
+import { Link, useParams } from "react-router-dom";
+import {
+  PrayerBlockPagination,
+  StyledPrayerBlockPreview,
+} from "./StyledComponents";
 import { SlotItemMapArray } from "swapy";
 import { reorderByMapArray } from "@/utils";
 import { useMemo } from "react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
+  withPagination?: boolean;
 }
 
 export default function PrayerBlockPreview({
   filterUnpublished = true,
+  withPagination = true,
 }: _props) {
   const { prayerId } = useParams();
 
@@ -30,14 +36,18 @@ export default function PrayerBlockPreview({
       ? {
           [PRAYERS]: {
             [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
-            $: { where: { id: prayerId } },
           },
         }
       : null
   );
 
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
-  const prayer = first(prayers);
+
+  const prayer = prayers.find((i) => i.id === prayerId);
+  const prayerIndex = indexOf(prayers, prayer);
+  const prevPrayer = nth(prayers, prayerIndex - 1);
+  const nextPrayer = nth(prayers, prayerIndex + 1);
+
   const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
   const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
 
@@ -59,12 +69,25 @@ export default function PrayerBlockPreview({
   };
 
   return (
-    <StyledPrayerBlockPreview>
+    <StyledPrayerBlockPreview
+      className={withPagination ? "with-pagination" : ""}
+    >
       <ReorderableList
         items={blocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
       />
+
+      {withPagination && (
+        <PrayerBlockPagination>
+          <Link to={`/prayer/${prevPrayer?.id}`}>
+            <CaretLeft size={24} color="var(--blue-10)" weight="bold" />
+          </Link>
+          <Link to={`/prayer/${nextPrayer?.id}`}>
+            <CaretRight size={24} color="var(--blue-10)" weight="bold" />
+          </Link>
+        </PrayerBlockPagination>
+      )}
     </StyledPrayerBlockPreview>
   );
 }

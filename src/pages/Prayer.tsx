@@ -6,7 +6,7 @@ import { ArrowLeft } from "@phosphor-icons/react";
 
 const StyledPrayer = styled.div`
   width: calc(100vw - 48px);
-  height: calc(100vh - 48px);
+  height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
@@ -32,7 +32,7 @@ export default function Prayer() {
   const { prayerId } = useParams();
 
   return (
-    <StyledPrayer>
+    <StyledPrayer data-id="StyledPrayer">
       <BackLink to={Pages.HOME}>
         <ArrowLeft /> Back
       </BackLink>

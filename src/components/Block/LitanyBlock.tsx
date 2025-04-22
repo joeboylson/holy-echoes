@@ -14,13 +14,14 @@ const IndentedResponse = styled.p`
 
 interface _props {
   prayerBlock: PrayerBlock;
+  className?: string;
 }
 
-export default function LitanyBlock({ prayerBlock }: _props) {
+export default function LitanyBlock({ prayerBlock, className }: _props) {
   const orderedLitanyBlocks = orderBy(prayerBlock?.litanyBlocks, "order");
 
   return (
-    <LitanyWrapper>
+    <LitanyWrapper data-id="LitanyWrapper" className={className}>
       {orderedLitanyBlocks.map((i) => {
         const { call, response, superscript, inline } = i;
 
@@ -29,7 +30,7 @@ export default function LitanyBlock({ prayerBlock }: _props) {
         if (inline)
           return (
             <p>
-              {`${call} ${response}`}
+              {`${call} ${response ?? ""}`}
               <sup>{superscript}</sup>
             </p>
           );
@@ -40,7 +41,7 @@ export default function LitanyBlock({ prayerBlock }: _props) {
               {`${call}`}
               <sup>&nbsp;{superscript}</sup>
             </p>
-            <IndentedResponse>{response}</IndentedResponse>
+            <IndentedResponse>{response ?? ""}</IndentedResponse>
           </IndentedResponseWrapper>
         );
       })}
