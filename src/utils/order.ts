@@ -1,7 +1,6 @@
 import { indexOf } from "lodash";
 import { db, LitanyBlock, Prayer, PrayerBlock, TableNames } from "../database";
 import { SlotItemMapArray } from "swapy";
-import { type } from "node:os";
 
 type Reorderable = Prayer | PrayerBlock | LitanyBlock;
 
