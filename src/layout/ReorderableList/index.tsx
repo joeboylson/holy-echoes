@@ -12,12 +12,14 @@ interface _props {
   items: ListItem[];
   onReorder: (mapArray: SlotItemMapArray) => Promise<void>;
   enabled?: boolean;
+  itemClass?: string;
 }
 
 export default function ReorderableList({
   items,
   onReorder,
   enabled = false,
+  itemClass = "",
 }: _props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -76,6 +78,10 @@ export default function ReorderableList({
     " "
   );
 
+  const itemClassName = ["item", itemClass, isLoading ? "disabled" : ""].join(
+    " "
+  );
+
   return (
     <StyledReorderableContainer
       key="list"
@@ -86,13 +92,17 @@ export default function ReorderableList({
       <div className="items">
         {slottedItems.map(({ slotId, itemId, item }) => (
           <div className="slot" key={slotId} data-swapy-slot={slotId}>
-            <div className="item" data-swapy-item={itemId} key={itemId}>
+            <div
+              className={itemClassName}
+              data-swapy-item={itemId}
+              key={itemId}
+            >
+              {item?.component}
               {enabled && (
                 <div data-swapy-handle>
                   <DotsSix size={20} weight="bold" />
                 </div>
               )}
-              {item?.component}
             </div>
           </div>
         ))}

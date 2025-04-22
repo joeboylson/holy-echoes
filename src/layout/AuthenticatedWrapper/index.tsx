@@ -6,12 +6,11 @@ import { WithChildren } from "../../types";
 import { db, TableNames } from "../../database";
 import Header from "../Header";
 import { Pages } from "../App";
-import { first, isEmpty } from "lodash";
 
 const { $USERS, ADMIN } = TableNames;
 
 const PageWrapper = styled.div`
-  padding-top: 24px;
+  //
 `;
 
 interface UserContextType {

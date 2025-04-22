@@ -1,7 +1,11 @@
+import LitanyInput from "../../components/LitanyInput";
 import { ChangeEvent, useCallback, useMemo } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem } from "@/components/ui/select";
+import { debounce } from "lodash";
+import { TrashSimple } from "@phosphor-icons/react";
+import { removeBlock, cascadeDeletePrayerBlock } from "../../utils";
 import {
   BlockType,
   BlockTypes,
@@ -9,18 +13,6 @@ import {
   PrayerBlock,
   TableNames,
 } from "../../database";
-
-import { debounce } from "lodash";
-import { ArrowFatDown, ArrowFatUp, TrashSimple } from "@phosphor-icons/react";
-import LitanyInput from "../../components/LitanyInput";
-
-import {
-  moveBlockDown,
-  moveBlockUp,
-  removeBlock,
-  cascadeDeletePrayerBlock,
-} from "../../utils";
-
 import {
   BlockContent,
   BlockContentValues,
@@ -117,11 +109,6 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
     if (!_id) return;
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ imageUrl: null })]);
   }, [prayerBlock]);
-
-  const moveUp = () => moveBlockUp(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
-
-  const moveDown = () =>
-    moveBlockDown(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
 
   const deleteBlock = () => {
     removeBlock(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
@@ -260,14 +247,6 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
       </BlockContent>
 
       <BlockControls>
-        <div>
-          <button onClick={moveUp}>
-            <ArrowFatUp size={20} weight="duotone" color="var(--blue-10)" />
-          </button>
-          <button onClick={moveDown}>
-            <ArrowFatDown size={20} weight="duotone" color="var(--blue-10)" />
-          </button>
-        </div>
         <button onClick={deleteBlock}>
           <TrashSimple size={20} weight="duotone" color="var(--red-10)" />
         </button>

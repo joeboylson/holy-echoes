@@ -7,21 +7,22 @@ import { useMemo } from "react";
 
 const StyledPrayerListItem = styled.div`
   position: relative;
-  border-radius: 8px;
   overflow: hidden;
   height: 36px;
   align-items: center;
-  display: grid;
   align-items: center;
-  background-color: #eee;
+  display: grid;
 
   &:hover,
   &.active {
-    background-color: #ddd;
+    a {
+      color: black;
+      font-weight: bold;
+    }
   }
 
   a {
-    color: #222222;
+    color: #555555;
     text-decoration: none;
     padding: 0 16px;
     line-height: 36px;

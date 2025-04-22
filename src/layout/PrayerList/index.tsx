@@ -20,21 +20,24 @@ const PrayerListItemsWrapper = styled.div`
   grid-template-columns: 1fr;
   align-content: start;
   gap: 4px;
+
+  .item {
+    border-bottom: 1px solid #ccc;
+  }
 `;
 
 const { PRAYERS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
-  showFilters?: boolean;
-  hideControls?: boolean;
 }
 
-export default function PrayerList({
-  filterUnpublished = true,
-  showFilters = false,
-  hideControls = true,
-}: _props) {
+export default function PrayerList({ filterUnpublished = true }: _props) {
+  const enableReorder = useMemo(
+    () => window.location.pathname.includes("/admin"),
+    []
+  );
+
   const filter = useMemo(() => {
     if (!filterUnpublished) return {};
 
@@ -73,7 +76,7 @@ export default function PrayerList({
         <ReorderableList
           items={blocks}
           onReorder={handleOnReorder}
-          enabled={true}
+          enabled={enableReorder}
         />
       </PrayerListItemsWrapper>
     </StyledPrayerList>

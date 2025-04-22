@@ -7,19 +7,23 @@ import { useParams } from "react-router-dom";
 import { StyledPrayerBlockPreview } from "./StyledComponents";
 import { SlotItemMapArray } from "swapy";
 import { reorderByMapArray } from "@/utils";
+import { useMemo } from "react";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
-  enableReordering?: boolean;
 }
 
 export default function PrayerBlockPreview({
   filterUnpublished = true,
-  enableReordering = false,
 }: _props) {
   const { prayerId } = useParams();
+
+  const enableReorder = useMemo(
+    () => window.location.pathname.includes("/admin"),
+    []
+  );
 
   const { data, isLoading } = db.useQuery(
     prayerId
@@ -55,11 +59,11 @@ export default function PrayerBlockPreview({
   };
 
   return (
-    <StyledPrayerBlockPreview key={new Date().valueOf()}>
+    <StyledPrayerBlockPreview>
       <ReorderableList
         items={blocks}
         onReorder={handleOnReorder}
-        enabled={enableReordering}
+        enabled={enableReorder}
       />
     </StyledPrayerBlockPreview>
   );

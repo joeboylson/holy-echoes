@@ -7,18 +7,19 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import WindowTooSmall from "../components/WindowTooSmall";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { useState } from "react";
+import { HEADER_HEIGHT } from "@/constants/layout";
 
 const StyledAdmin = styled.div`
-  width: calc(100vw - 48px);
-  height: calc(100vh - 48px - 24px - 50px - 12px);
   padding: 24px;
+  width: 100vw;
+  height: calc(100vh - ${HEADER_HEIGHT}px);
   display: grid;
-  grid-template-columns: 400px 1fr 400px;
+  grid-template-columns: 500px 1fr 500px;
   gap: 12px;
   overflow: hidden;
 
   &.hide-prayer-list {
-    grid-template-columns: 24px 1fr 400px;
+    grid-template-columns: 24px 1fr 1fr;
   }
 `;
 
@@ -56,8 +57,8 @@ export default function Admin() {
   if ((size.width ?? 0) < 1200) return <WindowTooSmall />;
 
   return (
-    <AuthenticatedWrapper>
-      <StyledAdmin className={className}>
+    <AuthenticatedWrapper data-id="AuthenticatedWrapper">
+      <StyledAdmin className={className} data-id="StyledAdmin">
         <PrayerListWrapper className={className}>
           <TogglePrayerListButton onClick={togglePrayerList}>
             {hidePrayerList ? (
@@ -67,12 +68,10 @@ export default function Admin() {
             )}
           </TogglePrayerListButton>
 
-          {!hidePrayerList && (
-            <PrayerList filterUnpublished={false} hideControls={false} />
-          )}
+          {!hidePrayerList && <PrayerList filterUnpublished={false} />}
         </PrayerListWrapper>
         <PrayerBlockEditor />
-        <PrayerBlockPreview filterUnpublished={false} enableReordering />
+        <PrayerBlockPreview filterUnpublished={false} />
       </StyledAdmin>
     </AuthenticatedWrapper>
   );

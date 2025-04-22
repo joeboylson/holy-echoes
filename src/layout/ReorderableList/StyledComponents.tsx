@@ -7,7 +7,7 @@ export const StyledReorderableContainer = styled.div`
   }
 
   [data-swapy-highlighted] {
-    background-color: rgba(0, 0, 255, 0.25);
+    background-color: rgba(0, 0, 0, 0.25);
   }
 
   [data-swapy-dragging] {
@@ -15,22 +15,15 @@ export const StyledReorderableContainer = styled.div`
   }
 
   .item {
-    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 24px;
+    gap: 8px;
+    align-items: center;
   }
 
   [data-swapy-handle] {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0;
     width: 24px;
     height: 24px;
-    background-color: rgba(255, 255, 255, 0.75);
-    background-color: red;
-    display: grid;
-    place-items: center;
-    border-radius: 24px;
-    height: inherit;
-    z-index: 1;
+    cursor: ns-resize;
   }
 `;
