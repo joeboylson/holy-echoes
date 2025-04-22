@@ -4,7 +4,7 @@ import PrayerListItem from "./PrayerListItem";
 import { first, isEmpty, isEqual, orderBy } from "lodash";
 import { useMemo } from "react";
 import { moveBlockDown, moveBlockUp } from "../../utils";
-import { ArrowFatDown, ArrowFatUp } from "@phosphor-icons/react";
+import { ArrowDown, ArrowUp } from "@phosphor-icons/react";
 
 const StyledPrayerList = styled.div`
   display: grid;
@@ -90,11 +90,7 @@ export default function PrayerList({
                     <span />
                   ) : (
                     <button onClick={moveUp}>
-                      <ArrowFatUp
-                        size={20}
-                        weight="duotone"
-                        color="var(--blue-10)"
-                      />
+                      <ArrowUp size={20} weight="bold" color="var(--blue-10)" />
                     </button>
                   )}
 
@@ -102,9 +98,9 @@ export default function PrayerList({
                     <span />
                   ) : (
                     <button onClick={moveDown}>
-                      <ArrowFatDown
+                      <ArrowDown
                         size={20}
-                        weight="duotone"
+                        weight="bold"
                         color="var(--blue-10)"
                       />
                     </button>

@@ -1,21 +1,23 @@
 import "@mdxeditor/editor/style.css";
-import { first, orderBy } from "lodash";
+import { debounce, first, orderBy } from "lodash";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { useParams } from "react-router-dom";
-import {
-  PrayerBlocksWrapper,
-  StyledPrayerBlockPreview,
-} from "./StyledComponents";
+import { StyledPrayerBlockPreview } from "./StyledComponents";
 import Block from "../../components/Block";
+import ReorderableList from "../ReorderableList";
+import { SlotItemMapArray } from "swapy";
+import { reorderByMapArray } from "@/utils";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
+  enableReordering?: boolean;
 }
 
 export default function PrayerBlockPreview({
   filterUnpublished = true,
+  enableReordering = false,
 }: _props) {
   const { prayerId } = useParams();
 
@@ -41,14 +43,24 @@ export default function PrayerBlockPreview({
 
   if (isLoading) return <span />;
 
+  const blocks = orderedPrayerBlocks.map((i) => {
+    return {
+      id: i.id,
+      component: <Block prayerBlock={i} />,
+    };
+  });
+
+  const handleOnReorder = (mapArray: SlotItemMapArray) => {
+    reorderByMapArray(mapArray, PRAYERBLOCKS, orderedPrayerBlocks);
+  };
+
   return (
-    <StyledPrayerBlockPreview>
-      <PrayerBlocksWrapper>
-        {orderedPrayerBlocks &&
-          orderedPrayerBlocks.map((prayerBlock) => {
-            return <Block prayerBlock={prayerBlock} />;
-          })}
-      </PrayerBlocksWrapper>
+    <StyledPrayerBlockPreview key={new Date().valueOf()}>
+      <ReorderableList
+        items={blocks}
+        onReorder={handleOnReorder}
+        enabled={enableReordering}
+      />
     </StyledPrayerBlockPreview>
   );
 }

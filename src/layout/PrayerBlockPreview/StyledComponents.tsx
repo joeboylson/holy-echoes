@@ -11,8 +11,8 @@ export const StyledPrayerBlockPreview = styled.div`
   padding-bottom: 16px;
 `;
 
-export const PrayerBlocksWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  padding-bottom: 100px;
-`;
+// export const PrayerBlocksWrapper = styled.div`
+//   display: grid;
+//   grid-template-columns: 1fr;
+//   padding-bottom: 100px;
+// `;

@@ -3,21 +3,21 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../database";
 import { Pages } from "../layout/App";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { Button } from "@/components/ui/button";
 
 export const StyledLogin = styled.div`
   width: 100vw;
   height: 100vh;
   display: grid;
   place-items: center;
-`;
-
-export const LoginFormWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  width: 100%;
-  padding: 24px;
-  max-width: 500px;
 `;
 
 export const LoginForm = styled.div`
@@ -27,9 +27,14 @@ export const LoginForm = styled.div`
   gap: 12px;
 `;
 
+enum LoginTabs {
+  ENTER_EMAIL = "enter_email",
+  ENTER_MAGIC_CODE = "enter_magic_code",
+}
+
 export default function Login() {
   const navigate = useNavigate();
-
+  const [tab, setTab] = useState<LoginTabs>(LoginTabs.ENTER_EMAIL);
   const [email, setEmail] = useState<string>();
   const [emailIsSent, setEmailIsSent] = useState(false);
   const [code, setCode] = useState<string>();
@@ -43,11 +48,15 @@ export default function Login() {
       setEmailIsSent(false);
       setMessage("Oops, there was an error:" + err.body?.message);
     });
+
+    setTab(LoginTabs.ENTER_MAGIC_CODE);
   };
 
   const handleSubmitCode = () => {
     if (!email) return setMessage("Please enter an email address");
     if (!code) return setMessage("Please enter your magic code");
+
+    console.log(email, code);
 
     db.auth
       .signInWithMagicCode({ email, code })
@@ -55,43 +64,61 @@ export default function Login() {
       .catch((err) => {
         setMessage("Oops, there was an error:" + err.body?.message);
       });
+
+    navigate("/admin");
   };
 
   return (
-    <StyledLogin>
-      <LoginFormWrapper>
-        <h3>Login:</h3>
-        <ol>
-          <li>Enter your email address</li>
-          <li>Look for an email sent by "auth@pm.instantdb.com"</li>
-          <li>Enter the 6-digit Magic Code in 2nd input below</li>
-        </ol>
-        {message && <code>{message}</code>}
-        <LoginForm>
-          {/* Email Input */}
-          <input
-            type="text"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <div className="grid w-[100vw] h-[100vh] place-items-center">
+      <Card className="bg-neutral-100">
+        <div className="w-[500px] h-[200px] grid gap-[24px] content-start px-[24px]">
+          <h1 className="text-4xl text-center">Login</h1>
 
-          {/* Code Input */}
-          <input
-            type="text"
-            placeholder="Magic Code"
-            onChange={(e) => setCode(e.target.value)}
-            disabled={!emailIsSent}
-          />
+          <Tabs value={tab} onValueChange={(_tab) => setTab(_tab as LoginTabs)}>
+            <TabsList className="grid grid-cols-2 gap-[24px] w-full">
+              <TabsTrigger value={LoginTabs.ENTER_EMAIL} className="bg-primary">
+                Enter Email
+              </TabsTrigger>
+              <TabsTrigger value={LoginTabs.ENTER_MAGIC_CODE}>
+                Enter Magic Code
+              </TabsTrigger>
+            </TabsList>
 
-          {/* Send Code Button */}
-          <button onClick={handleSubmitEmail}>Submit Email</button>
+            {/* Email Input */}
+            <TabsContent value="enter_email" className="grid gap-[12px] w-full">
+              <Input
+                type="text"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Button onClick={handleSubmitEmail}>Submit Email</Button>
+            </TabsContent>
 
-          {/* Submit Code Button */}
-          <button onClick={handleSubmitCode} disabled={!emailIsSent}>
-            Submit Magic Code
-          </button>
-        </LoginForm>
-      </LoginFormWrapper>
-    </StyledLogin>
+            <TabsContent
+              value="enter_magic_code"
+              className="grid gap-[12px] w-full"
+            >
+              <div className="grid place-items-center">
+                <InputOTP maxLength={6} onChange={setCode}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+              <Button onClick={handleSubmitCode} disabled={!emailIsSent}>
+                Submit
+              </Button>
+            </TabsContent>
+          </Tabs>
+
+          {message && <code>{message}</code>}
+        </div>
+      </Card>
+    </div>
   );
 }

@@ -1,0 +1,89 @@
+import { JSX, useEffect, useMemo, useRef, useState } from "react";
+import { createSwapy, SlotItemMapArray, Swapy, utils } from "swapy";
+import { StyledReorderableContainer } from "./StyledComponents";
+import { DotsSix } from "@phosphor-icons/react";
+
+interface ListItem {
+  id?: string;
+  component: JSX.Element;
+}
+
+interface _props {
+  items: ListItem[];
+  onReorder: (mapArray: SlotItemMapArray) => void;
+  enabled?: boolean;
+}
+
+export default function ReorderableList({
+  items,
+  onReorder,
+  enabled = false,
+}: _props) {
+  const [slotItemMap, setSlotItemMap] = useState<SlotItemMapArray>(
+    utils.initSlotItemMap(items, "id")
+  );
+
+  const slottedItems = useMemo(
+    () => utils.toSlottedItems(items, "id", slotItemMap),
+    [items, slotItemMap]
+  );
+
+  const swapyRef = useRef<Swapy | null>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(
+    () =>
+      utils.dynamicSwapy(
+        swapyRef.current,
+        items,
+        "id",
+        slotItemMap,
+        setSlotItemMap
+      ),
+    [items]
+  );
+
+  useEffect(() => {
+    swapyRef.current = createSwapy(containerRef.current!, {
+      manualSwap: true,
+      // animation: 'dynamic'
+      // autoScrollOnDrag: true,
+      swapMode: "drop",
+      enabled,
+      dragAxis: "y",
+      // dragOnHold: true,
+    });
+
+    swapyRef.current.onSwap((event) => {
+      setSlotItemMap(event.newSlotItemMap.asArray);
+      onReorder(event.newSlotItemMap.asArray);
+    });
+
+    return () => {
+      swapyRef.current?.destroy();
+    };
+  }, []);
+  return (
+    <StyledReorderableContainer
+      className="container"
+      ref={containerRef}
+      data-id="ReorderableList"
+    >
+      <div className="items">
+        {slottedItems.map(({ slotId, itemId, item }) => (
+          <div className="slot" key={slotId} data-swapy-slot={slotId}>
+            <div className="item" data-swapy-item={itemId} key={itemId}>
+              {enabled && (
+                <div data-swapy-handle>
+                  <DotsSix size={20} weight="bold" />
+                </div>
+              )}
+              {item?.component}
+            </div>
+          </div>
+        ))}
+      </div>
+    </StyledReorderableContainer>
+  );
+}

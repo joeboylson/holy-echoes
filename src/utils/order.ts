@@ -1,5 +1,7 @@
 import { indexOf } from "lodash";
 import { db, LitanyBlock, Prayer, PrayerBlock, TableNames } from "../database";
+import { SlotItemMapArray } from "swapy";
+import { type } from "node:os";
 
 type Reorderable = Prayer | PrayerBlock | LitanyBlock;
 
@@ -75,4 +77,19 @@ export function normalizeOrder(allBlocks: Reorderable[], table: TableNames) {
   );
 
   db.transact(reorderTransactions);
+}
+
+export function reorderByMapArray(
+  mapArray: SlotItemMapArray,
+  table: TableNames,
+  currentItems: Reorderable[]
+) {
+  const itemIdsInNewOrder = mapArray.map((i) => i.item);
+
+  currentItems.forEach((i) => {
+    const order = indexOf(itemIdsInNewOrder, i.id);
+    console.log(order, typeof order);
+
+    db.transact([db.tx[table][i.id ?? ""].update({ order })]);
+  });
 }

@@ -46,7 +46,7 @@ export default function AuthenticatedWrapper({ children }: WithChildren) {
   }, [userQuery]);
 
   // TODO: improve loading screen
-  if (authState.isLoading) return <p>Loading...</p>;
+  if (userQuery.isLoading || authState.isLoading) return <p>Loading...</p>;
 
   // TODO: improve error message screen
   if (authState.error) return <code>{authState.error.message}</code>;

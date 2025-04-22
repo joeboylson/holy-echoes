@@ -72,7 +72,7 @@ export default function Admin() {
           )}
         </PrayerListWrapper>
         <PrayerBlockEditor />
-        <PrayerBlockPreview filterUnpublished={false} />
+        <PrayerBlockPreview filterUnpublished={false} enableReordering />
       </StyledAdmin>
     </AuthenticatedWrapper>
   );
