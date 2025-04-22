@@ -1,5 +1,5 @@
 import { createContext, useMemo } from "react";
-import { User } from "@instantdb/react";
+import { AuthState, User } from "@instantdb/react";
 import { Navigate } from "react-router-dom";
 import styled from "styled-components";
 import { WithChildren } from "../../types";
@@ -29,28 +29,33 @@ export default function AuthenticatedWrapper({ children }: WithChildren) {
     if (authState.user) return authState.user.id;
   }, [authState]);
 
+  if (authState.isLoading) return <p>Loading...</p>;
+  if (authState.error) return <code>{authState.error.message}</code>;
+  if (!userId) return <Navigate to={Pages.LOGIN} />;
+
+  return (
+    <AuthenticatedWrapperInner authState={authState} children={children} />
+  );
+}
+
+type _props = WithChildren & {
+  authState: AuthState;
+};
+
+function AuthenticatedWrapperInner({ authState, children }: _props) {
   const userQuery = db.useQuery(
-    userId
+    authState.user?.id
       ? {
           [$USERS]: {
             [ADMIN]: {},
-            $: { where: { id: userId } },
+            $: { where: { id: authState.user?.id } },
           },
         }
       : null
   );
 
-  const isAdmin = useMemo(() => {
-    const _user = first(userQuery.data?.[$USERS]);
-    return !isEmpty(_user?.[ADMIN]);
-  }, [userQuery]);
-
-  // TODO: improve loading screen
-  if (userQuery.isLoading || authState.isLoading) return <p>Loading...</p>;
-
-  // TODO: improve error message screen
-  if (authState.error) return <code>{authState.error.message}</code>;
-  if (!isAdmin) return <Navigate to={Pages.LOGIN} />;
+  if (userQuery.isLoading) return <p>Loading...</p>;
+  if (!authState.user) return <Navigate to={Pages.LOGIN} />;
 
   return (
     <UserContext.Provider value={{ user: authState.user }}>
