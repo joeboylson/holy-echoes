@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 export const StyledReorderableContainer = styled.div`
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   [data-swapy-highlighted] {
     background-color: rgba(0, 0, 255, 0.25);
   }
@@ -26,5 +31,6 @@ export const StyledReorderableContainer = styled.div`
     place-items: center;
     border-radius: 24px;
     height: inherit;
+    z-index: 1;
   }
 `;

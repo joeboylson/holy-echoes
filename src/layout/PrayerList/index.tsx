@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { db, Prayer, TableNames } from "../../database";
 import PrayerListItem from "./PrayerListItem";
-import { first, isEmpty, isEqual, orderBy } from "lodash";
+import ReorderableList from "@/layout/ReorderableList";
+import { db, Prayer, TableNames } from "@/database";
+import { reorderByMapArray } from "@/utils/";
+import { orderBy } from "lodash";
 import { useMemo } from "react";
-import { moveBlockDown, moveBlockUp } from "../../utils";
-import { ArrowDown, ArrowUp } from "@phosphor-icons/react";
+import { SlotItemMapArray } from "swapy";
 
 const StyledPrayerList = styled.div`
   display: grid;
@@ -19,21 +20,6 @@ const PrayerListItemsWrapper = styled.div`
   grid-template-columns: 1fr;
   align-content: start;
   gap: 4px;
-`;
-
-const PrayerListItemWrapper = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 24px 24px;
-  align-content: start;
-  gap: 4px;
-
-  button {
-    padding: 0;
-    margin: 0;
-    background-color: transparent;
-    border: none;
-  }
 `;
 
 const { PRAYERS } = TableNames;
@@ -59,7 +45,7 @@ export default function PrayerList({
     };
   }, [filterUnpublished]);
 
-  const { data } = db.useQuery({
+  const { data, isLoading } = db.useQuery({
     [PRAYERS]: {
       $: filter,
     },
@@ -68,48 +54,27 @@ export default function PrayerList({
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
 
   const orderedPrayers = orderBy(prayers, "order");
+  if (isLoading) return <span />;
+
+  const blocks = orderedPrayers.map((i) => {
+    return {
+      id: i.id,
+      component: <PrayerListItem prayer={i} />,
+    };
+  });
+
+  const handleOnReorder = async (mapArray: SlotItemMapArray) => {
+    await reorderByMapArray(mapArray, PRAYERS, orderedPrayers);
+  };
 
   return (
     <StyledPrayerList>
       <PrayerListItemsWrapper>
-        {isEmpty(orderedPrayers) && <p>No prayers...</p>}
-
-        {orderedPrayers.map((prayer, index) => {
-          const moveUp = () => moveBlockUp(prayer, orderedPrayers, PRAYERS);
-          const moveDown = () => moveBlockDown(prayer, orderedPrayers, PRAYERS);
-          const isFirstItem = index === 0;
-          const isLastItem = index + 1 === orderedPrayers.length;
-
-          return (
-            <PrayerListItemWrapper key={prayer.id}>
-              <PrayerListItem prayer={prayer} />
-
-              {!hideControls && (
-                <>
-                  {isFirstItem ? (
-                    <span />
-                  ) : (
-                    <button onClick={moveUp}>
-                      <ArrowUp size={20} weight="bold" color="var(--blue-10)" />
-                    </button>
-                  )}
-
-                  {isLastItem ? (
-                    <span />
-                  ) : (
-                    <button onClick={moveDown}>
-                      <ArrowDown
-                        size={20}
-                        weight="bold"
-                        color="var(--blue-10)"
-                      />
-                    </button>
-                  )}
-                </>
-              )}
-            </PrayerListItemWrapper>
-          );
-        })}
+        <ReorderableList
+          items={blocks}
+          onReorder={handleOnReorder}
+          enabled={true}
+        />
       </PrayerListItemsWrapper>
     </StyledPrayerList>
   );

@@ -10,7 +10,7 @@ interface ListItem {
 
 interface _props {
   items: ListItem[];
-  onReorder: (mapArray: SlotItemMapArray) => void;
+  onReorder: (mapArray: SlotItemMapArray) => Promise<void>;
   enabled?: boolean;
 }
 
@@ -19,6 +19,8 @@ export default function ReorderableList({
   onReorder,
   enabled = false,
 }: _props) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [slotItemMap, setSlotItemMap] = useState<SlotItemMapArray>(
     utils.initSlotItemMap(items, "id")
   );
@@ -45,10 +47,11 @@ export default function ReorderableList({
   );
 
   useEffect(() => {
+    if (isLoading) return;
     swapyRef.current = createSwapy(containerRef.current!, {
       manualSwap: true,
-      // animation: 'dynamic'
-      // autoScrollOnDrag: true,
+      animation: "none",
+      autoScrollOnDrag: true,
       swapMode: "drop",
       enabled,
       dragAxis: "y",
@@ -57,16 +60,26 @@ export default function ReorderableList({
 
     swapyRef.current.onSwap((event) => {
       setSlotItemMap(event.newSlotItemMap.asArray);
-      onReorder(event.newSlotItemMap.asArray);
+      setIsLoading(true);
+
+      onReorder(event.newSlotItemMap.asArray).finally(() => {
+        setIsLoading(false);
+      });
     });
 
     return () => {
       swapyRef.current?.destroy();
     };
-  }, []);
+  }, [isLoading]);
+
+  const containerClassName = ["container", isLoading ? "disabled" : ""].join(
+    " "
+  );
+
   return (
     <StyledReorderableContainer
-      className="container"
+      key="list"
+      className={containerClassName}
       ref={containerRef}
       data-id="ReorderableList"
     >

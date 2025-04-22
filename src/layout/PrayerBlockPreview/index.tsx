@@ -1,10 +1,10 @@
 import "@mdxeditor/editor/style.css";
-import { debounce, first, orderBy } from "lodash";
+import Block from "../../components/Block";
+import ReorderableList from "../ReorderableList";
+import { first, orderBy } from "lodash";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { useParams } from "react-router-dom";
 import { StyledPrayerBlockPreview } from "./StyledComponents";
-import Block from "../../components/Block";
-import ReorderableList from "../ReorderableList";
 import { SlotItemMapArray } from "swapy";
 import { reorderByMapArray } from "@/utils";
 
@@ -50,8 +50,8 @@ export default function PrayerBlockPreview({
     };
   });
 
-  const handleOnReorder = (mapArray: SlotItemMapArray) => {
-    reorderByMapArray(mapArray, PRAYERBLOCKS, orderedPrayerBlocks);
+  const handleOnReorder = async (mapArray: SlotItemMapArray) => {
+    await reorderByMapArray(mapArray, PRAYERBLOCKS, orderedPrayerBlocks);
   };
 
   return (
