@@ -14,12 +14,20 @@ const StyledAdmin = styled.div`
   width: 100vw;
   height: calc(100vh - ${HEADER_HEIGHT}px);
   display: grid;
-  grid-template-columns: 500px 1fr 500px;
   gap: 12px;
   overflow: hidden;
 
   &.hide-prayer-list {
     grid-template-columns: 24px 1fr 1fr;
+  }
+
+  grid-template-columns: repeat(3, 1fr);
+  @media (max-width: 2200px) {
+    grid-template-columns: 500px 1fr 500px;
+  }
+
+  @media (max-width: 1800px) {
+    grid-template-columns: 350px 1fr 400px;
   }
 `;
 

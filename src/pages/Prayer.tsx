@@ -5,7 +5,7 @@ import { Pages } from "../layout/App";
 import { ArrowLeft } from "@phosphor-icons/react";
 
 const StyledPrayer = styled.div`
-  width: calc(100vw - 48px);
+  width: 100vw;
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr;

@@ -1,4 +1,4 @@
-import { db, Prayer, PrayerBlock, TableNames } from "../../database";
+import { BlockType, db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
 import { first, orderBy } from "lodash";
 import { useParams } from "react-router-dom";
@@ -6,13 +6,14 @@ import PrayerControls from "../PrayerControls";
 import BlockForm from "../BlockForm";
 import { BlocksWrapper, StyledPrayerBlockEditor } from "./StyledComponents";
 import AddNewButton from "../../components/AddNewButton";
+import { useMemo } from "react";
 
-const { PRAYERBLOCKS, PRAYERS } = TableNames;
+const { PRAYERBLOCKS, PRAYERS, BLOCKTYPES } = TableNames;
 
 export default function PrayerBlockEditor() {
   const { prayerId } = useParams();
 
-  const { data, isLoading } = db.useQuery(
+  const { data: prayersData, isLoading } = db.useQuery(
     prayerId
       ? {
           [PRAYERS]: {
@@ -23,7 +24,14 @@ export default function PrayerBlockEditor() {
       : {}
   );
 
-  const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
+  const { data: blockTypesData } = db.useQuery({ [BLOCKTYPES]: {} });
+
+  const blockTypes = useMemo(
+    () => (blockTypesData?.[BLOCKTYPES] ?? []) as BlockType[],
+    [blockTypesData]
+  );
+
+  const prayers = (prayersData?.[PRAYERS] ?? []) as Prayer[];
   const prayer = first(prayers);
   const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
 
@@ -48,13 +56,14 @@ export default function PrayerBlockEditor() {
 
       {prayer && (
         <>
-          <BlocksWrapper>
+          <BlocksWrapper key={prayer?.id ?? "new"}>
             {orderedPrayerBlocks.map((prayerBlock) => {
               return (
                 <BlockForm
                   key={prayerBlock.id}
                   prayerBlock={prayerBlock}
                   allPrayerBlocks={orderedPrayerBlocks}
+                  blockTypes={blockTypes}
                 />
               );
             })}

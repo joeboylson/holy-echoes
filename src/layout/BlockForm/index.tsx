@@ -1,8 +1,14 @@
 import LitanyInput from "../../components/LitanyInput";
-import { ChangeEvent, useCallback, useMemo } from "react";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { debounce } from "lodash";
 import { TrashSimple } from "@phosphor-icons/react";
 import { removeBlock, cascadeDeletePrayerBlock } from "../../utils";
@@ -44,21 +50,32 @@ const {
 interface _props {
   prayerBlock: PrayerBlock;
   allPrayerBlocks: PrayerBlock[];
+  blockTypes: BlockType[];
 }
 
-export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
-  const { data } = db.useQuery({ [BLOCKTYPES]: {} });
-  const blockTypes = (data?.[BLOCKTYPES] ?? []) as BlockType[];
-  const blockTypeName = prayerBlock.blockType?.name;
-  const imageUrl = prayerBlock.imageUrl;
-  const text = prayerBlock.text ?? "";
-  const reference = prayerBlock.reference ?? "";
+export default function BlockForm({
+  prayerBlock,
+  allPrayerBlocks,
+  blockTypes,
+}: _props) {
+  const [blockTypeName, setBlockTypeName] = useState(
+    prayerBlock.blockType?.name
+  );
+
+  const imageUrl = useMemo(() => prayerBlock.imageUrl, [prayerBlock]);
+  const text = useMemo(() => prayerBlock.text ?? "", [prayerBlock]);
+  const reference = useMemo(() => prayerBlock.reference ?? "", [prayerBlock]);
 
   const handleTypeChange = useCallback(
-    (blockTypeId: string) => {
+    async (blockTypeId: string) => {
+      const newBlockType = blockTypes.find((i) => i.id === blockTypeId);
+      setBlockTypeName(newBlockType?.name);
+
       const _id = prayerBlock.id;
       if (!_id || !blockTypeId) return;
-      db.transact([db.tx[PRAYERBLOCKS][_id].link({ blockType: blockTypeId })]);
+      await db.transact([
+        db.tx[PRAYERBLOCKS][_id].link({ blockType: blockTypeId }),
+      ]);
     },
     [prayerBlock]
   );
@@ -67,7 +84,7 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
     const _id = prayerBlock.id;
     if (!_id) return;
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ text })]);
-  }, 1000);
+  }, 250);
 
   const handleSpaceAboveChange = (spaceAbove: boolean) => {
     const _id = prayerBlock.id;
@@ -79,7 +96,7 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
     const _id = prayerBlock.id;
     if (!_id) return;
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ reference })]);
-  }, 1000);
+  }, 250);
 
   const handleUploadImage = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -138,9 +155,12 @@ export default function BlockForm({ prayerBlock, allPrayerBlocks }: _props) {
         )}
 
         <Select
-          value={prayerBlock.blockType?.id ?? ""}
+          defaultValue={prayerBlock.blockType?.id ?? ""}
           onValueChange={handleTypeChange}
         >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Choose Block Type" />
+          </SelectTrigger>
           <SelectContent>
             {blockTypes.map((blockType) => (
               <SelectItem key={blockType.id} value={blockType.id ?? ""}>

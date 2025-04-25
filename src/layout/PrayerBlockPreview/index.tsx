@@ -1,7 +1,7 @@
 import "@mdxeditor/editor/style.css";
 import Block from "../../components/Block";
 import ReorderableList from "../ReorderableList";
-import { first, indexOf, nth, orderBy } from "lodash";
+import { indexOf, nth, orderBy } from "lodash";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -71,6 +71,7 @@ export default function PrayerBlockPreview({
   return (
     <StyledPrayerBlockPreview
       className={withPagination ? "with-pagination" : ""}
+      data-id="StyledPrayerBlockPreview"
     >
       <ReorderableList
         items={blocks}
