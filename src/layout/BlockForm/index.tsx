@@ -31,7 +31,7 @@ import {
 } from "./StyledComponents";
 import { Switch } from "@/components/ui/switch";
 
-const { BLOCKTYPES, PRAYERBLOCKS } = TableNames;
+const { PRAYERBLOCKS } = TableNames;
 
 const {
   BODY,
