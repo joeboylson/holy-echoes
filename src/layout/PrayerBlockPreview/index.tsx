@@ -71,6 +71,7 @@ export default function PrayerBlockPreview({
   return (
     <StyledPrayerBlockPreview
       className={withPagination ? "with-pagination" : ""}
+      data-id="StyledPrayerBlockPreview"
     >
       <ReorderableList
         items={blocks}

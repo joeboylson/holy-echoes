@@ -270,3 +270,7 @@ button[role="switch"][aria-checked="true"]::before {
 button[role="switch"] span {
   display: none;
 }
+
+button[role="combobox"] {
+  display: flex;
+}

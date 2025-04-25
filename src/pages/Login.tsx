@@ -56,8 +56,6 @@ export default function Login() {
     if (!email) return setMessage("Please enter an email address");
     if (!code) return setMessage("Please enter your magic code");
 
-    console.log(email, code);
-
     db.auth
       .signInWithMagicCode({ email, code })
       .then(() => navigate(Pages.ADMIN))

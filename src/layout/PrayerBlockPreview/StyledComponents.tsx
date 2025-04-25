@@ -9,8 +9,6 @@ export const StyledPrayerBlockPreview = styled.div`
     background-color: #fff;
     align-content: start;
     overflow-x: hidden;
-    padding-right: 16px;
-    padding-bottom: 16px;
   }
 
   &.with-pagination .container {

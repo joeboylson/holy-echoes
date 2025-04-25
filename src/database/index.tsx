@@ -2,8 +2,6 @@ import { init, i, CardinalityKind } from "@instantdb/react";
 
 const appId = import.meta.env.VITE_INSTANT_APP_ID ?? "";
 
-console.log({ appId });
-
 const initGraph = i.graph as any;
 
 export enum TableNames {

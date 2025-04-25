@@ -19,6 +19,10 @@ export const StyledReorderableContainer = styled.div`
     grid-template-columns: 1fr 24px;
     gap: 8px;
     align-items: center;
+
+    &.disabled {
+      grid-template-columns: 1fr;
+    }
   }
 
   [data-swapy-handle] {

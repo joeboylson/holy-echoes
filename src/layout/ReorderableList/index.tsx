@@ -78,9 +78,11 @@ export default function ReorderableList({
     " "
   );
 
-  const itemClassName = ["item", itemClass, isLoading ? "disabled" : ""].join(
-    " "
-  );
+  const itemClassName = [
+    "item",
+    itemClass,
+    isLoading || !enabled ? "disabled" : "",
+  ].join(" ");
 
   return (
     <StyledReorderableContainer
