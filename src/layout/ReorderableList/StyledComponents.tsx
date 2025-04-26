@@ -1,11 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const StyledReorderableContainer = styled.div`
-  &.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-
+const dragAndDropStyling = css`
   [data-swapy-highlighted] {
     background-color: rgba(0, 0, 0, 0.25);
   }
@@ -14,6 +9,15 @@ export const StyledReorderableContainer = styled.div`
     background-color: rgba(0, 0, 0, 0.1);
   }
 
+  [data-swapy-handle] {
+    width: 24px;
+    height: 24px;
+    cursor: ns-resize;
+    padding-top: 2px;
+  }
+`;
+
+const swapyItemStyling = css`
   .item {
     display: grid;
     grid-template-columns: 1fr 24px;
@@ -24,11 +28,18 @@ export const StyledReorderableContainer = styled.div`
       grid-template-columns: 1fr;
     }
   }
+`;
 
-  [data-swapy-handle] {
-    width: 24px;
-    height: 24px;
-    cursor: ns-resize;
-    padding-top: 2px;
+export const StyledReorderableContainer = styled.div`
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
+
+  ${dragAndDropStyling}
+  ${swapyItemStyling}
 `;

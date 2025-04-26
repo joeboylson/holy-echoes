@@ -49,15 +49,14 @@ export default function ReorderableList({
   );
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || !enabled) return;
     swapyRef.current = createSwapy(containerRef.current!, {
+      enabled,
       manualSwap: true,
       animation: "none",
       autoScrollOnDrag: true,
       swapMode: "drop",
-      enabled,
       dragAxis: "y",
-      // dragOnHold: true,
     });
 
     swapyRef.current.onSwap((event) => {
