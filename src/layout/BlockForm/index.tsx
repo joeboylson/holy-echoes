@@ -30,6 +30,7 @@ import {
   StyledBlockForm,
 } from "./StyledComponents";
 import { Switch } from "@/components/ui/switch";
+import TwoColumnInput from "@/components/TwoColumnInput";
 
 const { PRAYERBLOCKS } = TableNames;
 
@@ -40,6 +41,7 @@ const {
   IMAGE,
   INFO_TEXT,
   LITANY,
+  TWO_COLUMN,
   QUOTE,
   REFERENCE,
   SMALL_IMAGE,
@@ -246,6 +248,13 @@ export default function BlockForm({
                 <>
                   <i>Input a litany</i>
                   <LitanyInput prayerBlockId={prayerBlock.id} />
+                </>
+              )}
+
+              {blockTypeName === TWO_COLUMN && (
+                <>
+                  <i>Input a two-column prayer</i>
+                  <TwoColumnInput prayerBlockId={prayerBlock.id} />
                 </>
               )}
 

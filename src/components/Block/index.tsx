@@ -13,6 +13,7 @@ import {
   Quote,
   Reference,
 } from "./StyledComponents";
+import TwoColumnBlock from "./TwoColumnBlock";
 
 const {
   BODY,
@@ -21,6 +22,7 @@ const {
   IMAGE,
   INFO_TEXT,
   LITANY,
+  TWO_COLUMN,
   QUOTE,
   REFERENCE,
   SMALL_IMAGE,
@@ -78,6 +80,9 @@ export default function Block({ prayerBlock }: _props) {
 
   if (blockTypeName === LITANY)
     return <LitanyBlock prayerBlock={prayerBlock} {...propsNoContent} />;
+
+  if (blockTypeName === TWO_COLUMN)
+    return <TwoColumnBlock prayerBlock={prayerBlock} {...propsNoContent} />;
 
   if (blockTypeName === SPACER)
     return <BlockSpacer height={text} {...propsNoContent} />;

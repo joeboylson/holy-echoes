@@ -23,6 +23,7 @@ export enum BlockTypes {
   IMAGE = "Image",
   SMALL_IMAGE = "Small Image",
   LITANY = "Litany",
+  TWO_COLUMN = "Two Column",
   SPACER = "Spacer",
   ICON = "Icon",
 }
