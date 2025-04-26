@@ -47,6 +47,7 @@ export default function PrayerBlockEditor() {
   }
 
   const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
+  const orderedBlockTypes = orderBy(blockTypes, "order");
 
   if (isLoading) return <span />;
 
@@ -63,7 +64,7 @@ export default function PrayerBlockEditor() {
                   key={prayerBlock.id}
                   prayerBlock={prayerBlock}
                   allPrayerBlocks={orderedPrayerBlocks}
-                  blockTypes={blockTypes}
+                  blockTypes={orderedBlockTypes}
                 />
               );
             })}

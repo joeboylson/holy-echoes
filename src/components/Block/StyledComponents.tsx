@@ -99,6 +99,17 @@ export const LitanyWrapper = styled.div`
   }
 `;
 
+export const TwoColumnWrapper = styled.div`
+  ${BaseBlockCSS}
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  p {
+    line-height: calc(21px * 1.1);
+  }
+`;
+
 export const BlockSpacer = styled.div<{ height: string }>`
   height: ${(props) => props.height}px;
 `;

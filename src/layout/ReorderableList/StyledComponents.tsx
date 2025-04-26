@@ -32,9 +32,6 @@ const swapyItemStyling = css`
 
 export const StyledReorderableContainer = styled.div`
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-
   &.disabled {
     opacity: 0.5;
     pointer-events: none;

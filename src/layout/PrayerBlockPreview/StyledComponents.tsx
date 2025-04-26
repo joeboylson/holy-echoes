@@ -1,24 +1,21 @@
 import styled from "styled-components";
+import { PRAYER_HEADER_HEIGHT } from "@/pages/Prayer/StyledComponents";
 
 export const StyledPrayerBlockPreview = styled.div`
+  height: calc(100vh - ${PRAYER_HEADER_HEIGHT}px);
+  max-width: 600px;
+  margin: auto;
+  overflow-y: scroll;
+  padding: 24px;
+
   .container {
     display: grid;
     width: 100%;
-    height: calc(100vh - 36px - 48px);
     grid-template-rows: 1fr 24px;
     background-color: #fff;
     align-content: start;
     overflow-x: hidden;
   }
 
-  &.with-pagination .container {
-    height: calc(100vh - 36px - 48px - 50px);
-  }
-`;
-
-export const PrayerBlockPagination = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
+  padding-bottom: 20vh;
 `;
