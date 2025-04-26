@@ -10,15 +10,4 @@ export const StyledPrayerBlockPreview = styled.div`
     align-content: start;
     overflow-x: hidden;
   }
-
-  &.with-pagination .container {
-    height: calc(100vh - 36px - 48px - 50px);
-  }
-`;
-
-export const PrayerBlockPagination = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
 `;
