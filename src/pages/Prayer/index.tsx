@@ -44,10 +44,10 @@ export default function Prayer() {
 
         <PrayerBlockPagination>
           <Link to={`/prayer/${prevPrayer?.id}`}>
-            <CaretLeft size={24} weight="bold" />
+            <CaretLeft size={24} weight="bold" color="#FFFFFF" />
           </Link>
           <Link to={`/prayer/${nextPrayer?.id}`}>
-            <CaretRight size={24} weight="bold" />
+            <CaretRight size={24} weight="bold" color="#FFFFFF" />
           </Link>
         </PrayerBlockPagination>
       </PrayerHeader>
