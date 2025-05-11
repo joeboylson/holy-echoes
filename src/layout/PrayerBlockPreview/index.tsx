@@ -58,7 +58,7 @@ export default function PrayerBlockPreview({
         items={orderedPrayerBlocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
-        renderItem={(item) => <Block prayerBlock={item} />}
+        renderItem={(item) => <Block data-id="Block" prayerBlock={item} />}
       />
     </StyledPrayerBlockPreview>
   );

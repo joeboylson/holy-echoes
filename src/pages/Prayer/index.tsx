@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Pages } from "@/layout/App";
 import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { db, TableNames, Prayer as PrayerType } from "@/database";
-import { indexOf, nth } from "lodash";
+import { indexOf, nth, orderBy } from "lodash";
 import {
   BackLink,
   PrayerBlockPagination,
@@ -21,17 +21,24 @@ export default function Prayer() {
       ? {
           [PRAYERS]: {
             [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
+            $: {
+              where: {
+                published: true,
+              },
+            },
           },
         }
       : null
   );
 
   const prayers = (data?.[PRAYERS] ?? []) as PrayerType[];
+  const orderedPrayers = orderBy(prayers, "order");
 
-  const prayer = prayers.find((i) => i.id === prayerId);
-  const prayerIndex = indexOf(prayers, prayer);
-  const prevPrayer = nth(prayers, prayerIndex - 1);
-  const nextPrayer = nth(prayers, prayerIndex + 1);
+  const prayer = orderedPrayers.find((i) => i.id === prayerId);
+  const prayerIndex = indexOf(orderedPrayers, prayer);
+  const prevPrayer =
+    prayerIndex === 0 ? null : nth(orderedPrayers, prayerIndex - 1);
+  const nextPrayer = nth(orderedPrayers, prayerIndex + 1);
 
   if (isLoading) return <span />;
 
@@ -43,12 +50,21 @@ export default function Prayer() {
         </BackLink>
 
         <PrayerBlockPagination>
-          <Link to={`/prayer/${prevPrayer?.id}`}>
-            <CaretLeft size={24} weight="bold" color="#FFFFFF" />
-          </Link>
-          <Link to={`/prayer/${nextPrayer?.id}`}>
-            <CaretRight size={24} weight="bold" color="#FFFFFF" />
-          </Link>
+          {prevPrayer ? (
+            <Link to={`/prayer/${prevPrayer?.id}`}>
+              <CaretLeft size={24} weight="bold" color="#FFFFFF" />
+            </Link>
+          ) : (
+            <span />
+          )}
+
+          {nextPrayer ? (
+            <Link to={`/prayer/${nextPrayer?.id}`}>
+              <CaretRight size={24} weight="bold" color="#FFFFFF" />
+            </Link>
+          ) : (
+            <span />
+          )}
         </PrayerBlockPagination>
       </PrayerHeader>
 

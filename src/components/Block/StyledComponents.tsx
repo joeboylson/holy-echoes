@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 const BASE_TEXT = "#2c2c2c";
 
 const BASE_SIZE = "21px";
-const TITLE_SIZE = "34px";
+const TITLE_SIZE = "30px";
 const SMALL_SIZE = "16px";
 
 const LINE_HEIGHT_RATIO_TITLE = 1.1;
@@ -38,6 +38,7 @@ export const CenteredTitle = styled.h1`
   ${BaseBlockCSS}
   text-align: center;
   font-size: ${TITLE_SIZE};
+  font-weight: bold;
   line-height: calc(${TITLE_SIZE} * ${LINE_HEIGHT_RATIO_TITLE});
   color: ${BASE_TEXT};
 `;

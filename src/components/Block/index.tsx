@@ -43,7 +43,6 @@ export default function Block({ prayerBlock }: _props) {
   const reference = prayerBlock.reference ?? "";
 
   const propsNoContent = {
-    key: prayerBlock.id,
     className: prayerBlock.spaceAbove ? "space-above" : "",
   };
 
@@ -54,7 +53,8 @@ export default function Block({ prayerBlock }: _props) {
 
   if (blockTypeName === BODY) return <Body {...props} />;
   if (blockTypeName === BODY_CENTERED) return <BodyCentered {...props} />;
-  if (blockTypeName === CENTERED_TITLE) return <CenteredTitle {...props} />;
+  if (blockTypeName === CENTERED_TITLE)
+    return <CenteredTitle data-id="Centered Title" {...props} />;
   if (blockTypeName === INFO_TEXT) return <InfoText {...props} />;
   if (blockTypeName === REFERENCE) return <Reference {...props} />;
   if (blockTypeName === QUOTE) {
