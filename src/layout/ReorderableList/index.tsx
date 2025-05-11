@@ -1,6 +1,5 @@
 import clsx from "clsx";
-import { JSX, useState } from "react";
-import { GripVertical } from "lucide-react";
+import { JSX, useEffect, useState } from "react";
 import { Reorderable } from "@/utils";
 import { DotsSix } from "@phosphor-icons/react";
 
@@ -28,6 +27,8 @@ export default function ReorderableList({
   const [items, setItems] = useState(initialItems);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
+  useEffect(() => setItems(initialItems), [initialItems]);
 
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
@@ -82,10 +83,12 @@ export default function ReorderableList({
               "is-dragged": index === draggedIndex,
             })}
           >
-            <p>{renderItem(item)}</p>
-            <span>
-              <DotsSix size={20} weight="bold" />
-            </span>
+            <>{renderItem(item)}</>
+            {enabled && (
+              <span>
+                <DotsSix size={20} weight="bold" />
+              </span>
+            )}
           </ReorderableItem>
         );
       })}

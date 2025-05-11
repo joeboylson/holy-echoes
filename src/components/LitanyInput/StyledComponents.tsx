@@ -5,6 +5,11 @@ export const LitanyRowWrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 8px;
   padding-top: 12px;
+
+  &.is-disabled {
+    opacity: 0.25;
+    pointer-events: none;
+  }
 `;
 
 export const StyledLitanyRow = styled.div`

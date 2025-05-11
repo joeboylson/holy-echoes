@@ -49,7 +49,7 @@ export default function PrayerBlockPreview({
   if (isLoading) return <span />;
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    await reorderReorderable(items, PRAYERS);
+    await reorderReorderable(items, PRAYERBLOCKS);
   };
 
   return (

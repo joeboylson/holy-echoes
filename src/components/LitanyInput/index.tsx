@@ -1,7 +1,7 @@
 import AddNewButton from "../AddNewButton";
 // import LitanyRow from "./LitanyRow";
 import ReorderableList from "@/layout/ReorderableList";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { first, orderBy } from "lodash";
 import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
@@ -12,6 +12,7 @@ import {
   StyledLitanyRow,
 } from "./StyledComponents";
 import LitanyRow from "./LitanyRow";
+import clsx from "clsx";
 
 const { PRAYERBLOCKS, LITANYBLOCKS } = TableNames;
 
@@ -20,12 +21,14 @@ interface _props {
 }
 
 export default function LitanyInput({ prayerBlockId }: _props) {
+  const [addRowLoading, setAddRowLoading] = useState<boolean>(false);
+
   const enableReorder = useMemo(
     () => window.location.pathname.includes("/admin"),
     []
   );
 
-  const { data } = db.useQuery(
+  const { data, isLoading } = db.useQuery(
     prayerBlockId
       ? {
           [PRAYERBLOCKS]: {
@@ -41,29 +44,39 @@ export default function LitanyInput({ prayerBlockId }: _props) {
   const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    await reorderReorderable(items, PRAYERBLOCKS);
+    await reorderReorderable(items, LITANYBLOCKS);
   };
 
   const numberOfItems = orderedLitanyBlocks?.length ?? 0;
-  const handleAddNewRow = useCallback(() => {
+  const handleAddNewRow = useCallback(async () => {
     if (!prayerBlockId) return;
 
     const _id = id();
     const order = numberOfItems;
 
-    db.transact([
-      db.tx[LITANYBLOCKS][_id]
-        .update({ order })
-        .link({ prayerBlock: prayerBlockId }),
-    ]);
+    setAddRowLoading(true);
+    await db
+      .transact([
+        db.tx[LITANYBLOCKS][_id]
+          .update({ order })
+          .link({ prayerBlock: prayerBlockId }),
+      ])
+      .finally(() => setAddRowLoading(false));
   }, [prayerBlockId, numberOfItems]);
 
+  if (isLoading) return <span />;
+
   return (
-    <LitanyRowWrapper>
+    <LitanyRowWrapper
+      key={prayerBlockId}
+      className={clsx({
+        "is-disabled": addRowLoading,
+      })}
+    >
       <StyledLitanyRow className="header">
         <RowHeader>Call</RowHeader>
         <RowHeader>Response</RowHeader>
-        <RowHeader>Sup.</RowHeader>
+        <RowHeader>Super</RowHeader>
         <RowHeader>Inline?</RowHeader>
       </StyledLitanyRow>
 
