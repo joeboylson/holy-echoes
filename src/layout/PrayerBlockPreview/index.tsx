@@ -5,7 +5,7 @@ import { orderBy } from "lodash";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { useParams } from "react-router-dom";
 import { StyledPrayerBlockPreview } from "./StyledComponents";
-import { Reorderable, reorderByMapArray } from "@/utils";
+import { Reorderable, reorderReorderable } from "@/utils";
 import { useMemo } from "react";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
@@ -49,7 +49,7 @@ export default function PrayerBlockPreview({
   if (isLoading) return <span />;
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    console.log(items);
+    await reorderReorderable(items, PRAYERS);
   };
 
   return (

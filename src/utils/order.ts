@@ -77,15 +77,11 @@ export function normalizeOrder(allBlocks: Reorderable[], table: TableNames) {
   db.transact(reorderTransactions);
 }
 
-export async function reorderByMapArray(
-  mapArray: SlotItemMapArray,
-  table: TableNames,
-  currentItems: Reorderable[]
+export async function reorderReorderable(
+  reorderableItems: Reorderable[],
+  table: TableNames
 ) {
-  const itemIdsInNewOrder = mapArray.map((i) => i.item);
-
-  const promises = currentItems.map((i) => {
-    const order = indexOf(itemIdsInNewOrder, i.id);
+  const promises = reorderableItems.map((i, order) => {
     return db.tx[table][i.id ?? ""].update({ order });
   });
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import PrayerListItem from "./PrayerListItem";
 import ReorderableList from "@/layout/ReorderableList";
 import { db, Prayer, TableNames } from "@/database";
-import { Reorderable, reorderByMapArray } from "@/utils/";
+import { Reorderable, reorderReorderable } from "@/utils/";
 import { orderBy } from "lodash";
 import { useMemo } from "react";
 
@@ -59,7 +59,7 @@ export default function PrayerList({ filterUnpublished = true }: _props) {
   if (isLoading) return <span />;
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    console.log(items);
+    await reorderReorderable(items, PRAYERS);
   };
 
   return (

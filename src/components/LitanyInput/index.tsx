@@ -5,7 +5,7 @@ import { useCallback, useMemo } from "react";
 import { first, orderBy } from "lodash";
 import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
-import { Reorderable } from "../../utils";
+import { Reorderable, reorderReorderable } from "../../utils";
 import {
   LitanyRowWrapper,
   RowHeader,
@@ -41,7 +41,7 @@ export default function LitanyInput({ prayerBlockId }: _props) {
   const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    console.log(items);
+    await reorderReorderable(items, PRAYERBLOCKS);
   };
 
   const numberOfItems = orderedLitanyBlocks?.length ?? 0;

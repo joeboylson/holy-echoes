@@ -5,7 +5,7 @@ import { useCallback, useMemo } from "react";
 import { first, orderBy } from "lodash";
 import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
-import { Reorderable } from "../../utils";
+import { Reorderable, reorderReorderable } from "../../utils";
 import {
   TwoColumnRowWrapper,
   RowHeader,
@@ -39,15 +39,8 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
   const litanyBlocks = first(prayerBlocks)?.litanyBlocks as LitanyBlock[];
   const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
 
-  const blocks = orderedLitanyBlocks.map((i) => {
-    return {
-      id: i.id,
-      component: <TwoColumnRow row={i} />,
-    };
-  });
-
   const handleOnReorder = async (items: Reorderable[]) => {
-    console.log(items);
+    await reorderReorderable(items, PRAYERBLOCKS);
   };
 
   const numberOfItems = orderedLitanyBlocks?.length ?? 0;

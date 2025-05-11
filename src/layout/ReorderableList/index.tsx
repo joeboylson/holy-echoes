@@ -50,6 +50,8 @@ export default function ReorderableList({
     setItems(updated);
     setDraggedIndex(null);
     setHoverIndex(null);
+    setIsLoading(true);
+    onReorder(updated).finally(() => setIsLoading(false));
   };
 
   const handleDragEnd = () => {
