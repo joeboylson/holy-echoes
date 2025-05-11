@@ -81,7 +81,7 @@ export default function ReorderableList({
             })}
           >
             <p>{renderItem(item)}</p>
-            <span className="cursor-grab active:cursor-grabbing">
+            <span>
               <DotsSix size={20} weight="bold" />
             </span>
           </ReorderableItem>
