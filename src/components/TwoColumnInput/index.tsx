@@ -5,8 +5,7 @@ import { useCallback, useMemo } from "react";
 import { first, orderBy } from "lodash";
 import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
-import { reorderByMapArray } from "../../utils";
-import { SlotItemMapArray } from "swapy";
+import { Reorderable } from "../../utils";
 import {
   TwoColumnRowWrapper,
   RowHeader,
@@ -47,8 +46,8 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
     };
   });
 
-  const handleOnReorder = async (mapArray: SlotItemMapArray) => {
-    await reorderByMapArray(mapArray, LITANYBLOCKS, orderedLitanyBlocks);
+  const handleOnReorder = async (items: Reorderable[]) => {
+    console.log(items);
   };
 
   const numberOfItems = orderedLitanyBlocks?.length ?? 0;
@@ -73,9 +72,10 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
       </StyledTwoColumnRow>
 
       <ReorderableList
-        items={blocks}
+        items={orderedLitanyBlocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
+        renderItem={(item) => <TwoColumnRow row={item} />}
       />
 
       <AddNewButton onClick={handleAddNewRow} itemName="Row" />

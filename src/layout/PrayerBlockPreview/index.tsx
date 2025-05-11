@@ -5,8 +5,7 @@ import { orderBy } from "lodash";
 import { db, Prayer, PrayerBlock, TableNames } from "../../database";
 import { useParams } from "react-router-dom";
 import { StyledPrayerBlockPreview } from "./StyledComponents";
-import { SlotItemMapArray } from "swapy";
-import { reorderByMapArray } from "@/utils";
+import { Reorderable, reorderByMapArray } from "@/utils";
 import { useMemo } from "react";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
@@ -49,23 +48,17 @@ export default function PrayerBlockPreview({
 
   if (isLoading) return <span />;
 
-  const blocks = orderedPrayerBlocks.map((i) => {
-    return {
-      id: i.id,
-      component: <Block prayerBlock={i} />,
-    };
-  });
-
-  const handleOnReorder = async (mapArray: SlotItemMapArray) => {
-    await reorderByMapArray(mapArray, PRAYERBLOCKS, orderedPrayerBlocks);
+  const handleOnReorder = async (items: Reorderable[]) => {
+    console.log(items);
   };
 
   return (
     <StyledPrayerBlockPreview data-id="StyledPrayerBlockPreview">
       <ReorderableList
-        items={blocks}
+        items={orderedPrayerBlocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
+        renderItem={(item) => <Block prayerBlock={item} />}
       />
     </StyledPrayerBlockPreview>
   );

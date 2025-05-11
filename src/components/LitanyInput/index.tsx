@@ -1,17 +1,17 @@
 import AddNewButton from "../AddNewButton";
-import LitanyRow from "./LitanyRow";
+// import LitanyRow from "./LitanyRow";
 import ReorderableList from "@/layout/ReorderableList";
 import { useCallback, useMemo } from "react";
 import { first, orderBy } from "lodash";
 import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
 import { id } from "@instantdb/react";
-import { reorderByMapArray } from "../../utils";
-import { SlotItemMapArray } from "swapy";
+import { Reorderable } from "../../utils";
 import {
   LitanyRowWrapper,
   RowHeader,
   StyledLitanyRow,
 } from "./StyledComponents";
+import LitanyRow from "./LitanyRow";
 
 const { PRAYERBLOCKS, LITANYBLOCKS } = TableNames;
 
@@ -40,15 +40,8 @@ export default function LitanyInput({ prayerBlockId }: _props) {
   const litanyBlocks = first(prayerBlocks)?.litanyBlocks as LitanyBlock[];
   const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
 
-  const blocks = orderedLitanyBlocks.map((i) => {
-    return {
-      id: i.id,
-      component: <LitanyRow row={i} />,
-    };
-  });
-
-  const handleOnReorder = async (mapArray: SlotItemMapArray) => {
-    await reorderByMapArray(mapArray, LITANYBLOCKS, orderedLitanyBlocks);
+  const handleOnReorder = async (items: Reorderable[]) => {
+    console.log(items);
   };
 
   const numberOfItems = orderedLitanyBlocks?.length ?? 0;
@@ -75,9 +68,10 @@ export default function LitanyInput({ prayerBlockId }: _props) {
       </StyledLitanyRow>
 
       <ReorderableList
-        items={blocks}
+        items={orderedLitanyBlocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
+        renderItem={(item) => <LitanyRow row={item} />}
       />
 
       <AddNewButton onClick={handleAddNewRow} itemName="Row" />

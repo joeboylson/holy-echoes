@@ -2,10 +2,9 @@ import styled from "styled-components";
 import PrayerListItem from "./PrayerListItem";
 import ReorderableList from "@/layout/ReorderableList";
 import { db, Prayer, TableNames } from "@/database";
-import { reorderByMapArray } from "@/utils/";
+import { Reorderable, reorderByMapArray } from "@/utils/";
 import { orderBy } from "lodash";
 import { useMemo } from "react";
-import { SlotItemMapArray } from "swapy";
 
 const StyledPrayerList = styled.div`
   display: grid;
@@ -59,24 +58,18 @@ export default function PrayerList({ filterUnpublished = true }: _props) {
   const orderedPrayers = orderBy(prayers, "order");
   if (isLoading) return <span />;
 
-  const blocks = orderedPrayers.map((i) => {
-    return {
-      id: i.id,
-      component: <PrayerListItem prayer={i} />,
-    };
-  });
-
-  const handleOnReorder = async (mapArray: SlotItemMapArray) => {
-    await reorderByMapArray(mapArray, PRAYERS, orderedPrayers);
+  const handleOnReorder = async (items: Reorderable[]) => {
+    console.log(items);
   };
 
   return (
     <StyledPrayerList>
       <PrayerListItemsWrapper>
         <ReorderableList
-          items={blocks}
+          items={orderedPrayers}
           onReorder={handleOnReorder}
           enabled={enableReorder}
+          renderItem={(item) => <PrayerListItem prayer={item} />}
         />
       </PrayerListItemsWrapper>
     </StyledPrayerList>
