@@ -12,8 +12,6 @@ interface _props {
 }
 
 export default function LitanyRow({ row }: _props) {
-  console.log({ row });
-
   const handleChange = debounce(
     (litanyBlockId?: string, data?: Partial<LitanyBlock>) => {
       if (!litanyBlockId) return;

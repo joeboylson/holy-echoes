@@ -273,4 +273,8 @@ button[role="switch"] span {
 
 button[role="combobox"] {
   display: flex;
+  background-color: transparent;
+  font-size: 12px;
+  align-items: center;
+  padding-top: 2px;
 }

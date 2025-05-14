@@ -11,6 +11,7 @@ export enum TableNames {
   PRAYERBLOCKS = "prayerBlocks",
   BLOCKTYPES = "blockTypes",
   LITANYBLOCKS = "litanyBlocks",
+  CATEGORY = "categories",
 }
 
 export enum BlockTypes {
@@ -89,6 +90,7 @@ export type Prayer = {
   order?: number;
   published?: boolean;
   prayerBlocks?: PrayerBlock[];
+  category?: Category;
 };
 
 export const prayersTable = {
@@ -152,8 +154,25 @@ export const litanyBlocksTable = {
   }),
 };
 
+export type Category = {
+  id?: string;
+  name?: string;
+  order?: number;
+};
+
+export const categoriesTable = {
+  [TableNames.CATEGORY]: i.entity({
+    name: i.string(),
+    order: i.number(),
+  }),
+};
+
 export const userRelations = {
   hasOneUser: oneToOne(TableNames.$USERS, TableNames.ADMIN, "admin"),
+};
+
+export const prayerRelations = {
+  hasOneCategory: oneToOne(TableNames.PRAYERS, TableNames.CATEGORY, "category"),
 };
 
 export const prayerBlocksRelations = {
@@ -184,9 +203,11 @@ const schema = initGraph(
     ...prayerBlocksTable,
     ...blockTypesTable,
     ...litanyBlocksTable,
+    ...categoriesTable,
   },
   {
     ...userRelations,
+    ...prayerRelations,
     ...prayerBlocksRelations,
     ...litanyBlocksRelations,
   }

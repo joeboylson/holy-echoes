@@ -1,4 +1,4 @@
-import { db, Prayer, TableNames } from "../../database";
+import { Category, db, Prayer, TableNames } from "../../database";
 import { id } from "@instantdb/react";
 import { Pages } from "../App";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,9 @@ import { cascadeDeletePrayer } from "../../utils";
 import DeleteButton from "../../components/DeleteButton";
 import { debounce } from "lodash";
 import { Switch } from "@/components/ui/switch";
+import { SelectWithCreate } from "@/components/SelectWithCreate";
+import { useState } from "react";
+import useCategories from "@/hooks/useCategories";
 
 const { PRAYERS } = TableNames;
 
@@ -22,11 +25,22 @@ interface _props {
 export default function PrayerControls({ prayer }: _props) {
   const navigate = useNavigate();
 
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    string | undefined
+  >(prayer?.category?.id);
+
+  const { categoriesAsOptions, categoriesLoading, addNewCategory } =
+    useCategories();
+
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+
   const { data, isLoading } = db.useQuery({
     [PRAYERS]: {},
   });
 
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
+
+  console.log({ prayers });
 
   const handleNameChange = debounce((name: string) => {
     if (!prayer) return;
@@ -35,11 +49,14 @@ export default function PrayerControls({ prayer }: _props) {
     db.transact([db.tx[PRAYERS][_id].update({ name })]);
   }, 500);
 
-  const handleIsPublishedChange = (published: boolean) => {
+  const handleIsPublishedChange = async (published: boolean) => {
     if (!prayer) return;
     const _id = prayer.id;
     if (!_id) return;
-    db.transact([db.tx[PRAYERS][_id].update({ published })]);
+    setIsSaving(true);
+    await db
+      .transact([db.tx[PRAYERS][_id].update({ published })])
+      .finally(() => setIsSaving(false));
   };
 
   async function addNewPrayer() {
@@ -65,6 +82,24 @@ export default function PrayerControls({ prayer }: _props) {
     cascadeDeletePrayer(prayer);
   }
 
+  async function updatePrayerCategory(categoryId: string) {
+    if (!prayer) return;
+    const _id = prayer.id;
+    if (!_id) return;
+    setIsSaving(true);
+    await db
+      .transact([db.tx[PRAYERS][_id].link({ category: categoryId })])
+      .finally(() => {
+        setIsSaving(false);
+        setSelectedCategoryId(categoryId);
+      });
+  }
+
+  async function handleAddNewCategory(name: string) {
+    const newCategory = await addNewCategory(name);
+    if (newCategory.id) updatePrayerCategory(newCategory.id);
+  }
+
   if (isLoading) return <span />;
 
   return (
@@ -83,15 +118,28 @@ export default function PrayerControls({ prayer }: _props) {
           </ControlRow>
 
           <ControlRow>
-            <p>{prayer.published ? "Published:" : "Not Published:"}</p>
-            <Switch
-              checked={prayer.published}
-              onCheckedChange={handleIsPublishedChange}
+            <p>Category:</p>
+            <SelectWithCreate
+              placeholder={"Select a category"}
+              onChange={updatePrayerCategory}
+              onCreate={handleAddNewCategory}
+              options={categoriesAsOptions}
+              disabled={categoriesLoading}
+              value={selectedCategoryId}
             />
           </ControlRow>
 
           <ControlRow>
-            <p>Delete Prayer</p>
+            <p>{prayer.published ? "Published:" : "Not Published:"}</p>
+            <Switch
+              checked={prayer.published}
+              onCheckedChange={handleIsPublishedChange}
+              disabled={isSaving}
+            />
+          </ControlRow>
+
+          <ControlRow>
+            <p>Delete Prayer:</p>
             <DeleteButton onClick={deletePrayer} itemName="Prayer" />
           </ControlRow>
         </ControlRowWrapper>
