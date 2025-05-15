@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import PrayerListItem from "./PrayerListItem";
 import ReorderableList from "@/layout/ReorderableList";
-import { db, Prayer, TableNames } from "@/database";
+import { Category, db, Prayer, TableNames } from "@/database";
 import { Reorderable, reorderReorderable } from "@/utils/";
-import { orderBy } from "lodash";
+import { orderBy, set, setWith } from "lodash";
 import { useMemo } from "react";
 
 const StyledPrayerList = styled.div`
@@ -29,9 +29,13 @@ const { PRAYERS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
+  filterByCategory?: Category;
 }
 
-export default function PrayerList({ filterUnpublished = true }: _props) {
+export default function PrayerList({
+  filterUnpublished = true,
+  filterByCategory,
+}: _props) {
   const enableReorder = useMemo(
     () => window.location.pathname.includes("/admin"),
     []
@@ -40,12 +44,18 @@ export default function PrayerList({ filterUnpublished = true }: _props) {
   const filter = useMemo(() => {
     if (!filterUnpublished) return {};
 
-    return {
+    const _filter: { [key: string]: any } = {
       where: {
         published: true,
       },
     };
-  }, [filterUnpublished]);
+
+    if (filterByCategory) {
+      _filter.where["category.id"] = filterByCategory.id;
+    }
+
+    return _filter;
+  }, [filterUnpublished, filterByCategory]);
 
   const { data, isLoading } = db.useQuery({
     [PRAYERS]: {

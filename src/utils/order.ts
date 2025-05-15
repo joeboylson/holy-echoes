@@ -1,7 +1,14 @@
 import { indexOf } from "lodash";
-import { db, LitanyBlock, Prayer, PrayerBlock, TableNames } from "../database";
+import {
+  Category,
+  db,
+  LitanyBlock,
+  Prayer,
+  PrayerBlock,
+  TableNames,
+} from "../database";
 
-export type Reorderable = Prayer | PrayerBlock | LitanyBlock;
+export type Reorderable = Prayer | PrayerBlock | LitanyBlock | Category;
 
 export function moveBlockUp(
   block: Reorderable,
@@ -66,15 +73,7 @@ export function removeBlock(
   db.transact([db.tx[table][blockId].delete()]);
 
   const updatedAllBlocks = allBlocks.filter((i) => i.id !== blockId);
-  normalizeOrder(updatedAllBlocks, table);
-}
-
-export function normalizeOrder(allBlocks: Reorderable[], table: TableNames) {
-  const reorderTransactions = allBlocks.map((i, order) =>
-    db.tx[table][i.id ?? ""].update({ order })
-  );
-
-  db.transact(reorderTransactions);
+  reorderReorderable(updatedAllBlocks, table);
 }
 
 export async function reorderReorderable(

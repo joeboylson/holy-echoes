@@ -40,8 +40,6 @@ export default function PrayerControls({ prayer }: _props) {
 
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
 
-  console.log({ prayers });
-
   const handleNameChange = debounce((name: string) => {
     if (!prayer) return;
     const _id = prayer.id;

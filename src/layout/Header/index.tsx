@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { UserContext } from "../AuthenticatedWrapper";
 import styled from "styled-components";
 import { db } from "../../database";
-import { useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Pages } from "../App";
 import { HEADER_HEIGHT } from "@/constants/layout";
 
@@ -13,6 +13,13 @@ const StyledHeader = styled.div`
   grid-template-columns: 1fr 100px;
   align-items: center;
   height: ${HEADER_HEIGHT}px;
+
+  a {
+    color: blue;
+    &.active {
+      text-decoration: underline;
+    }
+  }
 `;
 
 export default function Header() {
@@ -26,7 +33,13 @@ export default function Header() {
 
   return (
     <StyledHeader data-id="StyledHeader">
-      <p>{user?.email}</p>
+      <div className="flex gap-[36px]">
+        <p>{user?.email}</p>
+        <nav className="flex gap-[12px]">
+          <NavLink to={Pages.ADMIN}>Prayer Dashboard</NavLink>
+          <NavLink to={Pages.CONFIG}>Configuration</NavLink>
+        </nav>
+      </div>
       <button onClick={handleLogout}>Logout</button>
     </StyledHeader>
   );

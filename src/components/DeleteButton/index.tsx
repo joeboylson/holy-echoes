@@ -18,12 +18,35 @@ const StyledDeleteButton = styled.button`
   }
 `;
 
+const StyledDeleteIconButton = styled.button`
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border: none;
+  outline: none;
+`;
+
 interface _props {
   itemName: string;
   onClick: () => void;
+  icon?: boolean;
 }
 
-export default function DeleteButton({ itemName, onClick }: _props) {
+export default function DeleteButton({
+  itemName,
+  onClick,
+  icon = false,
+}: _props) {
+  if (icon) {
+    return (
+      <StyledDeleteIconButton onClick={onClick}>
+        <TrashSimple size={20} weight="duotone" color="var(--red-10)" />
+      </StyledDeleteIconButton>
+    );
+  }
+
   return (
     <StyledDeleteButton onClick={onClick}>
       <span>Delete {itemName}</span>

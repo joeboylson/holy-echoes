@@ -158,6 +158,7 @@ export type Category = {
   id?: string;
   name?: string;
   order?: number;
+  prayers?: Prayer[];
 };
 
 export const categoriesTable = {
@@ -172,7 +173,11 @@ export const userRelations = {
 };
 
 export const prayerRelations = {
-  hasOneCategory: oneToOne(TableNames.PRAYERS, TableNames.CATEGORY, "category"),
+  hasOneCategory: oneToMany(
+    TableNames.PRAYERS,
+    TableNames.CATEGORY,
+    "category"
+  ),
 };
 
 export const prayerBlocksRelations = {

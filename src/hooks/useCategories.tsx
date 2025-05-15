@@ -1,12 +1,20 @@
 import { Option } from "@/types";
 import { Category, db, TableNames } from "../database";
 import { id } from "@instantdb/react";
+import { isEmpty } from "lodash";
 
-const { CATEGORY } = TableNames;
+const { CATEGORY, PRAYERS } = TableNames;
 
 export default function useCategories() {
-  const { data, isLoading } = db.useQuery({
-    [CATEGORY]: {},
+  const { data, isLoading, error } = db.useQuery({
+    [CATEGORY]: {
+      [PRAYERS]: {},
+      $: {
+        order: {
+          order: "asc",
+        },
+      },
+    },
   });
 
   const categories = (data?.[CATEGORY] ?? []) as Category[];
@@ -18,8 +26,12 @@ export default function useCategories() {
     };
   }) as Option[];
 
+  const categoriesWithPrayers = categories.filter((category) => {
+    return !isEmpty(category.prayers);
+  });
+
   async function addNewCategory(name: string) {
-    const order = 0;
+    const order = categories.length;
     const newCategoryData: Category = { order, name };
     const newId = id();
     await db.transact([db.tx[CATEGORY][newId].update({ ...newCategoryData })]);
@@ -27,10 +39,30 @@ export default function useCategories() {
     return { id: newId, ...newCategoryData } as Category;
   }
 
+  async function deleteCategory(category: Category) {
+    if (!category.id) return;
+    await db.transact([db.tx[CATEGORY][category.id].delete()]);
+  }
+
+  async function editCategory(
+    category: Category,
+    newCategoryValues: Partial<Category>
+  ) {
+    if (!category.id) return;
+    await db.transact([
+      db.tx[CATEGORY][category.id].update({
+        ...newCategoryValues,
+      }),
+    ]);
+  }
+
   return {
     categories,
+    categoriesWithPrayers,
     categoriesLoading: isLoading,
     categoriesAsOptions,
     addNewCategory,
+    deleteCategory,
+    editCategory,
   };
 }
