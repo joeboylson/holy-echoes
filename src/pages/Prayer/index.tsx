@@ -1,6 +1,6 @@
 import PrayerBlockPreview from "@/layout/PrayerBlockPreview";
 import { Link, useParams } from "react-router-dom";
-import { Pages } from "@/layout/App";
+import { Pages } from "@/layout/App/router";
 import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { db, TableNames, Prayer as PrayerType } from "@/database";
 import { indexOf, nth, orderBy } from "lodash";
