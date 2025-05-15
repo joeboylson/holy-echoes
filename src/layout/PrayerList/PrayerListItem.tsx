@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Prayer } from "../../database";
 import { Link, useParams } from "react-router-dom";
-import { Pages } from "../App";
+import { Pages } from "../App/router";
 import { compact } from "lodash";
 import { useMemo } from "react";
 

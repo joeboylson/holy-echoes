@@ -3,7 +3,7 @@ import PrayerListItem from "./PrayerListItem";
 import ReorderableList from "@/layout/ReorderableList";
 import { Category, db, Prayer, TableNames } from "@/database";
 import { Reorderable, reorderReorderable } from "@/utils/";
-import { orderBy, set, setWith } from "lodash";
+import { orderBy } from "lodash";
 import { useMemo } from "react";
 
 const StyledPrayerList = styled.div`
@@ -44,6 +44,7 @@ export default function PrayerList({
   const filter = useMemo(() => {
     if (!filterUnpublished) return {};
 
+    // eslint-disable-next-line
     const _filter: { [key: string]: any } = {
       where: {
         published: true,

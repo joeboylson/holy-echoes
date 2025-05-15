@@ -6,7 +6,7 @@ import { isEmpty } from "lodash";
 const { CATEGORY, PRAYERS } = TableNames;
 
 export default function useCategories() {
-  const { data, isLoading, error } = db.useQuery({
+  const { data, isLoading } = db.useQuery({
     [CATEGORY]: {
       [PRAYERS]: {},
       $: {

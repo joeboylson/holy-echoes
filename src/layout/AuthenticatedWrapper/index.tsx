@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { WithChildren } from "../../types";
 import { db, TableNames } from "../../database";
 import Header from "../Header";
-import { Pages } from "../App";
+import { Pages } from "../App/router";
 
 const { $USERS, ADMIN } = TableNames;
 

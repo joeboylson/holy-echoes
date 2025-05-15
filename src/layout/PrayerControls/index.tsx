@@ -1,6 +1,6 @@
-import { Category, db, Prayer, TableNames } from "../../database";
+import { db, Prayer, TableNames } from "../../database";
 import { id } from "@instantdb/react";
-import { Pages } from "../App";
+import { Pages } from "../App/router";
 import { useNavigate } from "react-router-dom";
 import AddNewButton from "../../components/AddNewButton";
 import {

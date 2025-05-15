@@ -79,7 +79,7 @@ export default function BlockForm({
         db.tx[PRAYERBLOCKS][_id].link({ blockType: blockTypeId }),
       ]);
     },
-    [prayerBlock]
+    [prayerBlock, blockTypes]
   );
 
   const handleBodyChange = debounce((text: string) => {

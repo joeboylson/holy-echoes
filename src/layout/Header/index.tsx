@@ -1,9 +1,9 @@
+import styled from "styled-components";
 import { useContext } from "react";
 import { UserContext } from "../AuthenticatedWrapper";
-import styled from "styled-components";
 import { db } from "../../database";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Pages } from "../App";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Pages } from "../App/router";
 import { HEADER_HEIGHT } from "@/constants/layout";
 
 const StyledHeader = styled.div`
