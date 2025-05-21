@@ -2,13 +2,14 @@ import "@mdxeditor/editor/style.css";
 import Block from "../../components/Block";
 import ReorderableList from "../ReorderableList";
 import { orderBy } from "lodash";
-import { db, Prayer, PrayerBlock, TableNames } from "../../database";
+import { Prayer, PrayerBlock, TableNames } from "../../database";
 import { useParams } from "react-router-dom";
 import { StyledPrayerBlockPreview } from "./StyledComponents";
 import { Reorderable, reorderReorderable } from "@/utils";
 import { useMemo } from "react";
+import usePrayer from "@/hooks/usePrayer";
 
-const { PRAYERBLOCKS, PRAYERS } = TableNames;
+const { PRAYERBLOCKS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
@@ -26,34 +27,27 @@ export default function PrayerBlockPreview({
     []
   );
 
-  const { data, isLoading } = db.useQuery(
-    prayerId && !existingPrayer
-      ? {
-          [PRAYERS]: {
-            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
-          },
-        }
-      : null
+  const { prayer: queryPrayer, prayerLoading } = usePrayer(
+    prayerId,
+    !!existingPrayer
   );
-
-  const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
-  const prayer = existingPrayer ?? prayers.find((i) => i.id === prayerId);
+  const prayer = existingPrayer ?? queryPrayer;
 
   const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
   const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
-
-  if (!prayer?.published && filterUnpublished) {
-    return <p>This page is under construction.</p>;
-  }
-
-  if (isLoading) return <span />;
 
   const handleOnReorder = async (items: Reorderable[]) => {
     await reorderReorderable(items, PRAYERBLOCKS);
   };
 
+  if (!prayer?.published && filterUnpublished) {
+    return <p>This page is under construction.</p>;
+  }
+
+  if (prayerLoading) return <p>loading...</p>;
+
   return (
-    <StyledPrayerBlockPreview data-id="StyledPrayerBlockPreview">
+    <StyledPrayerBlockPreview data-id="StyledPrayerBlockPreview" key={prayerId}>
       <ReorderableList
         items={orderedPrayerBlocks}
         onReorder={handleOnReorder}

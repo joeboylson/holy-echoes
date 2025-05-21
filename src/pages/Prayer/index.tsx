@@ -1,9 +1,8 @@
 import PrayerBlockPreview from "@/layout/PrayerBlockPreview";
+import usePrayer from "@/hooks/usePrayer";
 import { Link, useParams } from "react-router-dom";
 import { Pages } from "@/layout/App/router";
 import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
-import { db, TableNames, Prayer as PrayerType } from "@/database";
-import { indexOf, nth, orderBy } from "lodash";
 import {
   BackLink,
   PrayerBlockPagination,
@@ -11,36 +10,19 @@ import {
   StyledPrayer,
 } from "./StyledComponents";
 
-const { PRAYERBLOCKS, PRAYERS } = TableNames;
-
 export default function Prayer() {
   const { prayerId } = useParams();
+  const { prayer, prevNextPrayers, prayerLoading } = usePrayer(prayerId);
 
-  const { data, isLoading } = db.useQuery(
-    prayerId
-      ? {
-          [PRAYERS]: {
-            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
-            $: {
-              where: {
-                published: true,
-              },
-            },
-          },
-        }
-      : null
+  const prevPrayer = prevNextPrayers.find(
+    (p) => (p?.order ?? 0) < (prayer?.order ?? 0)
   );
 
-  const prayers = (data?.[PRAYERS] ?? []) as PrayerType[];
-  const orderedPrayers = orderBy(prayers, "order");
+  const nextPrayer = prevNextPrayers.find(
+    (p) => (p?.order ?? 0) > (prayer?.order ?? 0)
+  );
 
-  const prayer = orderedPrayers.find((i) => i.id === prayerId);
-  const prayerIndex = indexOf(orderedPrayers, prayer);
-  const prevPrayer =
-    prayerIndex === 0 ? null : nth(orderedPrayers, prayerIndex - 1);
-  const nextPrayer = nth(orderedPrayers, prayerIndex + 1);
-
-  if (isLoading) return <span />;
+  if (prayerLoading) return <p>Loading...</p>;
 
   return (
     <StyledPrayer data-id="StyledPrayer">
@@ -68,7 +50,9 @@ export default function Prayer() {
         </PrayerBlockPagination>
       </PrayerHeader>
 
-      {prayerId && <PrayerBlockPreview />}
+      {prayerId && (
+        <PrayerBlockPreview existingPrayer={prayer} key={prayerId} />
+      )}
     </StyledPrayer>
   );
 }
