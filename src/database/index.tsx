@@ -1,4 +1,4 @@
-import { init, i, CardinalityKind, InstaQLEntity } from "@instantdb/react";
+import { init, i, CardinalityKind } from "@instantdb/react";
 
 const appId = import.meta.env.VITE_INSTANT_APP_ID ?? "";
 

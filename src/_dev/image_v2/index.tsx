@@ -1,6 +1,5 @@
 import { db, PrayerBlock, TableNames } from "@/database";
 import ImageBlockForm from "@/layout/ImageBlockForm";
-import { filter } from "lodash";
 import { useState } from "react";
 
 const imageBlockTypeIds = [
@@ -32,8 +31,6 @@ export default function ImageV2() {
         setLoading(false);
       });
   };
-
-  console.log(data);
 
   return (
     <div>

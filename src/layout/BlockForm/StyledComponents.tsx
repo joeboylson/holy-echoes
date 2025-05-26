@@ -1,6 +1,5 @@
 import { MDXEditor } from "@mdxeditor/editor";
 import styled from "styled-components";
-import { BlockTypes } from "../../database";
 
 export const StyledBlockForm = styled.div`
   display: grid;
