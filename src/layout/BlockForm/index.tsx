@@ -84,7 +84,7 @@ export default function BlockForm({
     const _id = prayerBlock.id;
     if (!_id) return;
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ text })]);
-  }, 250);
+  }, 1000);
 
   const handleSpaceAboveChange = (spaceAbove: boolean) => {
     const _id = prayerBlock.id;
@@ -96,7 +96,7 @@ export default function BlockForm({
     const _id = prayerBlock.id;
     if (!_id) return;
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ reference })]);
-  }, 250);
+  }, 1000);
 
   const deleteBlock = () => {
     removeBlock(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);

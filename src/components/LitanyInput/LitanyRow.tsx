@@ -17,7 +17,7 @@ export default function LitanyRow({ row }: _props) {
       if (!litanyBlockId) return;
       db.transact([db.tx[LITANYBLOCKS][litanyBlockId].update({ ...data })]);
     },
-    500
+    1000
   );
 
   const { id: litanyBlockId, call, response, superscript, inline } = row;

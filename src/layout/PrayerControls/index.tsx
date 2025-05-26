@@ -45,7 +45,7 @@ export default function PrayerControls({ prayer }: _props) {
     const _id = prayer.id;
     if (!_id) return;
     db.transact([db.tx[PRAYERS][_id].update({ name })]);
-  }, 500);
+  }, 1000);
 
   const handleIsPublishedChange = async (published: boolean) => {
     if (!prayer) return;

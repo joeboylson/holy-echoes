@@ -6,11 +6,9 @@ import { HEADER_HEIGHT } from "@/constants/layout";
 import { useState } from "react";
 import CategoriesList from "@/layout/CategoryList";
 import { Button } from "@/components/ui/button";
-import ImageV2 from "@/_dev/image_v2";
 
 export enum ConfigOptions {
   CATEGORIES = "Categories",
-  IMAGE_V2 = "Image V2",
 }
 
 const StyledConfiguration = styled.div`
@@ -53,8 +51,6 @@ export default function Configuration() {
               <CategoriesList />
             </div>
           )}
-
-          {configOption === ConfigOptions.IMAGE_V2 && <ImageV2 />}
         </div>
       </StyledConfiguration>
     </AuthenticatedWrapper>

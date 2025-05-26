@@ -72,18 +72,18 @@ export const Quote = styled.div`
   }
 `;
 
-export const BlockImage = styled.img`
+export const BlockImage = styled.div`
   ${BaseBlockCSS}
   width: 100%;
 `;
 
-export const BlockImageSmall = styled.img`
+export const BlockImageSmall = styled.div`
   ${BaseBlockCSS}
   width: calc(100% * 0.68);
   margin: 0 auto;
 `;
 
-export const BlockImageIcon = styled.img`
+export const BlockImageIcon = styled.div`
   ${BaseBlockCSS}
   width: 36px;
   margin: 0 auto;

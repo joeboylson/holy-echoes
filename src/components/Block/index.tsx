@@ -14,6 +14,7 @@ import {
   Reference,
 } from "./StyledComponents";
 import TwoColumnBlock from "./TwoColumnBlock";
+import AsyncImage from "../AsyncImage";
 
 const {
   BODY,
@@ -69,14 +70,26 @@ export default function Block({ prayerBlock }: _props) {
     );
   }
 
-  if (blockTypeName === IMAGE)
-    return <BlockImage src={src} alt="" {...propsNoContent} />;
+  if (blockTypeName === IMAGE && src)
+    return (
+      <BlockImage {...propsNoContent}>
+        <AsyncImage src={src} alt="" />
+      </BlockImage>
+    );
 
-  if (blockTypeName === SMALL_IMAGE)
-    return <BlockImageSmall src={src} alt="" {...propsNoContent} />;
+  if (blockTypeName === SMALL_IMAGE && src)
+    return (
+      <BlockImageSmall {...propsNoContent}>
+        <AsyncImage src={src} alt="" />
+      </BlockImageSmall>
+    );
 
-  if (blockTypeName === ICON)
-    return <BlockImageIcon src={src} alt="" {...propsNoContent} />;
+  if (blockTypeName === ICON && src)
+    return (
+      <BlockImageIcon {...propsNoContent}>
+        <AsyncImage src={src} alt="" />
+      </BlockImageIcon>
+    );
 
   if (blockTypeName === LITANY)
     return <LitanyBlock prayerBlock={prayerBlock} {...propsNoContent} />;

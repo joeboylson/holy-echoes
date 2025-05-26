@@ -5,25 +5,40 @@ export const BlockInputCurrentImageWrapper = styled.div<{
   blocktype?: BlockTypes;
 }>`
   display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: 12px;
+  place-items: center;
+  background-color: white;
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  img {
+    max-width: 200px;
+    padding: 24px;
+  }
+
+  button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
 
   ${(props) =>
     props.blocktype === BlockTypes.ICON &&
     `
     img {
-      width: 36px;
+      width: 84px;
     }  
-  `}
+  `};
 `;
 
 export const BlockInputImage = styled.input`
   border: 0;
   outline: none;
+  padding: 12px;
+  height: fit-content;
 
   &::file-selector-button {
-    width: calc(100% - 36px);
-    height: 32px;
+    width: 100%;
     border: 1px solid #888;
     border-radius: 8px;
     outline: none;

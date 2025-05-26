@@ -65,7 +65,7 @@ export default function PrayerListItem({ prayer }: _props) {
 
   const prayerName = useMemo(
     () => (isEmpty(prayer.name) ? "No Name" : prayer.name),
-    []
+    [prayer]
   );
 
   return (
