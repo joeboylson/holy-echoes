@@ -8,7 +8,7 @@ export default function usePrayer(prayerId?: string, skip?: boolean) {
     prayerId && !skip
       ? {
           [PRAYERS]: {
-            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
+            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {}, file: {} },
             $: {
               where: {
                 id: prayerId,

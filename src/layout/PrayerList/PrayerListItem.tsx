@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Prayer } from "../../database";
 import { Link, useParams } from "react-router-dom";
 import { Pages } from "../App/router";
-import { compact } from "lodash";
+import { compact, isEmpty } from "lodash";
 import { useMemo } from "react";
 
 const StyledPrayerListItem = styled.div`
@@ -63,9 +63,14 @@ export default function PrayerListItem({ prayer }: _props) {
     " "
   );
 
+  const prayerName = useMemo(
+    () => (isEmpty(prayer.name) ? "No Name" : prayer.name),
+    []
+  );
+
   return (
     <StyledPrayerListItem className={className}>
-      <Link to={to}>{prayer.name ?? "No Name"}</Link>
+      <Link to={to}>{prayerName}</Link>
       {!prayer.published && <UnpublishedTag>Not Published</UnpublishedTag>}
     </StyledPrayerListItem>
   );

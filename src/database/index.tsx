@@ -1,4 +1,4 @@
-import { init, i, CardinalityKind } from "@instantdb/react";
+import { init, i, CardinalityKind, InstaQLEntity } from "@instantdb/react";
 
 const appId = import.meta.env.VITE_INSTANT_APP_ID ?? "";
 
@@ -7,6 +7,7 @@ const initGraph = i.graph as any;
 
 export enum TableNames {
   $USERS = "$users",
+  $FILES = "$files",
   ADMIN = "admin",
   PRAYERS = "prayers",
   PRAYERBLOCKS = "prayerBlocks",
@@ -76,9 +77,27 @@ type User = {
   email?: string;
 };
 
+export type InstantFile = {
+  id: string;
+  path: string;
+  "location-id": string;
+  size: number;
+  "content-type": string;
+  "content-disposition": string;
+  "key-version": number;
+  url: string;
+};
+
 export type Admin = {
   id?: string;
   $user?: User;
+};
+
+export const filesTable = {
+  [TableNames.$FILES]: i.entity({
+    path: i.string().unique().indexed(),
+    url: i.string(),
+  }),
 };
 
 export const adminTable = {
@@ -107,17 +126,16 @@ export type PrayerBlock = {
   text?: string;
   order?: number;
   blockType?: BlockType;
-  imageUrl?: string;
   reference?: string;
   litanyBlocks?: LitanyBlock[];
   spaceAbove?: boolean;
+  file?: InstantFile;
 };
 
 export const prayerBlocksTable = {
   [TableNames.PRAYERBLOCKS]: i.entity({
     text: i.string(),
     order: i.number(),
-    imageUrl: i.string(),
     reference: i.string(),
     spaceAbove: i.boolean(),
   }),
@@ -192,6 +210,7 @@ export const prayerBlocksRelations = {
     TableNames.PRAYERS,
     "prayer"
   ),
+  hasOneImage: oneToMany(TableNames.PRAYERBLOCKS, TableNames.$FILES, "file"),
 };
 
 export const litanyBlocksRelations = {
@@ -202,8 +221,9 @@ export const litanyBlocksRelations = {
   ),
 };
 
-const schema = initGraph(
+const _schema = initGraph(
   {
+    ...filesTable,
     ...adminTable,
     ...prayersTable,
     ...prayerBlocksTable,
@@ -219,5 +239,8 @@ const schema = initGraph(
   }
 );
 
+export type _AppSchema = typeof _schema;
+interface AppSchema extends _AppSchema {}
+const schema: AppSchema = _schema;
 export const db = init({ appId, schema, devtool: false });
 export type DB = typeof db;

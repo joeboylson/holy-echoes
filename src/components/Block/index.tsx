@@ -39,7 +39,7 @@ interface _props {
 export default function Block({ prayerBlock }: _props) {
   const blockTypeName = prayerBlock.blockType?.name;
   const text = prayerBlock.text ?? "";
-  const imageUrl = prayerBlock.imageUrl;
+  const src = prayerBlock?.file?.url;
   const reference = prayerBlock.reference ?? "";
 
   const propsNoContent = {
@@ -70,13 +70,13 @@ export default function Block({ prayerBlock }: _props) {
   }
 
   if (blockTypeName === IMAGE)
-    return <BlockImage src={imageUrl} alt="" {...propsNoContent} />;
+    return <BlockImage src={src} alt="" {...propsNoContent} />;
 
   if (blockTypeName === SMALL_IMAGE)
-    return <BlockImageSmall src={imageUrl} alt="" {...propsNoContent} />;
+    return <BlockImageSmall src={src} alt="" {...propsNoContent} />;
 
   if (blockTypeName === ICON)
-    return <BlockImageIcon src={imageUrl} alt="" {...propsNoContent} />;
+    return <BlockImageIcon src={src} alt="" {...propsNoContent} />;
 
   if (blockTypeName === LITANY)
     return <LitanyBlock prayerBlock={prayerBlock} {...propsNoContent} />;

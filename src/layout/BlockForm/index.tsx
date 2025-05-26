@@ -1,5 +1,5 @@
 import LitanyInput from "../../components/LitanyInput";
-import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,14 +23,13 @@ import {
   BlockContent,
   BlockContentValues,
   BlockControls,
-  BlockInputCurrentImageWrapper,
-  BlockInputImage,
   MarkdownEditor,
   SpaceAboveWrapper,
   StyledBlockForm,
 } from "./StyledComponents";
 import { Switch } from "@/components/ui/switch";
 import TwoColumnInput from "@/components/TwoColumnInput";
+import ImageBlockForm from "../ImageBlockForm";
 
 const { PRAYERBLOCKS } = TableNames;
 
@@ -64,7 +63,6 @@ export default function BlockForm({
     prayerBlock.blockType?.name
   );
 
-  const imageUrl = useMemo(() => prayerBlock.imageUrl, [prayerBlock]);
   const text = useMemo(() => prayerBlock.text ?? "", [prayerBlock]);
   const reference = useMemo(() => prayerBlock.reference ?? "", [prayerBlock]);
 
@@ -99,35 +97,6 @@ export default function BlockForm({
     if (!_id) return;
     db.transact([db.tx[PRAYERBLOCKS][_id].update({ reference })]);
   }, 250);
-
-  const handleUploadImage = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      if (!event.target.files) return;
-
-      const _id = prayerBlock.id;
-      if (!_id) return;
-
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        if (!event.target) return;
-
-        const imageUrl = event.target.result?.toString();
-        if (!imageUrl)
-          return alert("Something went wrong uploading that image");
-
-        db.transact([db.tx[PRAYERBLOCKS][_id].update({ imageUrl })]);
-      };
-    },
-    [prayerBlock]
-  );
-
-  const handleClearImage = useCallback(() => {
-    const _id = prayerBlock.id;
-    if (!_id) return;
-    db.transact([db.tx[PRAYERBLOCKS][_id].update({ imageUrl: null })]);
-  }, [prayerBlock]);
 
   const deleteBlock = () => {
     removeBlock(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
@@ -183,20 +152,7 @@ export default function BlockForm({
               )}
 
               {[IMAGE, SMALL_IMAGE, ICON].includes(blockTypeName) && (
-                <>
-                  {imageUrl ? (
-                    <BlockInputCurrentImageWrapper blockType={blockTypeName}>
-                      <img src={imageUrl} alt="" />
-                      <button onClick={handleClearImage}>Clear Image</button>
-                    </BlockInputCurrentImageWrapper>
-                  ) : (
-                    <BlockInputImage
-                      type="file"
-                      accept="image/*"
-                      onChange={handleUploadImage}
-                    />
-                  )}
-                </>
+                <ImageBlockForm prayerBlock={prayerBlock} />
               )}
 
               {[BODY, BODY_CENTERED].includes(blockTypeName) && (

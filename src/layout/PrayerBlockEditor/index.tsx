@@ -18,7 +18,7 @@ export default function PrayerBlockEditor() {
       ? {
           [PRAYERS]: {
             category: {},
-            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
+            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {}, file: {} },
             $: { where: { id: prayerId } },
           },
         }
