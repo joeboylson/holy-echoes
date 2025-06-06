@@ -42,17 +42,16 @@ export default function PrayerList({
   );
 
   const filter = useMemo(() => {
-    if (!filterUnpublished) return {};
-
-    // eslint-disable-next-line
     const _filter: { [key: string]: any } = {
       where: {
-        published: true,
+        published: filterUnpublished == false ? undefined : true,
       },
     };
 
     if (filterByCategory) {
-      _filter.where["category.id"] = filterByCategory.id;
+      _filter.where["categories.id"] = {
+        $in: [filterByCategory?.id],
+      };
     }
 
     return _filter;
@@ -67,11 +66,12 @@ export default function PrayerList({
   const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
 
   const orderedPrayers = orderBy(prayers, "order");
-  if (isLoading) return <span />;
 
   const handleOnReorder = async (items: Reorderable[]) => {
     await reorderReorderable(items, PRAYERS);
   };
+
+  if (isLoading) return <span />;
 
   return (
     <StyledPrayerList>
