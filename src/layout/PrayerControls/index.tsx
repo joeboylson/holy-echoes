@@ -10,7 +10,7 @@ import {
 } from "./StyledComponents";
 import { cascadeDeletePrayer } from "../../utils";
 import DeleteButton from "../../components/DeleteButton";
-import { debounce } from "lodash";
+import { compact, debounce } from "lodash";
 import { Switch } from "@/components/ui/switch";
 import { SelectWithCreate } from "@/components/SelectWithCreate";
 import { useState } from "react";
@@ -25,9 +25,13 @@ interface _props {
 export default function PrayerControls({ prayer }: _props) {
   const navigate = useNavigate();
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<
-    string | undefined
-  >(prayer?.category?.id);
+  const defaultSelectedCategoryIds = compact(
+    prayer?.categories?.map((i) => i.id)
+  );
+
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(
+    defaultSelectedCategoryIds ?? []
+  );
 
   const { categoriesAsOptions, categoriesLoading, addNewCategory } =
     useCategories();
@@ -80,22 +84,36 @@ export default function PrayerControls({ prayer }: _props) {
     cascadeDeletePrayer(prayer);
   }
 
-  async function updatePrayerCategory(categoryId: string) {
+  async function addPrayerCategory(categoryId: string) {
     if (!prayer) return;
     const _id = prayer.id;
     if (!_id) return;
     setIsSaving(true);
     await db
-      .transact([db.tx[PRAYERS][_id].link({ category: categoryId })])
+      .transact([db.tx[PRAYERS][_id].link({ categories: [categoryId] })])
       .finally(() => {
         setIsSaving(false);
-        setSelectedCategoryId(categoryId);
+        setSelectedCategoryIds([...selectedCategoryIds, categoryId]);
+      });
+  }
+
+  async function removePrayerCategory(categoryId: string) {
+    if (!prayer) return;
+    const _id = prayer.id;
+    if (!_id) return;
+    setIsSaving(true);
+    await db
+      .transact([db.tx[PRAYERS][_id].unlink({ categories: [categoryId] })])
+      .finally(() => {
+        const _filtered = selectedCategoryIds.filter((i) => i !== categoryId);
+        setSelectedCategoryIds(_filtered);
+        setIsSaving(false);
       });
   }
 
   async function handleAddNewCategory(name: string) {
     const newCategory = await addNewCategory(name);
-    if (newCategory.id) updatePrayerCategory(newCategory.id);
+    if (newCategory.id) addPrayerCategory(newCategory.id);
   }
 
   if (isLoading) return <span />;
@@ -116,18 +134,6 @@ export default function PrayerControls({ prayer }: _props) {
           </ControlRow>
 
           <ControlRow>
-            <p>Category:</p>
-            <SelectWithCreate
-              placeholder={"Select a category"}
-              onChange={updatePrayerCategory}
-              onCreate={handleAddNewCategory}
-              options={categoriesAsOptions}
-              disabled={categoriesLoading}
-              value={selectedCategoryId}
-            />
-          </ControlRow>
-
-          <ControlRow>
             <p>{prayer.published ? "Published:" : "Not Published:"}</p>
             <Switch
               checked={prayer.published}
@@ -139,6 +145,21 @@ export default function PrayerControls({ prayer }: _props) {
           <ControlRow>
             <p>Delete Prayer:</p>
             <DeleteButton onClick={deletePrayer} itemName="Prayer" />
+          </ControlRow>
+
+          <hr />
+
+          <ControlRow>
+            <p>Categories:</p>
+            <SelectWithCreate
+              placeholder={"+ Add a category"}
+              onSelect={addPrayerCategory}
+              onDeselect={removePrayerCategory}
+              onCreate={handleAddNewCategory}
+              options={categoriesAsOptions}
+              disabled={categoriesLoading || isSaving}
+              values={selectedCategoryIds}
+            />
           </ControlRow>
         </ControlRowWrapper>
       )}
