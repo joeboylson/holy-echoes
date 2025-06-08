@@ -1,0 +1,29 @@
+# codemagic.yaml
+workflows:
+  capacitor-build:
+    name: Build Capacitor Android app
+    instance_type: mac_mini_m1
+    environment:
+      vars:
+        PACKAGE_NAME: "com.example.app" # adjust to your bundle ID
+      node: latest
+      java: 17
+      xcode: latest
+    triggering:
+      events:
+        - push
+    scripts:
+      # Install dependencies
+      - npm install
+      # (optional) build your web app
+      - npm run build
+      # Sync with Capacitor
+      - npx cap sync
+      # Update native projects
+      - npx cap copy
+      - cd android
+      # Build Android APK / AAB
+      - ./gradlew assembleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+      - android/app/build/outputs/**/*.aab
