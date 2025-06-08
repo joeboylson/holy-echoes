@@ -1,11 +1,11 @@
 workflows:
   capacitor-app:
-    name: Build Capacitor App for Android & iOS
+    name: Holy Echoes Codemagic YAML
     max_build_duration: 60
     environment:
       vars:
         PACKAGE_NAME: "com.holyechoes.app"
-        XCODE_WORKSPACE: "ios/App.xcworkspace"
+        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
       ios_signing:
         distribution_type: app_store
@@ -21,8 +21,7 @@ workflows:
     scripts:
       - name: Install global and project dependencies
         script: |
-          npm install -g @ionic/cli
-          npm ci
+          npm install
       - name: Build web assets
         script: ionic build
       - name: Sync web assets with native platforms
@@ -31,7 +30,7 @@ workflows:
           npx cap copy
       - name: Install CocoaPods
         script: |
-          cd ios
+          cd ios/App
           pod install
       - name: Build Android APK & AAB
         script: |
