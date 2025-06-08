@@ -1,29 +1,59 @@
-# codemagic.yaml
 workflows:
-  capacitor-build:
-    name: Build Capacitor Android app
-    instance_type: mac_mini_m1
+  capacitor-app:
+    name: Build Capacitor App for Android & iOS
+    max_build_duration: 60
     environment:
+      ios_signing:
+        distribution_type: app_store # or ad_hoc / development
+      android_signing:
+        - keystore_reference_name: MY_KEYSTORE
       vars:
-        PACKAGE_NAME: "com.example.app" # adjust to your bundle ID
+        PACKAGE_NAME: "com.example.app"
+        XCODE_WORKSPACE: "ios/App.xcworkspace"
+        XCODE_SCHEME: "App"
       node: latest
-      java: 17
-      xcode: latest
-    triggering:
-      events:
-        - push
+      cocoapods: default
     scripts:
-      # Install dependencies
-      - npm install
-      # (optional) build your web app
-      - npm run build
-      # Sync with Capacitor
-      - npx cap sync
-      # Update native projects
-      - npx cap copy
-      - cd android
-      # Build Android APK / AAB
-      - ./gradlew assembleRelease
+      - name: Install global and project dependencies
+        script: |
+          npm install -g @ionic/cli
+          npm ci
+      - name: Build web assets
+        script: ionic build
+      - name: Sync web assets with native platforms
+        script: |
+          npx cap sync
+          npx cap copy
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install
+      - name: Build Android APK & AAB
+        script: |
+          cd android
+          ./gradlew assembleRelease bundleRelease
+      - name: Build iOS IPA
+        script: |
+          cd ..
+          xcodebuild -workspace ios/App.xcworkspace \
+                     -scheme App \
+                     -configuration Release \
+                     -sdk iphoneos \
+                     -archivePath $CM_BUILD_DIR/build/App.xcarchive \
+                     archive
+          xcodebuild -exportArchive \
+                     -archivePath $CM_BUILD_DIR/build/App.xcarchive \
+                     -exportOptionsPlist ios/exportOptions.plist \
+                     -exportPath $CM_BUILD_DIR/build/ios
     artifacts:
       - android/app/build/outputs/**/*.apk
       - android/app/build/outputs/**/*.aab
+      - build/ios/*.ipa
+      - $CM_BUILD_DIR/build/ios/**/*.ipa
+    publishing:
+      email:
+        recipients:
+          - your@email.com
+        notify:
+          success: true
+          failure: true
