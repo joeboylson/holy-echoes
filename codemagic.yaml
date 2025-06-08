@@ -3,14 +3,15 @@ workflows:
     name: Build Capacitor App for Android & iOS
     max_build_duration: 60
     environment:
-      ios_signing:
-        distribution_type: app_store # or ad_hoc / development
-      android_signing:
-        - keystore_reference_name: placelift-upload
       vars:
         PACKAGE_NAME: "com.holyechoes.app"
         XCODE_WORKSPACE: "ios/App.xcworkspace"
         XCODE_SCHEME: "App"
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: $PACKAGE_NAME
+      android_signing:
+        - keystore_reference_name: placelift-upload
       node: latest
       cocoapods: default
     scripts:
