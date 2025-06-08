@@ -22,8 +22,6 @@ workflows:
       - name: Install global and project dependencies
         script: |
           npm install
-      - name: Build web assets
-        script: ionic build
       - name: Sync web assets with native platforms
         script: |
           npx cap sync
