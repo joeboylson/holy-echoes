@@ -11,10 +11,11 @@ workflows:
         distribution_type: app_store
         bundle_identifier: $PACKAGE_NAME
       android_signing:
-        - keystore: $CM_KEYSTORE
-          keystore_password: $CM_KEYSTORE_PASSWORD
-          key_alias: $CM_KEY_ALIAS
-          key_password: $CM_KEY_PASSWORD
+        - keystore: placelift-upload
+          keystore_environment_variable: CM_KEYSTORE_PATH
+          keystore_password_environment_variable: CM_KEYSTORE_PASSWORD
+          key_alias_environment_variable: CM_KEY_ALIAS
+          key_password_environment_variable: CM_KEY_PASSWORD
       node: latest
       cocoapods: default
     scripts:
