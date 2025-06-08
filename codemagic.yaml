@@ -6,9 +6,9 @@ workflows:
       ios_signing:
         distribution_type: app_store # or ad_hoc / development
       android_signing:
-        - keystore_reference_name: MY_KEYSTORE
+        - keystore_reference_name: placelift-upload
       vars:
-        PACKAGE_NAME: "com.example.app"
+        PACKAGE_NAME: "com.holyechoes.app"
         XCODE_WORKSPACE: "ios/App.xcworkspace"
         XCODE_SCHEME: "App"
       node: latest
@@ -53,7 +53,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - your@email.com
+          - joeboylson@gmail.com
         notify:
           success: true
           failure: true
