@@ -39,16 +39,17 @@ workflows:
         script: |
           cd ios/App
           xcodebuild -workspace App.xcworkspace \
-                     -scheme App \
-                     -configuration Release \
-                     -sdk iphoneos \
-                     -archivePath $CM_BUILD_DIR/build/App.xcarchive \
-                     DEVELOPMENT_TEAM=T7T5D9A3KT CODE_SIGN_STYLE=Automatic \
-                     archive
+                    -scheme App \
+                    -configuration Release \
+                    -sdk iphoneos \
+                    -archivePath $CM_BUILD_OUTPUT_DIR/App.xcarchive \
+                    DEVELOPMENT_TEAM=T7T5D9A3KT CODE_SIGN_STYLE=Automatic \
+                    archive
+
           xcodebuild -exportArchive \
-                     -archivePath $CM_BUILD_DIR/build/App.xcarchive \
-                     -exportOptionsPlist exportOptions.plist \
-                     -exportPath $CM_BUILD_DIR/build
+                    -archivePath $CM_BUILD_OUTPUT_DIR/App.xcarchive \
+                    -exportOptionsPlist exportOptions.plist \
+                    -exportPath $CM_BUILD_OUTPUT_DIR
     artifacts:
       - android/app/build/outputs/**/*.apk
       - android/app/build/outputs/**/*.aab
