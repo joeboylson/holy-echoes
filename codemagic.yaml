@@ -37,8 +37,8 @@ workflows:
           ./gradlew assembleRelease bundleRelease
       - name: Build iOS IPA
         script: |
-          cd ..
-          xcodebuild -workspace ios/App/App.xcworkspace \
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace \
                      -scheme App \
                      -configuration Release \
                      -sdk iphoneos \
@@ -46,7 +46,7 @@ workflows:
                      archive
           xcodebuild -exportArchive \
                      -archivePath $CM_BUILD_DIR/build/App.xcarchive \
-                     -exportOptionsPlist ios/App/exportOptions.plist \
+                     -exportOptionsPlist exportOptions.plist \
                      -exportPath $CM_BUILD_DIR/build/ios
     artifacts:
       - android/app/build/outputs/**/*.apk
