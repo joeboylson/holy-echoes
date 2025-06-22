@@ -46,7 +46,7 @@ workflows:
                      archive
           xcodebuild -exportArchive \
                      -archivePath $CM_BUILD_DIR/build/App.xcarchive \
-                     -exportOptionsPlist ios/exportOptions.plist \
+                     -exportOptionsPlist ios/App/exportOptions.plist \
                      -exportPath $CM_BUILD_DIR/build/ios
     artifacts:
       - android/app/build/outputs/**/*.apk
