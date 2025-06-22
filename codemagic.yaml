@@ -22,10 +22,10 @@ workflows:
       - name: Install global and project dependencies
         script: |
           npm install
+          npm run build
       - name: Sync web assets with native platforms
         script: |
           npx cap sync
-          npx cap copy
       - name: Install CocoaPods
         script: |
           cd ios/App
