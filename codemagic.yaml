@@ -5,12 +5,12 @@ workflows:
     environment:
       java: 21
       vars:
-        PACKAGE_NAME: "com.holyechoes.app"
-        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
-        XCODE_SCHEME: "App"
+        PACKAGE_NAME: com.holyechoes.app
+        XCODE_WORKSPACE: ios/App/App.xcworkspace
+        XCODE_SCHEME: App
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: $PACKAGE_NAME
+        bundle_identifier: com.holyechoes.app
       android_signing:
         - keystore: placelift-upload
           keystore_environment_variable: CM_KEYSTORE_PATH
