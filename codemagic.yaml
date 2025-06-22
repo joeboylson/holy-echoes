@@ -48,12 +48,12 @@ workflows:
           xcodebuild -exportArchive \
                      -archivePath $CM_BUILD_DIR/build/App.xcarchive \
                      -exportOptionsPlist exportOptions.plist \
-                     -exportPath $CM_BUILD_DIR/build/ios
+                     -exportPath $CM_BUILD_DIR/build
     artifacts:
       - android/app/build/outputs/**/*.apk
       - android/app/build/outputs/**/*.aab
-      - build/ios/*.ipa
-      - $CM_BUILD_DIR/build/ios/**/*.ipa
+      - build/*.ipa
+      - $CM_BUILD_DIR/build/**/*.ipa
     publishing:
       email:
         recipients:
