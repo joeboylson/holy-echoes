@@ -3,6 +3,7 @@ workflows:
     name: Holy Echoes Codemagic YAML
     max_build_duration: 60
     environment:
+      java: 21
       vars:
         PACKAGE_NAME: "com.holyechoes.app"
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
