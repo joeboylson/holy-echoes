@@ -44,7 +44,7 @@ workflows:
                     -sdk iphoneos \
                     -archivePath $CM_BUILD_OUTPUT_DIR/App.xcarchive \
                     DEVELOPMENT_TEAM=T7T5D9A3KT CODE_SIGN_STYLE=Automatic \
-                    -allowProvisioningUpdates
+                    -allowProvisioningUpdates \
                     archive
 
           xcodebuild -exportArchive \
