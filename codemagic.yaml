@@ -8,7 +8,7 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: io.codemagic.ionicsample
+        bundle_identifier: com.holyechoes.app
       vars:
         # Ionic Xcode worskspace and scheme
         XCODE_WORKSPACE: "App.xcworkspace"
