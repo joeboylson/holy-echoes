@@ -43,7 +43,10 @@ workflows:
                     -configuration Release \
                     -sdk iphoneos \
                     -archivePath $CM_BUILD_OUTPUT_DIR/App.xcarchive \
-                    DEVELOPMENT_TEAM=T7T5D9A3KT CODE_SIGN_STYLE=Automatic \
+                    DEVELOPMENT_TEAM=T7T5D9A3KT \
+                    CODE_SIGN_STYLE=Manual \
+                    CODE_SIGN_IDENTITY="codemagic-asc-certificate-distribution"
+                    PROVISIONING_PROFILE_SPECIFIER="codemagic-asc-provisioning-profile"
                     -allowProvisioningUpdates \
                     archive
 
