@@ -89,7 +89,7 @@ workflows:
         PACKAGE_NAME: "com.holyechoes.app"
         GOOGLE_PLAY_TRACK: alpha
       node: latest
-      java: 20
+      java: 21
     scripts:
       - name: Set Android SDK location
         script: |
