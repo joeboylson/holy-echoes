@@ -84,9 +84,9 @@ workflows:
       android_signing:
         - placelift-upload
       groups:
-        - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS <-- Put CONTENTS of your Gloud crendentials file here)
+        - Holy Echoes # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS <-- Put CONTENTS of your Gloud crendentials file here)
       vars:
-        PACKAGE_NAME: "io.codemagic.ionicsample"
+        PACKAGE_NAME: "com.holyechoes.app"
         GOOGLE_PLAY_TRACK: alpha
       node: latest
     scripts:
