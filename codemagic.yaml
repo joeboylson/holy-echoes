@@ -69,8 +69,6 @@ workflows:
         # Configuration related to TestFlight (optional)
         # Note: This action is performed during post-processing.
         submit_to_testflight: true
-        beta_groups: # Specify the names of beta tester groups that will get access to the build once it has passed beta review.
-          - holyechoes_beta_testers_external
 
         # Configuration related to App Store (optional)
         # Note: This action is performed during post-processing.
@@ -87,7 +85,7 @@ workflows:
         - Holy Echoes # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS <-- Put CONTENTS of your Gloud crendentials file here)
       vars:
         PACKAGE_NAME: "com.holyechoes.app"
-        GOOGLE_PLAY_TRACK: alpha
+        GOOGLE_PLAY_TRACK: internal
       node: latest
       java: 21
     scripts:
