@@ -5,7 +5,7 @@ export const PRAYER_HEADER_HEIGHT = 36 + 16;
 
 export const StyledPrayer = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: var(--window-height);
   display: grid;
   grid-template-columns: 1fr;
   margin: 0 auto;

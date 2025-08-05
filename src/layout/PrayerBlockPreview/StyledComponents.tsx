@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { PRAYER_HEADER_HEIGHT } from "@/pages/Prayer/StyledComponents";
 
 export const StyledPrayerBlockPreview = styled.div`
-  height: calc(100vh - ${PRAYER_HEADER_HEIGHT}px);
+  height: calc(var(--header-height) - ${PRAYER_HEADER_HEIGHT}px);
   max-width: 600px;
   margin: auto;
   overflow-y: scroll;

@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 
 export const StyledLogin = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: var(--header-height);
   display: grid;
   place-items: center;
 `;
@@ -67,7 +67,7 @@ export default function Login() {
   };
 
   return (
-    <div className="grid w-[100vw] h-[100vh] place-items-center">
+    <div className="grid w-[100vw] h-[var(--header-height)] place-items-center">
       <Card className="bg-neutral-100">
         <div className="w-[500px] h-[200px] grid gap-[24px] content-start px-[24px]">
           <h1 className="text-4xl text-center">Login</h1>

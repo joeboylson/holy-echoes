@@ -12,7 +12,7 @@ import { HEADER_HEIGHT } from "@/constants/layout";
 const StyledAdmin = styled.div`
   padding: 24px;
   width: 100vw;
-  height: calc(100vh - ${HEADER_HEIGHT}px);
+  height: calc(var(--header-height) - ${HEADER_HEIGHT}px);
   display: grid;
   gap: 12px;
   overflow: hidden;
@@ -39,7 +39,7 @@ const PrayerListWrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 12px;
   align-content: start;
-  height: calc(100vh - 48px - 24px;);
+  height: calc(var(--header-height) - 48px - 24px;);
   overflow-y: auto;
 
   &.hide-prayer-list {

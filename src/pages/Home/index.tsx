@@ -8,7 +8,7 @@ import clsx from "clsx";
 
 const StyledHome = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: var(--window-height);
   display: grid;
   grid-template-columns: 1fr;
   padding: 24px;

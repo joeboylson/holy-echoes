@@ -14,7 +14,7 @@ export enum ConfigOptions {
 const StyledConfiguration = styled.div`
   padding: 24px;
   width: 100vw;
-  height: calc(100vh - ${HEADER_HEIGHT}px);
+  height: calc(var(--header-height) - ${HEADER_HEIGHT}px);
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 24px;

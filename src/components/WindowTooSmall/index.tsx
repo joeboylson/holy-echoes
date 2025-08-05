@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledWindowTooSmall = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: var(--header-height);
   display: grid;
   place-items: center;
 
