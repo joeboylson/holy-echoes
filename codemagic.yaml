@@ -1,6 +1,6 @@
 workflows:
   ionic-capacitor-ios-workflow:
-    name: Holy Echoes App IOS
+    name: "[iOS] com.holyechoes.app"
     max_build_duration: 120
     instance_type: mac_mini_m2
     integrations:
@@ -77,7 +77,7 @@ workflows:
         submit_to_app_store: false
 
   ionic-capacitor-android-workflow:
-    name: Ionic Capacitor Android Workflow
+    name: "[Android] com.holyechoes.app"
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
@@ -112,6 +112,7 @@ workflows:
             -PversionName=1.0.$BUILD_NUMBER
     artifacts:
       - android/app/build/outputs/**/*.apk
+      - android/app/build/outputs/**/*.aab
     publishing:
       email:
         recipients:
