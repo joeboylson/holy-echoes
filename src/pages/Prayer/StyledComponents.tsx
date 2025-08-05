@@ -11,7 +11,7 @@ export const StyledPrayer = styled.div`
   margin: 0 auto;
   align-content: start;
   justify-items: left;
-  overflow-y: hidden;
+  overflow-y: scroll;
 `;
 
 export const PrayerHeader = styled.div`
