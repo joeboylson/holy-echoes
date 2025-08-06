@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">holy-echoes</string>
-    <string name="title_activity_main">holy-echoes</string>
+    <string name="app_name">Holy Echoes</string>
+    <string name="title_activity_main">Holy Echoes</string>
     <string name="package_name">com.holyechoes.app</string>
     <string name="custom_url_scheme">com.holyechoes.app</string>
 </resources>
