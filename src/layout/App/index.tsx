@@ -1,9 +1,13 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
-import { useStatusBar } from "../../hooks/useStatusBar";
+import { StatusBarProvider } from "../../contexts/StatusBarContext";
 
 export default function App() {
-  useStatusBar();
-  
-  return <RouterProvider router={router} data-id="RouterProvider" />;
+  return (
+    <StatusBarProvider>
+      <div className="h-[100vh] overflow-y-scroll">
+        <RouterProvider router={router} data-id="RouterProvider" />
+      </div>
+    </StatusBarProvider>
+  );
 }

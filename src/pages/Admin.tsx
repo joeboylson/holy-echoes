@@ -12,7 +12,7 @@ import { HEADER_HEIGHT } from "@/constants/layout";
 const StyledAdmin = styled.div`
   padding: 24px;
   width: 100vw;
-  height: calc(var(--header-height) - ${HEADER_HEIGHT}px);
+  height: calc(100vh - ${HEADER_HEIGHT}px);
   display: grid;
   gap: 12px;
   overflow: hidden;

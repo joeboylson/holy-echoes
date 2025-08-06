@@ -74,7 +74,7 @@ export default function PrayerList({
   if (isLoading) return <span />;
 
   return (
-    <StyledPrayerList>
+    <StyledPrayerList className="pb-[20vh]">
       <PrayerListItemsWrapper>
         <ReorderableList
           items={orderedPrayers}

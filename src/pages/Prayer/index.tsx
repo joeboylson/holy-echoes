@@ -9,10 +9,17 @@ import {
   PrayerHeader,
   StyledPrayer,
 } from "./StyledComponents";
+import { useEffect } from "react";
+import { useStatusBar } from "@/contexts/StatusBarContext";
 
 export default function Prayer() {
   const { prayerId } = useParams();
   const { prayer, prevNextPrayers, prayerLoading } = usePrayer(prayerId);
+
+  const { setStatusBarColor } = useStatusBar();
+  useEffect(() => {
+    setStatusBarColor("#0082cb");
+  }, []);
 
   const prevPrayer = prevNextPrayers.find(
     (p) => (p?.order ?? 0) < (prayer?.order ?? 0)
