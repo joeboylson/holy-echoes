@@ -42,6 +42,7 @@ export default function Prayer() {
         <NavigationHeader 
           onPrevious={handlePrevious} 
           onNext={handleNext} 
+          backTo={categoryId ? `/category/${categoryId}` : "/home"}
         />
 
         {prayerId && (

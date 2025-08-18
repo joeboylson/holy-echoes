@@ -30,7 +30,8 @@ export default function PrayerBlockPreview({
   const { prayer: queryPrayer, prayerLoading } = usePrayer(
     prayerId,
     undefined,
-    !!existingPrayer
+    !!existingPrayer,
+    true // skipNextPrevious - admin doesn't need navigation
   );
   const prayer = existingPrayer ?? queryPrayer;
 

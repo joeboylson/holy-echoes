@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import PrayerListItem from "./PrayerListItem";
 import ReorderableList from "@/layout/ReorderableList";
-import { Category, db, Prayer, TableNames } from "@/database";
+import { Category, TableNames } from "@/database";
 import { Reorderable, reorderReorderable } from "@/utils/";
-import { orderBy } from "lodash";
 import { useMemo } from "react";
+import usePrayers from "@/hooks/usePrayers";
 
 const StyledPrayerList = styled.div`
   display: grid;
@@ -41,29 +41,10 @@ export default function PrayerList({
     []
   );
 
-  const filter = useMemo(() => {
-    const _filter: { [key: string]: any } = {
-      where: {
-        published: filterUnpublished == false ? undefined : true,
-      },
-    };
-
-    if (filterByCategory?.id) {
-      _filter.where["categories.id"] = filterByCategory.id;
-    }
-
-    return _filter;
-  }, [filterUnpublished, filterByCategory]);
-
-  const { data, isLoading } = db.useQuery({
-    [PRAYERS]: {
-      $: filter,
-    },
+  const { prayers: orderedPrayers, isLoading } = usePrayers({
+    filterUnpublished,
+    filterByCategory,
   });
-
-  const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
-
-  const orderedPrayers = orderBy(prayers, "order");
 
   const handleOnReorder = async (items: Reorderable[]) => {
     await reorderReorderable(items, PRAYERS);

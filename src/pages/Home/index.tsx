@@ -21,7 +21,7 @@ export default function Home() {
         </div>
 
         <div className="px-6 w-full max-w-[600px] mx-auto">
-          <div className="py-6 border-b grid gap-[24px]">
+          <div className="py-6 grid gap-[24px]">
             <h1 className="text-2xl font-bold text-center mb-6">
               Prayer Categories
             </h1>

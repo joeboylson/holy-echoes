@@ -1,12 +1,14 @@
 import { db, Prayer, TableNames } from "../database";
 import { first } from "lodash";
+import usePrayers from "./usePrayers";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
 export default function usePrayer(
   prayerId?: string,
   categoryId?: string,
-  skip?: boolean
+  skip?: boolean,
+  skipNextPrevious?: boolean
 ) {
   const { data, isLoading: prayerLoading } = db.useQuery(
     prayerId && !skip
@@ -24,39 +26,27 @@ export default function usePrayer(
   );
 
   const prayer = first((data?.[PRAYERS] ?? []) as Prayer[]);
-  const prayerOrder = prayer?.order ?? -10;
 
-  const { data: prevNextPrayersData, isLoading: prevNextIsLoading } =
-    db.useQuery(
-      prayer && categoryId
-        ? {
-            [PRAYERS]: {
-              [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
-              categories: {},
-              $: {
-                where: {
-                  and: [
-                    {
-                      order: {
-                        $in: [prayerOrder + 1, prayerOrder - 1],
-                      },
-                    },
-                    {
-                      "categories.id": categoryId,
-                    },
-                  ],
-                },
-              },
-            },
-          }
-        : null
-    );
+  const { prayers: allPrayers, isLoading: allPrayersLoading } = usePrayers({
+    filterUnpublished: true,
+    filterByCategory: categoryId ? { id: categoryId } : undefined,
+    skip: skip || skipNextPrevious, // Skip if usePrayer is skipped or navigation not needed
+  });
 
-  const prevNextPrayers = (prevNextPrayersData?.[PRAYERS] ?? []) as Prayer[];
+  const currentIndex = allPrayers.findIndex((p) => p.id === prayerId);
+  const prevPrayer =
+    currentIndex > 0 ? allPrayers[currentIndex - 1] : undefined;
+  const nextPrayer =
+    currentIndex < allPrayers.length - 1
+      ? allPrayers[currentIndex + 1]
+      : undefined;
+
+  const prevNextPrayers = [prevPrayer, nextPrayer].filter(Boolean) as Prayer[];
 
   return {
     prayer,
-    prayerLoading: !skip && (prayerLoading || prevNextIsLoading),
+    prayerLoading:
+      (!skip && prayerLoading) || (!skipNextPrevious && allPrayersLoading),
     prevNextPrayers,
   };
 }

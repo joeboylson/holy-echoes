@@ -4,18 +4,20 @@ import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
 interface NavigationHeaderProps {
   onPrevious?: () => void;
   onNext?: () => void;
+  backTo: string;
 }
 
 export default function NavigationHeader({
   onPrevious,
   onNext,
+  backTo,
 }: NavigationHeaderProps) {
   const navigate = useNavigate();
 
   return (
     <div className="w-full h-[50px] mx-auto bg-[#0082cb] grid grid-cols-[90px_1fr_72px] items-center px-6 shadow-lg z-10">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate(backTo)}
         className="!flex items-center gap-2 !text-white no-underline font-medium hover:underline !bg-transparent !border-none cursor-pointer"
       >
         <ArrowLeft size={20} /> Back

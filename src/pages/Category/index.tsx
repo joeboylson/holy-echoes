@@ -5,6 +5,7 @@ import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import useCategories from "@/hooks/useCategories";
 import NavigationHeader from "@/components/NavigationHeader";
+import { Pages } from "@/layout/App/router";
 
 export default function Category() {
   const { categoryId } = useParams();
@@ -24,7 +25,7 @@ export default function Category() {
   return (
     <LoggedInUserWrapper>
       <div className="w-screen grid grid-cols-1 mx-auto overflow-y-scroll gap-3 h-full content-start">
-        <NavigationHeader />
+        <NavigationHeader backTo={Pages.HOME} />
 
         <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="py-6 border-b">
