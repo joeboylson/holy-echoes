@@ -13,7 +13,7 @@ export default function Prayer() {
 
   const { setStatusBarColor } = useStatusBar();
   useEffect(() => {
-    setStatusBarColor("#0a79b5");
+    setStatusBarColor("#0082cb");
   }, []);
 
   const prevPrayer = prevNextPrayers.find(

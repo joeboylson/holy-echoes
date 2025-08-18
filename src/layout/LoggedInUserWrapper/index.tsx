@@ -9,7 +9,9 @@ export default function LoggedInUserWrapper({ children }: WithChildren) {
         <LoggedInUserWrapperInner children={children} />
       </db.SignedIn>
       <db.SignedOut>
-        <LoggedInUserWrapperInner children={children} />
+        <UserContext.Provider value={{ user: null }}>
+          {children}
+        </UserContext.Provider>
       </db.SignedOut>
     </div>
   );
@@ -19,8 +21,6 @@ function LoggedInUserWrapperInner({ children }: WithChildren) {
   const user = db.useUser();
 
   return (
-    <UserContext.Provider value={{ user }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
   );
 }
