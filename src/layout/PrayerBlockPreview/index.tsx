@@ -29,6 +29,7 @@ export default function PrayerBlockPreview({
 
   const { prayer: queryPrayer, prayerLoading } = usePrayer(
     prayerId,
+    undefined,
     !!existingPrayer
   );
   const prayer = existingPrayer ?? queryPrayer;
@@ -47,7 +48,11 @@ export default function PrayerBlockPreview({
   if (prayerLoading) return <p>loading...</p>;
 
   return (
-    <StyledPrayerBlockPreview data-id="StyledPrayerBlockPreview" key={prayerId}>
+    <StyledPrayerBlockPreview
+      data-id="StyledPrayerBlockPreview"
+      key={prayerId}
+      className="w-full"
+    >
       <ReorderableList
         items={orderedPrayerBlocks}
         onReorder={handleOnReorder}

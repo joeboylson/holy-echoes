@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import AuthenticatedWrapper from "../layout/AuthenticatedWrapper";
+import AdminAccessWrapper from "../layout/AdminAccessWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";
 import WindowTooSmall from "../components/WindowTooSmall";
 import { HEADER_HEIGHT } from "@/constants/layout";
@@ -30,7 +30,7 @@ export default function Configuration() {
   if ((size.width ?? 0) < 1200) return <WindowTooSmall />;
 
   return (
-    <AuthenticatedWrapper data-id="AuthenticatedWrapper">
+    <AdminAccessWrapper data-id="AdminAccessWrapper">
       <StyledConfiguration data-id="StyledConfiguration">
         <div className="grid [align-content:flex-start] gap-[8px]">
           {Object.values(ConfigOptions).map((configOption) => {
@@ -53,6 +53,6 @@ export default function Configuration() {
           )}
         </div>
       </StyledConfiguration>
-    </AuthenticatedWrapper>
+    </AdminAccessWrapper>
   );
 }

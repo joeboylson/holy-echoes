@@ -2,7 +2,7 @@ import styled from "styled-components";
 import PrayerList from "../layout/PrayerList";
 import PrayerBlockEditor from "../layout/PrayerBlockEditor";
 import PrayerBlockPreview from "../layout/PrayerBlockPreview";
-import AuthenticatedWrapper from "../layout/AuthenticatedWrapper";
+import AdminAccessWrapper from "../layout/AdminAccessWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";
 import WindowTooSmall from "../components/WindowTooSmall";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
@@ -65,7 +65,7 @@ export default function Admin() {
   if ((size.width ?? 0) < 1200) return <WindowTooSmall />;
 
   return (
-    <AuthenticatedWrapper data-id="AuthenticatedWrapper">
+    <AdminAccessWrapper data-id="AdminAccessWrapper">
       <StyledAdmin className={className} data-id="StyledAdmin">
         <PrayerListWrapper className={className}>
           <TogglePrayerListButton onClick={togglePrayerList}>
@@ -79,8 +79,10 @@ export default function Admin() {
           {!hidePrayerList && <PrayerList filterUnpublished={false} />}
         </PrayerListWrapper>
         <PrayerBlockEditor />
-        <PrayerBlockPreview filterUnpublished={false} />
+        <div className="h-[calc(100vh-72px-48px)] overflow-y-auto">
+          <PrayerBlockPreview filterUnpublished={false} />
+        </div>
       </StyledAdmin>
-    </AuthenticatedWrapper>
+    </AdminAccessWrapper>
   );
 }

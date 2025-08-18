@@ -60,6 +60,12 @@ export const filesTable = {
   }),
 };
 
+export const usersTable = {
+  [TableNames.$USERS]: i.entity({
+    email: i.string().unique().indexed(),
+  }),
+};
+
 export const adminTable = {
   [TableNames.ADMIN]: i.entity({}),
 };
@@ -155,7 +161,7 @@ export const prayerRelations = {
   hasManyCategories: manyToMany(
     TableNames.PRAYERS,
     TableNames.CATEGORY,
-    "category"
+    "categories"
   ),
 };
 
@@ -183,6 +189,7 @@ export const litanyBlocksRelations = {
 
 const _schema = initGraph(
   {
+    ...usersTable,
     ...filesTable,
     ...adminTable,
     ...prayersTable,

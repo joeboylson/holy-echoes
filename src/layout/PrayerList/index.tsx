@@ -48,10 +48,8 @@ export default function PrayerList({
       },
     };
 
-    if (filterByCategory) {
-      _filter.where["categories.id"] = {
-        $in: [filterByCategory?.id],
-      };
+    if (filterByCategory?.id) {
+      _filter.where["categories.id"] = filterByCategory.id;
     }
 
     return _filter;

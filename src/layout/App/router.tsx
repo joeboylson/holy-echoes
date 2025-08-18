@@ -3,12 +3,14 @@ import Configuration from "@/pages/Configuration";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Prayer from "@/pages/Prayer";
+import Category from "@/pages/Category";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 export enum Pages {
   INDEX = "/",
   HOME = "/home",
-  SELECTED_PRAYER = "/prayer/:prayerId",
+  CATEGORY = "/category/:categoryId",
+  SELECTED_PRAYER = "/category/:categoryId/prayer/:prayerId",
   REDIRECT_ADMIN = "/admin",
   ADMIN = "/admin/prayer",
   SELECTED_ADMIN_PRAYER = "/admin/prayer/:prayerId",
@@ -24,6 +26,10 @@ export const router = createBrowserRouter([
   {
     path: Pages.HOME,
     element: <Home />,
+  },
+  {
+    path: Pages.CATEGORY,
+    element: <Category />,
   },
   {
     path: Pages.ADMIN,

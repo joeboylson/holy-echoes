@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useContext } from "react";
-import { UserContext } from "../AuthenticatedWrapper";
+import { UserContext } from "../AdminAccessWrapper";
 import { db } from "../../database";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Pages } from "../App/router";

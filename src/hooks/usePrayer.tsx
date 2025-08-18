@@ -3,7 +3,11 @@ import { first } from "lodash";
 
 const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
-export default function usePrayer(prayerId?: string, skip?: boolean) {
+export default function usePrayer(
+  prayerId?: string,
+  categoryId?: string,
+  skip?: boolean
+) {
   const { data, isLoading: prayerLoading } = db.useQuery(
     prayerId && !skip
       ? {
@@ -24,15 +28,23 @@ export default function usePrayer(prayerId?: string, skip?: boolean) {
 
   const { data: prevNextPrayersData, isLoading: prevNextIsLoading } =
     db.useQuery(
-      prayer
+      prayer && categoryId
         ? {
             [PRAYERS]: {
               [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {} },
+              categories: {},
               $: {
                 where: {
-                  order: {
-                    $in: [prayerOrder + 1, prayerOrder - 1],
-                  },
+                  and: [
+                    {
+                      order: {
+                        $in: [prayerOrder + 1, prayerOrder - 1],
+                      },
+                    },
+                    {
+                      "categories.id": categoryId,
+                    },
+                  ],
                 },
               },
             },
@@ -41,8 +53,6 @@ export default function usePrayer(prayerId?: string, skip?: boolean) {
     );
 
   const prevNextPrayers = (prevNextPrayersData?.[PRAYERS] ?? []) as Prayer[];
-
-  console.log(prayerLoading, prevNextIsLoading);
 
   return {
     prayer,

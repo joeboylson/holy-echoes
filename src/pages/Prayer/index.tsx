@@ -1,24 +1,19 @@
 import PrayerBlockPreview from "@/layout/PrayerBlockPreview";
 import usePrayer from "@/hooks/usePrayer";
-import { Link, useParams } from "react-router-dom";
-import { Pages } from "@/layout/App/router";
-import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
-import {
-  BackLink,
-  PrayerBlockPagination,
-  PrayerHeader,
-  StyledPrayer,
-} from "./StyledComponents";
-import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
+import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
+import NavigationHeader from "@/components/NavigationHeader";
 
 export default function Prayer() {
-  const { prayerId } = useParams();
-  const { prayer, prevNextPrayers, prayerLoading } = usePrayer(prayerId);
+  const { prayerId, categoryId } = useParams();
+  const navigate = useNavigate();
+  const { prayer, prevNextPrayers, prayerLoading } = usePrayer(prayerId, categoryId);
 
   const { setStatusBarColor } = useStatusBar();
   useEffect(() => {
-    setStatusBarColor("#0082cb");
+    setStatusBarColor("#0a79b5");
   }, []);
 
   const prevPrayer = prevNextPrayers.find(
@@ -29,37 +24,30 @@ export default function Prayer() {
     (p) => (p?.order ?? 0) > (prayer?.order ?? 0)
   );
 
+  const handlePrevious = useMemo(() => {
+    if (!prevPrayer?.id || !categoryId) return undefined;
+    return () => navigate(`/category/${categoryId}/prayer/${prevPrayer.id}`);
+  }, [prevPrayer, categoryId, navigate]);
+
+  const handleNext = useMemo(() => {
+    if (!nextPrayer?.id || !categoryId) return undefined;
+    return () => navigate(`/category/${categoryId}/prayer/${nextPrayer.id}`);
+  }, [nextPrayer, categoryId, navigate]);
+
   if (prayerLoading) return <p>Loading...</p>;
 
   return (
-    <StyledPrayer data-id="StyledPrayer">
-      <PrayerHeader data-id="PrayerHeader">
-        <BackLink to={Pages.HOME}>
-          <ArrowLeft /> Back
-        </BackLink>
+    <LoggedInUserWrapper>
+      <div className="w-screen h-screen grid grid-cols-1 mx-auto content-start justify-items-start overflow-y-scroll">
+        <NavigationHeader 
+          onPrevious={handlePrevious} 
+          onNext={handleNext} 
+        />
 
-        <PrayerBlockPagination>
-          {prevPrayer ? (
-            <Link to={`/prayer/${prevPrayer?.id}`}>
-              <CaretLeft size={24} weight="bold" color="#FFFFFF" />
-            </Link>
-          ) : (
-            <span />
-          )}
-
-          {nextPrayer ? (
-            <Link to={`/prayer/${nextPrayer?.id}`}>
-              <CaretRight size={24} weight="bold" color="#FFFFFF" />
-            </Link>
-          ) : (
-            <span />
-          )}
-        </PrayerBlockPagination>
-      </PrayerHeader>
-
-      {prayerId && (
-        <PrayerBlockPreview existingPrayer={prayer} key={prayerId} />
-      )}
-    </StyledPrayer>
+        {prayerId && (
+          <PrayerBlockPreview existingPrayer={prayer} key={prayerId} />
+        )}
+      </div>
+    </LoggedInUserWrapper>
   );
 }
