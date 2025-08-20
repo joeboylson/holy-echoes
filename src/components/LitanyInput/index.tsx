@@ -59,7 +59,7 @@ export default function LitanyInput({ prayerBlockId }: _props) {
     setAddRowLoading(true);
     await db
       .transact([
-        db.tx["litanyBlocks"][_id]
+        db.tx.litanyBlocks[_id]
           .update({ order })
           .link({ prayerBlock: prayerBlockId }),
       ])
@@ -83,7 +83,7 @@ export default function LitanyInput({ prayerBlockId }: _props) {
       </StyledLitanyRow>
 
       <ReorderableList
-        items={litanyBlocks}
+        items={litanyBlocks ?? []}
         onReorder={handleOnReorder}
         enabled={enableReorder}
         renderItem={(item) => <LitanyRow row={item} />}

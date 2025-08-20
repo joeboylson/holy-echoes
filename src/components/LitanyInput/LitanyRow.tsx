@@ -14,7 +14,7 @@ export default function LitanyRow({ row }: _props) {
   const handleChange = debounce(
     (litanyBlockId?: string, data?: Partial<LitanyBlock>) => {
       if (!litanyBlockId) return;
-      db.transact([db.tx["litanyBlocks"][litanyBlockId].update({ ...data })]);
+      db.transact([db.tx.litanyBlocks[litanyBlockId].update({ ...data })]);
     },
     1000
   );
@@ -34,7 +34,7 @@ export default function LitanyRow({ row }: _props) {
 
   const removeRow = () => {
     if (!row) return;
-    db.transact([db.tx["litanyBlocks"][litanyBlockId ?? ""].delete()]);
+    db.transact([db.tx.litanyBlocks[litanyBlockId ?? ""].delete()]);
   };
 
   return (
