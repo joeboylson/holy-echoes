@@ -1,14 +1,12 @@
 import "@mdxeditor/editor/style.css";
 import Block from "../../components/Block";
 import ReorderableList from "../ReorderableList";
-import { orderBy } from "lodash";
-import type { Prayer, PrayerBlock } from "@schema";
+import type { Prayer } from "@schema";
 import { useParams } from "react-router-dom";
 import { StyledPrayerBlockPreview } from "./StyledComponents";
 import { Reorderable, reorderReorderable } from "@/utils";
 import { useMemo } from "react";
 import usePrayer from "@/hooks/usePrayer";
-
 
 interface _props {
   filterUnpublished?: boolean;
@@ -34,9 +32,6 @@ export default function PrayerBlockPreview({
   );
   const prayer = existingPrayer ?? queryPrayer;
 
-  const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
-  const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
-
   const handleOnReorder = async (items: Reorderable[]) => {
     await reorderReorderable(items, "prayerBlocks");
   };
@@ -54,7 +49,7 @@ export default function PrayerBlockPreview({
       className="w-full"
     >
       <ReorderableList
-        items={orderedPrayerBlocks}
+        items={prayer?.prayerBlocks ?? []}
         onReorder={handleOnReorder}
         enabled={enableReorder}
         renderItem={(item) => <Block data-id="Block" prayerBlock={item} />}

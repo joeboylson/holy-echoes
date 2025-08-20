@@ -1,7 +1,7 @@
 import AddNewButton from "@/components/AddNewButton";
 import ReorderableList from "@/layout/ReorderableList";
 import { useCallback, useMemo, useState } from "react";
-import { first, orderBy } from "lodash";
+import { first } from "lodash";
 import { db } from "@/database";
 import { id } from "@instantdb/react";
 import { Reorderable, reorderReorderable } from "@/utils";
@@ -29,8 +29,14 @@ export default function LitanyInput({ prayerBlockId }: _props) {
     prayerBlockId
       ? {
           prayerBlocks: {
-            litanyBlocks: {},
-            $: { where: { id: prayerBlockId } },
+            litanyBlocks: {
+              $: {
+                order: {
+                  order: "asc",
+                },
+              },
+            },
+            $: { where: { id: prayerBlockId }, order: { order: "asc" } },
           },
         }
       : null
@@ -38,13 +44,12 @@ export default function LitanyInput({ prayerBlockId }: _props) {
 
   const prayerBlocks = data?.prayerBlocks;
   const litanyBlocks = first(prayerBlocks)?.litanyBlocks;
-  const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
 
   const handleOnReorder = async (items: Reorderable[]) => {
     await reorderReorderable(items, "litanyBlocks");
   };
 
-  const numberOfItems = orderedLitanyBlocks?.length ?? 0;
+  const numberOfItems = litanyBlocks?.length ?? 0;
   const handleAddNewRow = useCallback(async () => {
     if (!prayerBlockId) return;
 
@@ -78,7 +83,7 @@ export default function LitanyInput({ prayerBlockId }: _props) {
       </StyledLitanyRow>
 
       <ReorderableList
-        items={orderedLitanyBlocks}
+        items={litanyBlocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
         renderItem={(item) => <LitanyRow row={item} />}

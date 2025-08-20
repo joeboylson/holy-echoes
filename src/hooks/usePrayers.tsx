@@ -1,4 +1,3 @@
-import { orderBy } from "lodash";
 import { db } from "@/database";
 
 interface UsePrayersOptions {
@@ -28,10 +27,9 @@ export default function usePrayers({
   );
 
   const prayers = data?.prayers ?? [];
-  const orderedPrayers = orderBy(prayers, "order");
 
   return {
-    prayers: orderedPrayers,
+    prayers,
     isLoading,
   };
 }

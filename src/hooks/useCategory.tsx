@@ -1,5 +1,5 @@
 import { db } from "@/database";
-import { first, orderBy, isEmpty } from "lodash";
+import { first, isEmpty } from "lodash";
 
 export default function useCategory(categoryId?: string, skip?: boolean) {
   // Get the specific category
@@ -37,10 +37,7 @@ export default function useCategory(categoryId?: string, skip?: boolean) {
         : null
     );
 
-  const allCategories = orderBy(
-    allCategoriesData?.categories ?? [],
-    "order"
-  );
+  const allCategories = allCategoriesData?.categories ?? [];
 
   // Filter out categories without prayers before navigation
   const categoriesWithPrayers = allCategories.filter((category) => {

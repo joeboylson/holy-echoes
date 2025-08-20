@@ -1,4 +1,3 @@
-import { orderBy } from "lodash";
 import { LitanyWrapper } from "./StyledComponents";
 import styled from "styled-components";
 import { PrayerBlock } from "@schema";
@@ -18,11 +17,9 @@ interface _props {
 }
 
 export default function LitanyBlock({ prayerBlock, className }: _props) {
-  const orderedLitanyBlocks = orderBy(prayerBlock?.litanyBlocks, "order");
-
   return (
     <LitanyWrapper data-id="LitanyWrapper" className={className}>
-      {orderedLitanyBlocks.map((i) => {
+      {(prayerBlock.litanyBlocks ?? []).map((i) => {
         const { call, response, superscript, inline } = i;
 
         if (!call && !response && !superscript) return <span />;

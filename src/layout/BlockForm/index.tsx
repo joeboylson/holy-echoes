@@ -26,7 +26,6 @@ import { Switch } from "@/components/ui/switch";
 import TwoColumnInput from "@/components/TwoColumnInput";
 import ImageBlockForm from "../ImageBlockForm";
 
-
 const {
   BODY,
   BODY_CENTERED,
@@ -53,9 +52,9 @@ export default function BlockForm({
   allPrayerBlocks,
   blockTypes,
 }: _props) {
-  const [blockTypeName, setBlockTypeName] = useState<BlockTypeNames | undefined>(
-    prayerBlock.blockType?.name as BlockTypeNames
-  );
+  const [blockTypeName, setBlockTypeName] = useState<
+    BlockTypeNames | undefined
+  >(prayerBlock.blockType?.name as BlockTypeNames);
 
   const text = useMemo(() => prayerBlock.text ?? "", [prayerBlock]);
   const reference = useMemo(() => prayerBlock.reference ?? "", [prayerBlock]);
@@ -145,11 +144,13 @@ export default function BlockForm({
                 </>
               )}
 
-              {[IMAGE, SMALL_IMAGE, ICON].includes(blockTypeName as BlockTypeNames) && (
-                <ImageBlockForm prayerBlock={prayerBlock} />
-              )}
+              {[IMAGE, SMALL_IMAGE, ICON].includes(
+                blockTypeName as BlockTypeNames
+              ) && <ImageBlockForm prayerBlock={prayerBlock} />}
 
-              {[BODY, BODY_CENTERED].includes(blockTypeName as BlockTypeNames) && (
+              {[BODY, BODY_CENTERED].includes(
+                blockTypeName as BlockTypeNames
+              ) && (
                 <>
                   <i>
                     {blockTypeName === BODY_CENTERED ? "Centered" : "Standard"}

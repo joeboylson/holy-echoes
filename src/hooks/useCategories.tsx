@@ -7,7 +7,13 @@ import { Category } from "@schema";
 export default function useCategories() {
   const { data, isLoading } = db.useQuery({
     categories: {
-      prayers: {},
+      prayers: {
+        $: {
+          where: {
+            published: true,
+          },
+        },
+      },
       $: {
         order: {
           order: "asc",
@@ -18,12 +24,12 @@ export default function useCategories() {
 
   const categories = data?.categories ?? [];
 
-  const categoriesAsOptions = categories.map((category) => {
+  const categoriesAsOptions: Option[] = categories.map((category) => {
     return {
       label: category.name,
       value: category.id,
     };
-  }) as Option[];
+  });
 
   const categoriesWithPrayers = categories.filter((category) => {
     return !isEmpty(category.prayers);

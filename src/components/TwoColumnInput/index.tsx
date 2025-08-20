@@ -2,7 +2,7 @@ import AddNewButton from "../AddNewButton";
 import TwoColumnRow from "./TwoColumnRow";
 import ReorderableList from "@/layout/ReorderableList";
 import { useCallback, useMemo } from "react";
-import { first, orderBy } from "lodash";
+import { first } from "lodash";
 import { db } from "@/database";
 import { id } from "@instantdb/react";
 import { Reorderable, reorderReorderable } from "../../utils";
@@ -34,14 +34,13 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
   );
 
   const prayerBlocks = data?.prayerBlocks ?? [];
-  const litanyBlocks = first(prayerBlocks)?.litanyBlocks;
-  const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
+  const litanyBlocks = first(prayerBlocks)?.litanyBlocks ?? [];
 
   const handleOnReorder = async (items: Reorderable[]) => {
     await reorderReorderable(items, "prayerBlocks");
   };
 
-  const numberOfItems = orderedLitanyBlocks?.length ?? 0;
+  const numberOfItems = litanyBlocks?.length;
   const handleAddNewRow = useCallback(() => {
     if (!prayerBlockId) return;
 
@@ -63,7 +62,7 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
       </StyledTwoColumnRow>
 
       <ReorderableList
-        items={orderedLitanyBlocks}
+        items={litanyBlocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
         renderItem={(item) => <TwoColumnRow row={item} />}

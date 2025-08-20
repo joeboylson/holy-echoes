@@ -1,13 +1,12 @@
 import { db } from "@/database";
-import type { PrayerBlock } from "@schema";
 import { id } from "@instantdb/react";
-import { first, orderBy } from "lodash";
+import { first } from "lodash";
 import { useParams } from "react-router-dom";
-import PrayerControls from "../PrayerControls";
-import BlockForm from "../BlockForm";
 import { BlocksWrapper, StyledPrayerBlockEditor } from "./StyledComponents";
+import BlockForm from "../BlockForm";
+import PrayerControls from "../PrayerControls";
 import AddNewButton from "../../components/AddNewButton";
-import { useMemo } from "react";
+import type { PrayerBlock } from "@schema";
 
 export default function PrayerBlockEditor() {
   const { prayerId } = useParams();
@@ -16,24 +15,54 @@ export default function PrayerBlockEditor() {
     prayerId
       ? {
           prayers: {
-            categories: {},
-            prayerBlocks: { blockType: {}, litanyBlocks: {}, file: {} },
-            $: { where: { id: prayerId } },
+            categories: {
+              $: {
+                order: {
+                  order: "asc",
+                },
+              },
+            },
+            prayerBlocks: {
+              blockType: {
+                $: {
+                  order: {
+                    order: "asc",
+                  },
+                },
+              },
+              litanyBlocks: {
+                $: {
+                  order: {
+                    order: "asc",
+                  },
+                },
+              },
+              file: {},
+            },
+            $: {
+              where: { id: prayerId },
+              order: {
+                order: "asc",
+              },
+            },
           },
         }
       : null
   );
 
-  const { data: blockTypesData } = db.useQuery({ blockTypes: {} });
+  const { data: blockTypesData } = db.useQuery({
+    blockTypes: {
+      $: {
+        order: {
+          order: "asc",
+        },
+      },
+    },
+  });
 
-  const blockTypes = useMemo(
-    () => blockTypesData?.blockTypes ?? [],
-    [blockTypesData]
-  );
-
-  const prayers = prayersData?.prayers ?? [];
+  const prayers = prayersData?.prayers;
   const prayer = first(prayers);
-  const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
+  const prayerBlocks = prayer?.prayerBlocks ?? [];
 
   async function addNewPrayerBlock() {
     const order = prayerBlocks?.length ?? 0;
@@ -46,9 +75,6 @@ export default function PrayerBlockEditor() {
     ]);
   }
 
-  const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
-  const orderedBlockTypes = orderBy(blockTypes, "order");
-
   if (isLoading) return <span />;
 
   return (
@@ -58,13 +84,13 @@ export default function PrayerBlockEditor() {
       {prayer && (
         <>
           <BlocksWrapper key={prayer?.id ?? "new"}>
-            {orderedPrayerBlocks.map((prayerBlock) => {
+            {prayerBlocks.map((prayerBlock) => {
               return (
                 <BlockForm
                   key={prayerBlock.id}
                   prayerBlock={prayerBlock}
-                  allPrayerBlocks={orderedPrayerBlocks}
-                  blockTypes={orderedBlockTypes}
+                  allPrayerBlocks={prayerBlocks}
+                  blockTypes={blockTypesData?.blockTypes ?? []}
                 />
               );
             })}

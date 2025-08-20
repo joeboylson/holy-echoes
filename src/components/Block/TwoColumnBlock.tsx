@@ -1,4 +1,3 @@
-import { orderBy } from "lodash";
 import { TwoColumnWrapper } from "./StyledComponents";
 import { PrayerBlock } from "@schema";
 
@@ -8,11 +7,9 @@ interface _props {
 }
 
 export default function TwoColumnBlock({ prayerBlock, className }: _props) {
-  const orderedTwoColumnBlocks = orderBy(prayerBlock?.litanyBlocks, "order");
-
   return (
     <TwoColumnWrapper data-id="TwoColumnWrapper" className={className}>
-      {orderedTwoColumnBlocks.map((i) => {
+      {(prayerBlock.litanyBlocks ?? []).map((i) => {
         const { call, response } = i;
 
         return (

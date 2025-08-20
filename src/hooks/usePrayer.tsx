@@ -1,5 +1,4 @@
 import { db } from "@/database";
-import type { Prayer } from "@schema";
 import { first } from "lodash";
 import usePrayers from "./usePrayers";
 
@@ -40,7 +39,7 @@ export default function usePrayer(
       ? allPrayers[currentIndex + 1]
       : undefined;
 
-  const prevNextPrayers = [prevPrayer, nextPrayer].filter(Boolean) as Prayer[];
+  const prevNextPrayers = [prevPrayer, nextPrayer].filter(Boolean);
 
   return {
     prayer,
