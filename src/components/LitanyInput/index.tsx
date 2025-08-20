@@ -1,12 +1,10 @@
-import AddNewButton from "../AddNewButton";
-// import LitanyRow from "./LitanyRow";
+import AddNewButton from "@/components/AddNewButton";
 import ReorderableList from "@/layout/ReorderableList";
 import { useCallback, useMemo, useState } from "react";
 import { first, orderBy } from "lodash";
-import { db, TableNames } from "../../database";
-import type { LitanyBlock, PrayerBlock } from "../../database/types";
+import { db } from "@/database";
 import { id } from "@instantdb/react";
-import { Reorderable, reorderReorderable } from "../../utils";
+import { Reorderable, reorderReorderable } from "@/utils";
 import {
   LitanyRowWrapper,
   RowHeader,
@@ -14,8 +12,6 @@ import {
 } from "./StyledComponents";
 import LitanyRow from "./LitanyRow";
 import clsx from "clsx";
-
-const { PRAYERBLOCKS, LITANYBLOCKS } = TableNames;
 
 interface _props {
   prayerBlockId?: string;
@@ -32,20 +28,20 @@ export default function LitanyInput({ prayerBlockId }: _props) {
   const { data, isLoading } = db.useQuery(
     prayerBlockId
       ? {
-          [PRAYERBLOCKS]: {
-            [LITANYBLOCKS]: {},
+          prayerBlocks: {
+            litanyBlocks: {},
             $: { where: { id: prayerBlockId } },
           },
         }
       : null
   );
 
-  const prayerBlocks = (data?.[PRAYERBLOCKS] ?? []) as PrayerBlock[];
-  const litanyBlocks = first(prayerBlocks)?.litanyBlocks as LitanyBlock[];
+  const prayerBlocks = data?.prayerBlocks;
+  const litanyBlocks = first(prayerBlocks)?.litanyBlocks;
   const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    await reorderReorderable(items, LITANYBLOCKS);
+    await reorderReorderable(items, "litanyBlocks");
   };
 
   const numberOfItems = orderedLitanyBlocks?.length ?? 0;
@@ -58,7 +54,7 @@ export default function LitanyInput({ prayerBlockId }: _props) {
     setAddRowLoading(true);
     await db
       .transact([
-        db.tx[LITANYBLOCKS][_id]
+        db.tx["litanyBlocks"][_id]
           .update({ order })
           .link({ prayerBlock: prayerBlockId }),
       ])

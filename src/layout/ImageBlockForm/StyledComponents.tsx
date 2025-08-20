@@ -1,4 +1,4 @@
-import { BlockTypes } from "@/database";
+import { BlockTypeNames } from "@schema";
 import styled from "styled-components";
 
 export const BlockInputCurrentImageWrapper = styled.div<{
@@ -23,7 +23,7 @@ export const BlockInputCurrentImageWrapper = styled.div<{
   }
 
   ${(props) =>
-    props.blocktype === BlockTypes.ICON &&
+    props.blocktype === BlockTypeNames.ICON &&
     `
     img {
       width: 84px;

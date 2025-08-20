@@ -4,7 +4,6 @@ import {
   testCreateAccess,
   testUpdateAccess,
   testDeleteAccess,
-  generateTestData,
 } from "../utils/testHelpers";
 
 describe("Users Model Access Tests", () => {
@@ -16,7 +15,7 @@ describe("Users Model Access Tests", () => {
       expect(result.success).toBe(true);
       expect(result.dataCount).toBeGreaterThan(0);
       expect(result.error).toBeNull();
-      
+
       // Get a user record ID for update/delete tests
       expect(result.data).toBeTruthy();
       userId = result.data![0]?.id;
@@ -64,21 +63,36 @@ describe("Users Model Access Tests", () => {
   describe("Update Access Tests", () => {
     it("should NOT allow admin to update users", async () => {
       const updateData = { email: "updated@example.com" };
-      const result = await testUpdateAccess("$users", "admin", userId, updateData);
+      const result = await testUpdateAccess(
+        "$users",
+        "admin",
+        userId,
+        updateData
+      );
       expect(result.success).toBe(false);
       expect(result.error).not.toBeNull();
     });
 
     it("should NOT allow user to update users", async () => {
       const updateData = { email: "hacked@example.com" };
-      const result = await testUpdateAccess("$users", "user", userId, updateData);
+      const result = await testUpdateAccess(
+        "$users",
+        "user",
+        userId,
+        updateData
+      );
       expect(result.success).toBe(false);
       expect(result.error).not.toBeNull();
     });
 
     it("should NOT allow guest to update users", async () => {
       const updateData = { email: "hacked@example.com" };
-      const result = await testUpdateAccess("$users", "guest", userId, updateData);
+      const result = await testUpdateAccess(
+        "$users",
+        "guest",
+        userId,
+        updateData
+      );
       expect(result.success).toBe(false);
       expect(result.error).not.toBeNull();
     });

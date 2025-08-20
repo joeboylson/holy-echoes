@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import ReorderableList from "@/layout/ReorderableList";
-import { TableNames } from "@/database";
-import type { Category } from "@/database/types";
 import { Reorderable, reorderReorderable } from "@/utils/";
 import useCategories from "@/hooks/useCategories";
 import DeleteButton from "@/components/DeleteButton";
@@ -26,8 +24,6 @@ const PrayerListItemsWrapper = styled.div`
   }
 `;
 
-const { CATEGORY } = TableNames;
-
 export default function CategoriesList() {
   const {
     categories,
@@ -39,7 +35,7 @@ export default function CategoriesList() {
   if (categoriesLoading) return <span />;
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    await reorderReorderable(items, CATEGORY);
+    await reorderReorderable(items, "categories");
   };
 
   const handleAddNewCategory = () => addNewCategory("New Category");

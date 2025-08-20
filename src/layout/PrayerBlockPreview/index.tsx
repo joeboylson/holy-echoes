@@ -2,15 +2,13 @@ import "@mdxeditor/editor/style.css";
 import Block from "../../components/Block";
 import ReorderableList from "../ReorderableList";
 import { orderBy } from "lodash";
-import { TableNames } from "../../database";
-import type { Prayer, PrayerBlock } from "../../database/types";
+import type { Prayer, PrayerBlock } from "@schema";
 import { useParams } from "react-router-dom";
 import { StyledPrayerBlockPreview } from "./StyledComponents";
 import { Reorderable, reorderReorderable } from "@/utils";
 import { useMemo } from "react";
 import usePrayer from "@/hooks/usePrayer";
 
-const { PRAYERBLOCKS } = TableNames;
 
 interface _props {
   filterUnpublished?: boolean;
@@ -40,7 +38,7 @@ export default function PrayerBlockPreview({
   const orderedPrayerBlocks = orderBy(prayerBlocks, "order");
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    await reorderReorderable(items, PRAYERBLOCKS);
+    await reorderReorderable(items, "prayerBlocks");
   };
 
   if (!prayer?.published && filterUnpublished) {

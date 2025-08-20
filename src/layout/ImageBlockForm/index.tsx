@@ -1,5 +1,5 @@
-import { db, TableNames } from "@/database";
-import type { PrayerBlock } from "@/database/types";
+import { db } from "@/database";
+import type { PrayerBlock } from "@schema";
 import { ChangeEvent, useCallback, useState } from "react";
 import {
   BlockInputCurrentImageWrapper,
@@ -10,7 +10,6 @@ import { isEmpty, last } from "lodash";
 import LoadingIcon from "@/components/LoadingIcon";
 import AsyncImage from "@/components/AsyncImage";
 
-const { PRAYERBLOCKS, $FILES } = TableNames;
 
 interface _props {
   prayerBlock: PrayerBlock;
@@ -23,7 +22,7 @@ export default function ImageBlockForm({ prayerBlock }: _props) {
     const _id = prayerBlock?.file?.id;
     if (!_id) return;
     setLoading(true);
-    await db.transact([db.tx[$FILES][_id].delete()]);
+    await db.transact([db.tx.$files[_id].delete()]);
     setLoading(false);
   }, [prayerBlock]);
 
@@ -41,7 +40,7 @@ export default function ImageBlockForm({ prayerBlock }: _props) {
 
       const uploadedFile = await db.storage.uploadFile(path, file);
       await db.transact(
-        db.tx[PRAYERBLOCKS][_id].link({ file: uploadedFile.data.id })
+        db.tx.prayerBlocks[_id].link({ file: uploadedFile.data.id })
       );
       setLoading(false);
     },

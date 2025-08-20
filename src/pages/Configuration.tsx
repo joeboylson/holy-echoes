@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import styled from "styled-components";
 import AdminAccessWrapper from "../layout/AdminAccessWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";

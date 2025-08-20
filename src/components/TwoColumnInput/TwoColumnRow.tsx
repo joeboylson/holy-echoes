@@ -1,11 +1,9 @@
 import { Textarea } from "@/components/ui/textarea";
 import { TrashSimple } from "@phosphor-icons/react";
 import { debounce } from "lodash";
-import { db, TableNames } from "../../database";
-import type { LitanyBlock } from "../../database/types";
+import { db } from "@/database";
 import { StyledTwoColumnRow } from "./StyledComponents";
-
-const { LITANYBLOCKS } = TableNames;
+import { LitanyBlock } from "@schema";
 
 interface _props {
   row: LitanyBlock;
@@ -15,7 +13,7 @@ export default function TwoColumnRow({ row }: _props) {
   const handleChange = debounce(
     (litanyBlockId?: string, data?: Partial<LitanyBlock>) => {
       if (!litanyBlockId) return;
-      db.transact([db.tx[LITANYBLOCKS][litanyBlockId].update({ ...data })]);
+      db.transact([db.tx.litanyBlocks[litanyBlockId].update({ ...data })]);
     },
     1000
   );
@@ -29,7 +27,7 @@ export default function TwoColumnRow({ row }: _props) {
 
   const removeRow = () => {
     if (!row) return;
-    db.transact([db.tx[LITANYBLOCKS][litanyBlockId ?? ""].delete()]);
+    db.transact([db.tx.litanyBlocks[litanyBlockId ?? ""].delete()]);
   };
 
   return (

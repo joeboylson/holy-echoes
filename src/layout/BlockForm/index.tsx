@@ -12,8 +12,8 @@ import {
 import { debounce } from "lodash";
 import { TrashSimple } from "@phosphor-icons/react";
 import { removeBlock, cascadeDeletePrayerBlock } from "../../utils";
-import { db, BlockTypes, TableNames } from "../../database";
-import type { BlockType, PrayerBlock } from "../../database/types";
+import { db } from "@/database";
+import { BlockTypeNames, type BlockType, type PrayerBlock } from "@schema";
 import {
   BlockContent,
   BlockContentValues,
@@ -26,7 +26,6 @@ import { Switch } from "@/components/ui/switch";
 import TwoColumnInput from "@/components/TwoColumnInput";
 import ImageBlockForm from "../ImageBlockForm";
 
-const { PRAYERBLOCKS } = TableNames;
 
 const {
   BODY,
@@ -41,7 +40,7 @@ const {
   SMALL_IMAGE,
   SPACER,
   ICON,
-} = BlockTypes;
+} = BlockTypeNames;
 
 interface _props {
   prayerBlock: PrayerBlock;
@@ -54,8 +53,8 @@ export default function BlockForm({
   allPrayerBlocks,
   blockTypes,
 }: _props) {
-  const [blockTypeName, setBlockTypeName] = useState(
-    prayerBlock.blockType?.name
+  const [blockTypeName, setBlockTypeName] = useState<BlockTypeNames | undefined>(
+    prayerBlock.blockType?.name as BlockTypeNames
   );
 
   const text = useMemo(() => prayerBlock.text ?? "", [prayerBlock]);
@@ -64,12 +63,12 @@ export default function BlockForm({
   const handleTypeChange = useCallback(
     async (blockTypeId: string) => {
       const newBlockType = blockTypes.find((i) => i.id === blockTypeId);
-      setBlockTypeName(newBlockType?.name);
+      setBlockTypeName(newBlockType?.name as BlockTypeNames);
 
       const _id = prayerBlock.id;
       if (!_id || !blockTypeId) return;
       await db.transact([
-        db.tx[PRAYERBLOCKS][_id].link({ blockType: blockTypeId }),
+        db.tx.prayerBlocks[_id].link({ blockType: blockTypeId }),
       ]);
     },
     [prayerBlock, blockTypes]
@@ -78,23 +77,23 @@ export default function BlockForm({
   const handleBodyChange = debounce((text: string) => {
     const _id = prayerBlock.id;
     if (!_id) return;
-    db.transact([db.tx[PRAYERBLOCKS][_id].update({ text })]);
+    db.transact([db.tx.prayerBlocks[_id].update({ text })]);
   }, 1000);
 
   const handleSpaceAboveChange = (spaceAbove: boolean) => {
     const _id = prayerBlock.id;
     if (!_id) return;
-    db.transact([db.tx[PRAYERBLOCKS][_id].update({ spaceAbove })]);
+    db.transact([db.tx.prayerBlocks[_id].update({ spaceAbove })]);
   };
 
   const handleReferenceChange = debounce((reference: string) => {
     const _id = prayerBlock.id;
     if (!_id) return;
-    db.transact([db.tx[PRAYERBLOCKS][_id].update({ reference })]);
+    db.transact([db.tx.prayerBlocks[_id].update({ reference })]);
   }, 1000);
 
   const deleteBlock = () => {
-    removeBlock(prayerBlock, allPrayerBlocks, PRAYERBLOCKS);
+    removeBlock(prayerBlock, allPrayerBlocks, "prayerBlocks");
     cascadeDeletePrayerBlock(prayerBlock);
   };
 
@@ -146,11 +145,11 @@ export default function BlockForm({
                 </>
               )}
 
-              {[IMAGE, SMALL_IMAGE, ICON].includes(blockTypeName) && (
+              {[IMAGE, SMALL_IMAGE, ICON].includes(blockTypeName as BlockTypeNames) && (
                 <ImageBlockForm prayerBlock={prayerBlock} />
               )}
 
-              {[BODY, BODY_CENTERED].includes(blockTypeName) && (
+              {[BODY, BODY_CENTERED].includes(blockTypeName as BlockTypeNames) && (
                 <>
                   <i>
                     {blockTypeName === BODY_CENTERED ? "Centered" : "Standard"}

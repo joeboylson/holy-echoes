@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     setStatusBarColor("#0082cb");
-  }, []);
+  }, [setStatusBarColor]);
 
   return (
     <LoggedInUserWrapper>

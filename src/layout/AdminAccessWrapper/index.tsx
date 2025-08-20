@@ -1,12 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import Header from "../Header";
 import { createContext } from "react";
 import { User } from "@instantdb/react";
 import { Navigate } from "react-router-dom";
 import { WithChildren } from "../../types";
-import { db, TableNames } from "../../database";
+import { db } from "@/database";
 import { Pages } from "../App/router";
-
-const { $USERS, ADMIN } = TableNames;
 
 interface UserContextType {
   user: User | null;
@@ -35,8 +35,8 @@ function AdminAccessWrapperInner({ children }: WithChildren) {
   const userQuery = db.useQuery(
     user?.id
       ? {
-          [$USERS]: {
-            [ADMIN]: {},
+          $users: {
+            admin: {},
             $: { where: { id: user?.id } },
           },
         }
@@ -46,7 +46,7 @@ function AdminAccessWrapperInner({ children }: WithChildren) {
   if (userQuery.isLoading) return <p>Loading...</p>;
   if (!user) return <Navigate to={Pages.LOGIN} />;
 
-  const dbUser = userQuery.data?.[$USERS]?.[0];
+  const dbUser = userQuery.data?.$users?.[0];
   const hasAdminAccess = dbUser?.admin;
 
   if (!hasAdminAccess) {

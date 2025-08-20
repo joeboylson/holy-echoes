@@ -1,15 +1,13 @@
 import { Option } from "@/types";
-import { db, TableNames } from "../database";
-import type { Category } from "../database/types";
+import { db } from "@/database";
 import { id } from "@instantdb/react";
 import { isEmpty } from "lodash";
-
-const { CATEGORY, PRAYERS } = TableNames;
+import { Category } from "@schema";
 
 export default function useCategories() {
   const { data, isLoading } = db.useQuery({
-    [CATEGORY]: {
-      [PRAYERS]: {},
+    categories: {
+      prayers: {},
       $: {
         order: {
           order: "asc",
@@ -18,7 +16,7 @@ export default function useCategories() {
     },
   });
 
-  const categories = (data?.[CATEGORY] ?? []) as Category[];
+  const categories = data?.categories ?? [];
 
   const categoriesAsOptions = categories.map((category) => {
     return {
@@ -33,16 +31,16 @@ export default function useCategories() {
 
   async function addNewCategory(name: string) {
     const order = categories.length;
-    const newCategoryData: Category = { order, name };
+    const newCategoryData: Partial<Category> = { order, name };
     const newId = id();
-    await db.transact([db.tx[CATEGORY][newId].update({ ...newCategoryData })]);
+    await db.transact([db.tx.categories[newId].update({ ...newCategoryData })]);
 
     return { id: newId, ...newCategoryData };
   }
 
   async function deleteCategory(category: Category) {
     if (!category.id) return;
-    await db.transact([db.tx[CATEGORY][category.id].delete()]);
+    await db.transact([db.tx.categories[category.id].delete()]);
   }
 
   async function editCategory(
@@ -51,7 +49,7 @@ export default function useCategories() {
   ) {
     if (!category.id) return;
     await db.transact([
-      db.tx[CATEGORY][category.id].update({
+      db.tx.categories[category.id].update({
         ...newCategoryValues,
       }),
     ]);

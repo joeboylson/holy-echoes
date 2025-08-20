@@ -1,4 +1,4 @@
-import { BlockTypes, PrayerBlock } from "../../database";
+import { PrayerBlock, BlockTypeNames } from "@schema";
 import markdownit from "markdown-it";
 import LitanyBlock from "./LitanyBlock";
 import {
@@ -29,7 +29,7 @@ const {
   SMALL_IMAGE,
   SPACER,
   ICON,
-} = BlockTypes;
+} = BlockTypeNames;
 
 const md = markdownit({ html: true });
 

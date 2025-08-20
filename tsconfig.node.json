@@ -5,6 +5,13 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "baseUrl": ".",
+
+    /* Path mappings */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@schema": ["./instant.schema.ts"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -20,5 +27,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "scripts/**/*"]
 }

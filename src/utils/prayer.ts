@@ -1,15 +1,13 @@
-import { db, TableNames } from "../database";
-import type { Prayer } from "../database/types";
+import { db } from "@/database";
+import type { Prayer } from "@schema";
 import { cascadeDeletePrayerBlock } from "./prayerBlock";
-
-const { PRAYERBLOCKS } = TableNames;
 
 export function cascadeDeletePrayer(prayer: Prayer) {
   const prayerBlocks = prayer.prayerBlocks;
 
   if (prayerBlocks) {
     const deleteTransactions = prayerBlocks.map((i) =>
-      db.tx[PRAYERBLOCKS][i.id ?? ""].delete()
+      db.tx.prayerBlocks[i.id ?? ""].delete()
     );
 
     prayerBlocks.forEach(cascadeDeletePrayerBlock);

@@ -1,7 +1,7 @@
-import { i } from "@instantdb/react";
+import { i, InstaQLEntity } from "@instantdb/react";
 
 // Enums for better type safety
-export enum BlockTypes {
+export enum BlockTypeNames {
   CENTERED_TITLE = "Centered Title",
   BODY = "Body",
   BODY_CENTERED = "Body Centered",
@@ -112,8 +112,59 @@ const _schema = i.schema({
 
 // This helps Typescript display better intellisense
 type _AppSchema = typeof _schema;
+
+// eslint-disable-next-line
 interface AppSchema extends _AppSchema {}
 const schema: AppSchema = _schema;
 
 export type { AppSchema };
 export default schema;
+
+/**
+ * ENTITY TYPES
+ */
+
+// eslint-disable-next-line
+export type User = InstaQLEntity<AppSchema, "$users", { admin?: {} }>;
+// eslint-disable-next-line
+export type File = InstaQLEntity<AppSchema, "$files", { prayerBlocks?: {} }>;
+
+// eslint-disable-next-line
+export type Admin = InstaQLEntity<AppSchema, "admin", { $user?: {} }>;
+
+export type Prayer = InstaQLEntity<
+  AppSchema,
+  "prayers",
+  // eslint-disable-next-line
+  { categories?: {}; prayerBlocks?: {} }
+>;
+
+export type PrayerBlock = InstaQLEntity<
+  AppSchema,
+  "prayerBlocks",
+  // eslint-disable-next-line
+  { prayer?: {}; blockType?: {}; file?: {}; litanyBlocks?: {} }
+>;
+
+export type BlockType = InstaQLEntity<
+  AppSchema,
+  "blockTypes",
+  // eslint-disable-next-line
+  { prayerBlocks?: {} }
+>;
+
+export type LitanyBlock = InstaQLEntity<
+  AppSchema,
+  "litanyBlocks",
+  // eslint-disable-next-line
+  { prayerBlock?: {} }
+>;
+
+// eslint-disable-next-line
+export type Category = InstaQLEntity<AppSchema, "categories", { prayers?: {} }>;
+
+/**
+ * TABLE NAMES
+ */
+
+export type TableNames = keyof AppSchema["entities"];

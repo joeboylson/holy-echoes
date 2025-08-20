@@ -3,8 +3,7 @@ import TwoColumnRow from "./TwoColumnRow";
 import ReorderableList from "@/layout/ReorderableList";
 import { useCallback, useMemo } from "react";
 import { first, orderBy } from "lodash";
-import { db, TableNames } from "../../database";
-import type { LitanyBlock, PrayerBlock } from "../../database/types";
+import { db } from "@/database";
 import { id } from "@instantdb/react";
 import { Reorderable, reorderReorderable } from "../../utils";
 import {
@@ -12,8 +11,6 @@ import {
   RowHeader,
   StyledTwoColumnRow,
 } from "./StyledComponents";
-
-const { PRAYERBLOCKS, LITANYBLOCKS } = TableNames;
 
 interface _props {
   prayerBlockId?: string;
@@ -28,20 +25,20 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
   const { data } = db.useQuery(
     prayerBlockId
       ? {
-          [PRAYERBLOCKS]: {
-            [LITANYBLOCKS]: {},
+          prayerBlocks: {
+            litanyBlocks: {},
             $: { where: { id: prayerBlockId } },
           },
         }
       : null
   );
 
-  const prayerBlocks = (data?.[PRAYERBLOCKS] ?? []) as PrayerBlock[];
-  const litanyBlocks = first(prayerBlocks)?.litanyBlocks as LitanyBlock[];
+  const prayerBlocks = data?.prayerBlocks ?? [];
+  const litanyBlocks = first(prayerBlocks)?.litanyBlocks;
   const orderedLitanyBlocks = orderBy(litanyBlocks, "order");
 
   const handleOnReorder = async (items: Reorderable[]) => {
-    await reorderReorderable(items, PRAYERBLOCKS);
+    await reorderReorderable(items, "prayerBlocks");
   };
 
   const numberOfItems = orderedLitanyBlocks?.length ?? 0;
@@ -52,7 +49,7 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
     const order = numberOfItems;
 
     db.transact([
-      db.tx[LITANYBLOCKS][_id]
+      db.tx.litanyBlocks[_id]
         .update({ order })
         .link({ prayerBlock: prayerBlockId }),
     ]);

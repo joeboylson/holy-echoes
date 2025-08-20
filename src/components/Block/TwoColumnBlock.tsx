@@ -1,6 +1,6 @@
 import { orderBy } from "lodash";
-import { PrayerBlock } from "../../database";
 import { TwoColumnWrapper } from "./StyledComponents";
+import { PrayerBlock } from "@schema";
 
 interface _props {
   prayerBlock: PrayerBlock;

@@ -1,9 +1,7 @@
-import { db, TableNames } from "../database";
-import type { Prayer } from "../database/types";
+import { db } from "@/database";
+import type { Prayer } from "@schema";
 import { first } from "lodash";
 import usePrayers from "./usePrayers";
-
-const { PRAYERBLOCKS, PRAYERS } = TableNames;
 
 export default function usePrayer(
   prayerId?: string,
@@ -14,8 +12,8 @@ export default function usePrayer(
   const { data, isLoading: prayerLoading } = db.useQuery(
     prayerId && !skip
       ? {
-          [PRAYERS]: {
-            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {}, file: {} },
+          prayers: {
+            prayerBlocks: { blockType: {}, litanyBlocks: {}, file: {} },
             $: {
               where: {
                 id: prayerId,
@@ -26,7 +24,7 @@ export default function usePrayer(
       : null
   );
 
-  const prayer = first((data?.[PRAYERS] ?? []) as Prayer[]);
+  const prayer = first(data?.prayers ?? []);
 
   const { prayers: allPrayers, isLoading: allPrayersLoading } = usePrayers({
     filterUnpublished: true,

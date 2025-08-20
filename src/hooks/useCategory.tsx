@@ -1,16 +1,13 @@
-import { db, TableNames } from "../database";
-import type { Category } from "../database/types";
+import { db } from "@/database";
 import { first, orderBy, isEmpty } from "lodash";
-
-const { CATEGORY, PRAYERS } = TableNames;
 
 export default function useCategory(categoryId?: string, skip?: boolean) {
   // Get the specific category
   const { data: categoryData, isLoading: categoryLoading } = db.useQuery(
     categoryId && !skip
       ? {
-          [CATEGORY]: {
-            [PRAYERS]: {},
+          categories: {
+            prayers: {},
             $: {
               where: {
                 id: categoryId,
@@ -21,15 +18,15 @@ export default function useCategory(categoryId?: string, skip?: boolean) {
       : null
   );
 
-  const category = first((categoryData?.[CATEGORY] ?? []) as Category[]);
+  const category = first(categoryData?.categories ?? []);
 
   // Get all categories ordered by order field to find prev/next
   const { data: allCategoriesData, isLoading: allCategoriesLoading } =
     db.useQuery(
       !skip
         ? {
-            [CATEGORY]: {
-              [PRAYERS]: {},
+            categories: {
+              prayers: {},
               $: {
                 order: {
                   order: "asc",
@@ -41,7 +38,7 @@ export default function useCategory(categoryId?: string, skip?: boolean) {
     );
 
   const allCategories = orderBy(
-    (allCategoriesData?.[CATEGORY] ?? []) as Category[],
+    allCategoriesData?.categories ?? [],
     "order"
   );
 

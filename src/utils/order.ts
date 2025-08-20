@@ -1,12 +1,12 @@
 import { indexOf } from "lodash";
+import { db } from "@/database";
 import {
   Category,
-  db,
   LitanyBlock,
   Prayer,
   PrayerBlock,
   TableNames,
-} from "../database";
+} from "@schema";
 
 export type Reorderable = Prayer | PrayerBlock | LitanyBlock | Category;
 

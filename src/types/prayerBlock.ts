@@ -1,4 +1,4 @@
-import { PrayerBlock } from "../database";
+import { PrayerBlock } from "@schema";
 
 export type ProviderValue = {
   blocks?: PrayerBlock[];

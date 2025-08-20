@@ -19,11 +19,10 @@ export const getDbForUserType = (userType: UserType) => {
 export const testReadAccess = async (table: string, userType: UserType) => {
   try {
     const scopedDb = getDbForUserType(userType);
-    let queryResult;
 
     // Use the table name directly as passed in
     const query = { [table]: {} };
-    queryResult = await scopedDb.query(query);
+    const queryResult = await scopedDb.query(query);
 
     // Check if query was successful and extract data
     const hasError =
@@ -57,7 +56,7 @@ export const testReadAccess = async (table: string, userType: UserType) => {
 export const testReadAccessWithFilter = async (
   table: string,
   userType: UserType,
-  filter: Record<string, any> = {}
+  filter: Record<string, string | number | boolean> = {}
 ) => {
   try {
     const scopedDb = getDbForUserType(userType);
@@ -97,7 +96,7 @@ export const testReadAccessWithFilter = async (
 export const testCreateAccess = async (
   table: string,
   userType: UserType,
-  testData: Record<string, any>
+  testData: Record<string, string | number | boolean>
 ) => {
   try {
     const scopedDb = getDbForUserType(userType);
@@ -134,7 +133,7 @@ export const testUpdateAccess = async (
   table: string,
   userType: UserType,
   recordId: string,
-  updateData: Record<string, any>
+  updateData: Record<string, string | number | boolean>
 ) => {
   try {
     const scopedDb = getDbForUserType(userType);
@@ -230,7 +229,7 @@ export const testFileUpload = async (
       contentType: file.type,
       contentDisposition: "attachment",
     };
-    
+
     await scopedDb.storage.uploadFile(uniqueFileName, file, opts);
 
     // If we get here, upload was successful

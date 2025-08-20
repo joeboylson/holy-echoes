@@ -1,5 +1,5 @@
-import { db, TableNames } from "../../database";
-import type { Prayer } from "../../database/types";
+import { db } from "@/database";
+import type { Prayer } from "@schema";
 import { id } from "@instantdb/react";
 import { Pages } from "../App/router";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,6 @@ import { Switch } from "@/components/ui/switch";
 import { SelectWithCreate } from "@/components/SelectWithCreate";
 import { useState } from "react";
 import useCategories from "@/hooks/useCategories";
-
-const { PRAYERS } = TableNames;
 
 interface _props {
   prayer?: Prayer;
@@ -40,16 +38,16 @@ export default function PrayerControls({ prayer }: _props) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const { data, isLoading } = db.useQuery({
-    [PRAYERS]: {},
+    prayers: {},
   });
 
-  const prayers = (data?.[PRAYERS] ?? []) as Prayer[];
+  const prayers = data?.prayers ?? [];
 
   const handleNameChange = debounce((name: string) => {
     if (!prayer) return;
     const _id = prayer.id;
     if (!_id) return;
-    db.transact([db.tx[PRAYERS][_id].update({ name })]);
+    db.transact([db.tx.prayers[_id].update({ name })]);
   }, 1000);
 
   const handleIsPublishedChange = async (published: boolean) => {
@@ -58,7 +56,7 @@ export default function PrayerControls({ prayer }: _props) {
     if (!_id) return;
     setIsSaving(true);
     await db
-      .transact([db.tx[PRAYERS][_id].update({ published })])
+      .transact([db.tx.prayers[_id].update({ published })])
       .finally(() => setIsSaving(false));
   };
 
@@ -66,14 +64,14 @@ export default function PrayerControls({ prayer }: _props) {
     if (!prayers) return;
 
     const order = prayers?.length;
-    const newPrayer: Prayer = {
+    const newPrayer: Partial<Prayer> = {
       order,
       name: `New Prayer`,
       published: false,
     };
 
     const newId = id();
-    await db.transact([db.tx[PRAYERS][newId].update({ ...newPrayer })]);
+    await db.transact([db.tx.prayers[newId].update({ ...newPrayer })]);
 
     const to = Pages.SELECTED_ADMIN_PRAYER.replace(":prayerId", newId);
     navigate(to);
@@ -81,7 +79,7 @@ export default function PrayerControls({ prayer }: _props) {
 
   async function deletePrayer() {
     if (!prayer) return;
-    db.transact([db.tx[PRAYERS][prayer?.id ?? ""].delete()]);
+    db.transact([db.tx.prayers[prayer?.id ?? ""].delete()]);
     cascadeDeletePrayer(prayer);
   }
 
@@ -91,7 +89,7 @@ export default function PrayerControls({ prayer }: _props) {
     if (!_id) return;
     setIsSaving(true);
     await db
-      .transact([db.tx[PRAYERS][_id].link({ categories: [categoryId] })])
+      .transact([db.tx.prayers[_id].link({ categories: [categoryId] })])
       .finally(() => {
         setIsSaving(false);
         setSelectedCategoryIds([...selectedCategoryIds, categoryId]);
@@ -104,7 +102,7 @@ export default function PrayerControls({ prayer }: _props) {
     if (!_id) return;
     setIsSaving(true);
     await db
-      .transact([db.tx[PRAYERS][_id].unlink({ categories: [categoryId] })])
+      .transact([db.tx.prayers[_id].unlink({ categories: [categoryId] })])
       .finally(() => {
         const _filtered = selectedCategoryIds.filter((i) => i !== categoryId);
         setSelectedCategoryIds(_filtered);

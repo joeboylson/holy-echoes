@@ -10,12 +10,13 @@ import { Pages } from "@/layout/App/router";
 export default function Category() {
   const { categoryId } = useParams();
   const navigate = useNavigate();
-  const { category, prevCategory, nextCategory, isLoading } = useCategory(categoryId);
+  const { category, prevCategory, nextCategory, isLoading } =
+    useCategory(categoryId);
   const { setStatusBarColor } = useStatusBar();
 
   useEffect(() => {
     setStatusBarColor("#0082cb");
-  }, []);
+  }, [setStatusBarColor]);
 
   const handlePrevious = useMemo(() => {
     if (!prevCategory?.id) return undefined;
@@ -28,7 +29,7 @@ export default function Category() {
   }, [nextCategory, navigate]);
 
   if (isLoading) return <div>Loading...</div>;
-  
+
   if (!category) {
     return <div>Category not found</div>;
   }
@@ -36,7 +37,7 @@ export default function Category() {
   return (
     <LoggedInUserWrapper>
       <div className="w-screen grid grid-cols-1 mx-auto overflow-y-scroll gap-3 h-full content-start">
-        <NavigationHeader 
+        <NavigationHeader
           backTo={Pages.HOME}
           onPrevious={handlePrevious}
           onNext={handleNext}
@@ -44,9 +45,7 @@ export default function Category() {
 
         <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="py-6 border-b">
-            <h1 className="text-2xl font-bold text-center">
-              {category.name}
-            </h1>
+            <h1 className="text-2xl font-bold text-center">{category.name}</h1>
           </div>
 
           <PrayerList filterByCategory={category} />

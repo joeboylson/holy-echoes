@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Prayer } from "../../database";
+import type { Prayer } from "@schema";
 import { Link, useParams } from "react-router-dom";
 import { Pages } from "../App/router";
 import { compact, isEmpty } from "lodash";
@@ -49,20 +49,22 @@ interface _props {
 
 export default function PrayerListItem({ prayer }: _props) {
   const { categoryId } = useParams();
-  
+
   const to = useMemo(() => {
     const { SELECTED_ADMIN_PRAYER, SELECTED_PRAYER, HOME } = Pages;
     const currentRoute = window.location.pathname;
     const route = currentRoute.includes("admin")
       ? SELECTED_ADMIN_PRAYER
       : SELECTED_PRAYER;
-    
+
     // For category-aware routes, require category ID or redirect to home
     if (route === SELECTED_PRAYER) {
       if (!categoryId) return HOME;
-      return route.replace(":categoryId", categoryId).replace(":prayerId", prayer.id ?? "");
+      return route
+        .replace(":categoryId", categoryId)
+        .replace(":prayerId", prayer.id ?? "");
     }
-    
+
     return route.replace(":prayerId", prayer.id ?? "");
   }, [prayer, categoryId]);
 

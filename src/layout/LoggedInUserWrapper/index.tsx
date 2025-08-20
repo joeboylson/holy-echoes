@@ -1,5 +1,5 @@
 import { WithChildren } from "../../types";
-import { db } from "../../database";
+import { db } from "@/database";
 import { UserContext } from "../AdminAccessWrapper";
 
 export default function LoggedInUserWrapper({ children }: WithChildren) {

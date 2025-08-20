@@ -1,5 +1,5 @@
-import { db, TableNames } from "../../database";
-import type { BlockType, Prayer, PrayerBlock } from "../../database/types";
+import { db } from "@/database";
+import type { PrayerBlock } from "@schema";
 import { id } from "@instantdb/react";
 import { first, orderBy } from "lodash";
 import { useParams } from "react-router-dom";
@@ -9,31 +9,29 @@ import { BlocksWrapper, StyledPrayerBlockEditor } from "./StyledComponents";
 import AddNewButton from "../../components/AddNewButton";
 import { useMemo } from "react";
 
-const { PRAYERBLOCKS, PRAYERS, BLOCKTYPES } = TableNames;
-
 export default function PrayerBlockEditor() {
   const { prayerId } = useParams();
 
   const { data: prayersData, isLoading } = db.useQuery(
     prayerId
       ? {
-          [PRAYERS]: {
+          prayers: {
             categories: {},
-            [PRAYERBLOCKS]: { blockType: {}, litanyBlocks: {}, file: {} },
+            prayerBlocks: { blockType: {}, litanyBlocks: {}, file: {} },
             $: { where: { id: prayerId } },
           },
         }
-      : {}
+      : null
   );
 
-  const { data: blockTypesData } = db.useQuery({ [BLOCKTYPES]: {} });
+  const { data: blockTypesData } = db.useQuery({ blockTypes: {} });
 
   const blockTypes = useMemo(
-    () => (blockTypesData?.[BLOCKTYPES] ?? []) as BlockType[],
+    () => blockTypesData?.blockTypes ?? [],
     [blockTypesData]
   );
 
-  const prayers = (prayersData?.[PRAYERS] ?? []) as Prayer[];
+  const prayers = prayersData?.prayers ?? [];
   const prayer = first(prayers);
   const prayerBlocks = prayer?.prayerBlocks as PrayerBlock[];
 
@@ -44,7 +42,7 @@ export default function PrayerBlockEditor() {
     const link = { prayer: prayerId };
 
     await db.transact([
-      db.tx[PRAYERBLOCKS][id()].update({ ...newPrayerBlock }).link({ ...link }),
+      db.tx.prayerBlocks[id()].update({ ...newPrayerBlock }).link({ ...link }),
     ]);
   }
 

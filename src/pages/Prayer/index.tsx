@@ -9,12 +9,15 @@ import NavigationHeader from "@/components/NavigationHeader";
 export default function Prayer() {
   const { prayerId, categoryId } = useParams();
   const navigate = useNavigate();
-  const { prayer, prevNextPrayers, prayerLoading } = usePrayer(prayerId, categoryId);
+  const { prayer, prevNextPrayers, prayerLoading } = usePrayer(
+    prayerId,
+    categoryId
+  );
 
   const { setStatusBarColor } = useStatusBar();
   useEffect(() => {
     setStatusBarColor("#0082cb");
-  }, []);
+  }, [setStatusBarColor]);
 
   const prevPrayer = prevNextPrayers.find(
     (p) => (p?.order ?? 0) < (prayer?.order ?? 0)
@@ -39,9 +42,9 @@ export default function Prayer() {
   return (
     <LoggedInUserWrapper>
       <div className="w-screen h-screen grid grid-cols-1 mx-auto content-start justify-items-start overflow-y-scroll">
-        <NavigationHeader 
-          onPrevious={handlePrevious} 
-          onNext={handleNext} 
+        <NavigationHeader
+          onPrevious={handlePrevious}
+          onNext={handleNext}
           backTo={categoryId ? `/category/${categoryId}` : "/home"}
         />
 
