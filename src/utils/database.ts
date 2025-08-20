@@ -1,12 +1,11 @@
-import { TableNames } from "@/database";
 import { CardinalityKind } from "@instantdb/react";
 
 const ONE: CardinalityKind = "one";
 const MANY: CardinalityKind = "many";
 
 export const oneToMany = (
-  table: TableNames,
-  toTable: TableNames,
+  table: string,
+  toTable: string,
   label: string
 ) => {
   return {
@@ -24,8 +23,8 @@ export const oneToMany = (
 };
 
 export const oneToOne = (
-  table: TableNames,
-  toTable: TableNames,
+  table: string,
+  toTable: string,
   label: string
 ) => {
   return {
@@ -43,8 +42,8 @@ export const oneToOne = (
 };
 
 export const manyToMany = (
-  table: TableNames,
-  toTable: TableNames,
+  table: string,
+  toTable: string,
   label: string
 ) => {
   return {

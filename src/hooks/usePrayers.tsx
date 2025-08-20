@@ -1,18 +1,19 @@
 import { useMemo } from "react";
 import { orderBy } from "lodash";
-import { db, Prayer, Category, TableNames } from "../database";
+import { db, TableNames } from "../database";
+import type { Prayer } from "../database/types";
 
 const { PRAYERS } = TableNames;
 
 interface UsePrayersOptions {
   filterUnpublished?: boolean;
-  filterByCategory?: Category;
+  filterByCategoryId?: string;
   skip?: boolean;
 }
 
 export default function usePrayers({
   filterUnpublished = true,
-  filterByCategory,
+  filterByCategoryId,
   skip = false,
 }: UsePrayersOptions = {}) {
   const filter = useMemo(() => {
@@ -22,12 +23,12 @@ export default function usePrayers({
       },
     };
 
-    if (filterByCategory?.id) {
-      _filter.where["categories.id"] = filterByCategory.id;
+    if (filterByCategoryId) {
+      _filter.where["categories.id"] = filterByCategoryId;
     }
 
     return _filter;
-  }, [filterUnpublished, filterByCategory]);
+  }, [filterUnpublished, filterByCategoryId]);
 
   const { data, isLoading } = db.useQuery(
     !skip

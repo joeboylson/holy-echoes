@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import PrayerListItem from "./PrayerListItem";
 import ReorderableList from "@/layout/ReorderableList";
-import { Category, TableNames } from "@/database";
+import { TableNames } from "@/database";
+import type { Category, Prayer } from "@/database/types";
 import { Reorderable, reorderReorderable } from "@/utils/";
 import { useMemo } from "react";
 import usePrayers from "@/hooks/usePrayers";
@@ -43,7 +44,7 @@ export default function PrayerList({
 
   const { prayers: orderedPrayers, isLoading } = usePrayers({
     filterUnpublished,
-    filterByCategory,
+    filterByCategoryId: filterByCategory?.id,
   });
 
   const handleOnReorder = async (items: Reorderable[]) => {
@@ -59,7 +60,10 @@ export default function PrayerList({
           items={orderedPrayers}
           onReorder={handleOnReorder}
           enabled={enableReorder}
-          renderItem={(item) => <PrayerListItem prayer={item} />}
+          renderItem={(item) => {
+            const _prayer = item as Prayer;
+            return <PrayerListItem prayer={_prayer} />;
+          }}
         />
       </PrayerListItemsWrapper>
     </StyledPrayerList>

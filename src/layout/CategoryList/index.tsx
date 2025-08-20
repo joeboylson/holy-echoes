@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ReorderableList from "@/layout/ReorderableList";
-import { Category, TableNames } from "@/database";
+import { TableNames } from "@/database";
+import type { Category } from "@/database/types";
 import { Reorderable, reorderReorderable } from "@/utils/";
 import useCategories from "@/hooks/useCategories";
 import DeleteButton from "@/components/DeleteButton";
@@ -50,20 +51,23 @@ export default function CategoriesList() {
         <ReorderableList
           items={categories}
           onReorder={handleOnReorder}
-          renderItem={(item: Category) => (
-            <div className="item flex gap-[24px] py-[6px] items-center">
-              <DeleteButton
-                itemName="Category"
-                onClick={() => deleteCategory(item)}
-                icon
-              />
+          renderItem={(item: Reorderable) => {
+            const _category = item as Category;
+            return (
+              <div className="item flex gap-[24px] py-[6px] items-center">
+                <DeleteButton
+                  itemName="Category"
+                  onClick={() => deleteCategory(_category)}
+                  icon
+                />
 
-              <CategoryListItem
-                name={item.name ?? "(empty)"}
-                onSave={(name) => editCategory(item, { name })}
-              />
-            </div>
-          )}
+                <CategoryListItem
+                  name={_category.name ?? "(empty)"}
+                  onSave={(name) => editCategory(_category, { name })}
+                />
+              </div>
+            );
+          }}
           enabled={true}
         />
       </PrayerListItemsWrapper>

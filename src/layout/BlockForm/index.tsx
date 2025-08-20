@@ -12,13 +12,8 @@ import {
 import { debounce } from "lodash";
 import { TrashSimple } from "@phosphor-icons/react";
 import { removeBlock, cascadeDeletePrayerBlock } from "../../utils";
-import {
-  BlockType,
-  BlockTypes,
-  db,
-  PrayerBlock,
-  TableNames,
-} from "../../database";
+import { db, BlockTypes, TableNames } from "../../database";
+import type { BlockType, PrayerBlock } from "../../database/types";
 import {
   BlockContent,
   BlockContentValues,

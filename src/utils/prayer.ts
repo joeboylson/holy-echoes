@@ -1,4 +1,5 @@
-import { db, Prayer, TableNames } from "../database";
+import { db, TableNames } from "../database";
+import type { Prayer } from "../database/types";
 import { cascadeDeletePrayerBlock } from "./prayerBlock";
 
 const { PRAYERBLOCKS } = TableNames;

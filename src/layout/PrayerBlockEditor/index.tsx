@@ -1,4 +1,5 @@
-import { BlockType, db, Prayer, PrayerBlock, TableNames } from "../../database";
+import { db, TableNames } from "../../database";
+import type { BlockType, Prayer, PrayerBlock } from "../../database/types";
 import { id } from "@instantdb/react";
 import { first, orderBy } from "lodash";
 import { useParams } from "react-router-dom";
@@ -39,7 +40,7 @@ export default function PrayerBlockEditor() {
   async function addNewPrayerBlock() {
     const order = prayerBlocks?.length ?? 0;
     const spaceAbove = order !== 0;
-    const newPrayerBlock: PrayerBlock = { order, spaceAbove };
+    const newPrayerBlock: Partial<PrayerBlock> = { order, spaceAbove };
     const link = { prayer: prayerId };
 
     await db.transact([

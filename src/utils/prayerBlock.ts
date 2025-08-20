@@ -1,4 +1,5 @@
-import { db, PrayerBlock, TableNames } from "../database";
+import { db, TableNames } from "../database";
+import type { PrayerBlock } from "../database/types";
 
 const { LITANYBLOCKS } = TableNames;
 

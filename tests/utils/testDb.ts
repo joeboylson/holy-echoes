@@ -1,12 +1,14 @@
-import { init, i } from "@instantdb/admin";
+import { init } from "@instantdb/admin";
+import { schema, type AppSchema } from "@schema";
 
 // Test database configuration - you'll need to set up a test app ID and admin token
 const testAppId = process.env.VITE_INSTANT_APP_ID;
 const adminToken = process.env.VITE_INSTANT_ADMIN_TOKEN;
 
-const db = init({
+const db = init<AppSchema>({
   appId: testAppId ?? "",
   adminToken: adminToken ?? "",
+  schema,
 });
 
 // Test user configurations - UPDATE THESE WITH REAL EMAILS

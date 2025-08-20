@@ -3,7 +3,8 @@ import TwoColumnRow from "./TwoColumnRow";
 import ReorderableList from "@/layout/ReorderableList";
 import { useCallback, useMemo } from "react";
 import { first, orderBy } from "lodash";
-import { db, LitanyBlock, PrayerBlock, TableNames } from "../../database";
+import { db, TableNames } from "../../database";
+import type { LitanyBlock, PrayerBlock } from "../../database/types";
 import { id } from "@instantdb/react";
 import { Reorderable, reorderReorderable } from "../../utils";
 import {

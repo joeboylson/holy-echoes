@@ -1,7 +1,8 @@
 import { Textarea } from "@/components/ui/textarea";
 import { TrashSimple } from "@phosphor-icons/react";
 import { debounce } from "lodash";
-import { db, LitanyBlock, TableNames } from "../../database";
+import { db, TableNames } from "../../database";
+import type { LitanyBlock } from "../../database/types";
 import { StyledTwoColumnRow } from "./StyledComponents";
 
 const { LITANYBLOCKS } = TableNames;

@@ -1,4 +1,5 @@
-import { db, Prayer, TableNames } from "../database";
+import { db, TableNames } from "../database";
+import type { Prayer } from "../database/types";
 import { first } from "lodash";
 import usePrayers from "./usePrayers";
 
@@ -29,7 +30,7 @@ export default function usePrayer(
 
   const { prayers: allPrayers, isLoading: allPrayersLoading } = usePrayers({
     filterUnpublished: true,
-    filterByCategory: categoryId ? { id: categoryId } : undefined,
+    filterByCategoryId: categoryId,
     skip: skip || skipNextPrevious, // Skip if usePrayer is skipped or navigation not needed
   });
 

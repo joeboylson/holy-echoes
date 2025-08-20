@@ -1,4 +1,5 @@
-import { db, Prayer, TableNames } from "../../database";
+import { db, TableNames } from "../../database";
+import type { Prayer } from "../../database/types";
 import { id } from "@instantdb/react";
 import { Pages } from "../App/router";
 import { useNavigate } from "react-router-dom";

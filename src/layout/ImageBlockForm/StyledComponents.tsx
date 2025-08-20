@@ -2,7 +2,7 @@ import { BlockTypes } from "@/database";
 import styled from "styled-components";
 
 export const BlockInputCurrentImageWrapper = styled.div<{
-  blocktype?: BlockTypes;
+  blocktype?: string;
 }>`
   display: grid;
   place-items: center;

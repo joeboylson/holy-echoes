@@ -1,3 +1,4 @@
+import { id } from "@instantdb/admin";
 import { getDbAsAdmin, getDbAsUser, getDbAsGuest, UserType } from "./testDb";
 
 // Helper function to get the appropriate database instance for user type
@@ -89,5 +90,92 @@ export const testReadAccessWithFilter = async (
       hasData: false,
       data: null,
     };
+  }
+};
+
+// Helper to test creation access for a specific table and user type
+export const testCreateAccess = async (
+  table: string,
+  userType: UserType,
+  testData: Record<string, any>
+) => {
+  try {
+    const scopedDb = getDbForUserType(userType);
+
+    const transactionResult = await scopedDb.transact(
+      scopedDb.tx[table][id()].create(testData)
+    );
+
+    const hasError =
+      transactionResult.error !== undefined && transactionResult.error !== null;
+
+    console.log(transactionResult);
+
+    return {
+      userType,
+      table,
+      testData,
+      success: !hasError,
+      error: hasError ? transactionResult.error : null,
+      transactionId: hasError ? null : transactionResult["tx-id"],
+    };
+  } catch (error) {
+    return {
+      userType,
+      table,
+      testData,
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      transactionId: null,
+    };
+  }
+};
+
+// Helper to generate test data for different table types
+export const generateTestData = (table: string) => {
+  const timestamp = Date.now();
+
+  switch (table) {
+    case "prayers":
+      return {
+        name: `Test Prayer ${timestamp}`,
+        order: timestamp,
+        published: false,
+      };
+
+    case "categories":
+      return {
+        name: `Test Category ${timestamp}`,
+        order: timestamp,
+      };
+
+    case "blockTypes":
+      return {
+        name: `Test Block Type ${timestamp}`,
+        order: timestamp,
+      };
+
+    case "prayerBlocks":
+      return {
+        text: `Test prayer block content ${timestamp}`,
+        order: timestamp,
+        reference: "Test Reference",
+        spaceAbove: false,
+      };
+
+    case "litanyBlocks":
+      return {
+        order: timestamp,
+        call: `Test call ${timestamp}`,
+        response: `Test response ${timestamp}`,
+        superscript: "",
+        inline: false,
+      };
+
+    default:
+      return {
+        name: `Test ${table} ${timestamp}`,
+        order: timestamp,
+      };
   }
 };

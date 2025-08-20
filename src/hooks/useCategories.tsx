@@ -1,5 +1,6 @@
 import { Option } from "@/types";
-import { Category, db, TableNames } from "../database";
+import { db, TableNames } from "../database";
+import type { Category } from "../database/types";
 import { id } from "@instantdb/react";
 import { isEmpty } from "lodash";
 
@@ -36,7 +37,7 @@ export default function useCategories() {
     const newId = id();
     await db.transact([db.tx[CATEGORY][newId].update({ ...newCategoryData })]);
 
-    return { id: newId, ...newCategoryData } as Category;
+    return { id: newId, ...newCategoryData };
   }
 
   async function deleteCategory(category: Category) {
