@@ -59,10 +59,7 @@ export default function PrayerBlockPreview({
         items={orderedPrayerBlocks}
         onReorder={handleOnReorder}
         enabled={enableReorder}
-        renderItem={(item) => {
-          const _prayerBlock = item as PrayerBlock;
-          return <Block data-id="Block" prayerBlock={_prayerBlock} />;
-        }}
+        renderItem={(item) => <Block data-id="Block" prayerBlock={item} />}
       />
     </StyledPrayerBlockPreview>
   );

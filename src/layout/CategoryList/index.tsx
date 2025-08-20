@@ -51,19 +51,18 @@ export default function CategoriesList() {
         <ReorderableList
           items={categories}
           onReorder={handleOnReorder}
-          renderItem={(item: Reorderable) => {
-            const _category = item as Category;
+          renderItem={(item) => {
             return (
               <div className="item flex gap-[24px] py-[6px] items-center">
                 <DeleteButton
                   itemName="Category"
-                  onClick={() => deleteCategory(_category)}
+                  onClick={() => deleteCategory(item)}
                   icon
                 />
 
                 <CategoryListItem
-                  name={_category.name ?? "(empty)"}
-                  onSave={(name) => editCategory(_category, { name })}
+                  name={item.name ?? "(empty)"}
+                  onSave={(name) => editCategory(item, { name })}
                 />
               </div>
             );

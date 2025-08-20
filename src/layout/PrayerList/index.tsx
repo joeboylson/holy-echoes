@@ -60,10 +60,7 @@ export default function PrayerList({
           items={orderedPrayers}
           onReorder={handleOnReorder}
           enabled={enableReorder}
-          renderItem={(item) => {
-            const _prayer = item as Prayer;
-            return <PrayerListItem prayer={_prayer} />;
-          }}
+          renderItem={(item) => <PrayerListItem prayer={item} />}
         />
       </PrayerListItemsWrapper>
     </StyledPrayerList>

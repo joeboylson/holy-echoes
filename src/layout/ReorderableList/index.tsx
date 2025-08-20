@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { JSX, useEffect, useState } from "react";
-import { Reorderable } from "@/utils";
 import { DotsSix } from "@phosphor-icons/react";
 
 import {
@@ -8,21 +7,21 @@ import {
   StyledReorderableContainer,
 } from "./StyledComponents";
 
-interface _props {
-  items: Reorderable[];
-  onReorder: (items: Reorderable[]) => Promise<void>;
-  renderItem: (item: Reorderable) => JSX.Element;
+interface _props<T extends { id?: string; order: number }> {
+  items: T[];
+  onReorder: (items: T[]) => Promise<void>;
+  renderItem: (item: T) => JSX.Element;
   enabled?: boolean;
   itemClass?: string;
 }
 
-export default function ReorderableList({
+export default function ReorderableList<T extends { id?: string; order: number }>({
   items: initialItems,
   onReorder,
   renderItem,
   enabled = false,
   itemClass = "",
-}: _props) {
+}: _props<T>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [items, setItems] = useState(initialItems);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
