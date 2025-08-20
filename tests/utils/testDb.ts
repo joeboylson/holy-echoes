@@ -17,7 +17,7 @@ export const TEST_USERS = {
     email: "joeboylson@gmail.com", // UPDATE: Provide admin email here
   },
   USER: {
-    email: "joe@spotdx.com", // UPDATE: Provide regular user email here
+    email: "example@mail.com", // UPDATE: Provide regular user email here
   },
 } as const;
 

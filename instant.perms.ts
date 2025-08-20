@@ -18,15 +18,47 @@ const rules = {
 
   /**
    * --------------------------------------------------------------------------
-   * USERS
+   * ADMIN
    * --------------------------------------------------------------------------
    */
-  $users: {
+  admin: {
     allow: {
-      view: "isAdmin", // -- only admin users can see users
-      create: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
-      update: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
-      delete: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
+      view: "isAdmin",
+      create: "false", // records to be handled in dashboard only
+      update: "false", // records to be handled in dashboard only
+      delete: "false", // records to be handled in dashboard only
+    },
+    bind: [
+      "isAdmin",
+      "auth.email in ['joeboylson@gmail.com', 'tom@proall.us']",
+    ],
+  },
+
+  /**
+   * --------------------------------------------------------------------------
+   * BLOCK TYPES
+   * --------------------------------------------------------------------------
+   */
+  blockTypes: {
+    allow: {
+      view: "true",
+      create: "false", // records to be handled in the dashboard only
+      update: "false", // records to be handled in the dashboard only
+      delete: "false", // records to be handled in the dashboard only
+    },
+  },
+
+  /**
+   * --------------------------------------------------------------------------
+   * CATEGORIES
+   * --------------------------------------------------------------------------
+   */
+  categories: {
+    allow: {
+      view: "true",
+      create: "isAdmin",
+      update: "isAdmin",
+      delete: "isAdmin",
     },
     bind: [
       "isAdmin",
@@ -54,30 +86,12 @@ const rules = {
 
   /**
    * --------------------------------------------------------------------------
-   * ADMIN
+   * LITANY BLOCKS
    * --------------------------------------------------------------------------
    */
-  admin: {
+  litanyBlocks: {
     allow: {
-      view: "isAdmin",
-      create: "false", // records to be handled in dashboard only
-      update: "false", // records to be handled in dashboard only
-      delete: "false", // records to be handled in dashboard only
-    },
-    bind: [
-      "isAdmin",
-      "auth.email in ['joeboylson@gmail.com', 'tom@proall.us']",
-    ],
-  },
-
-  /**
-   * --------------------------------------------------------------------------
-   * PRAYERS
-   * --------------------------------------------------------------------------
-   */
-  prayers: {
-    allow: {
-      view: "data.published || isAdmin", // users can only see published prayers
+      view: "true",
       create: "isAdmin",
       update: "isAdmin",
       delete: "isAdmin",
@@ -108,26 +122,12 @@ const rules = {
 
   /**
    * --------------------------------------------------------------------------
-   * PRAYER BLOCKS
+   * PRAYERS
    * --------------------------------------------------------------------------
    */
-  blockTypes: {
+  prayers: {
     allow: {
-      view: "true",
-      create: "false", // records to be handled in the dashboard only
-      update: "false", // records to be handled in the dashboard only
-      delete: "false", // records to be handled in the dashboard only
-    },
-  },
-
-  /**
-   * --------------------------------------------------------------------------
-   * LITANY BLOCKS
-   * --------------------------------------------------------------------------
-   */
-  litanyBlocks: {
-    allow: {
-      view: "true",
+      view: "data.published || isAdmin", // users can only see published prayers
       create: "isAdmin",
       update: "isAdmin",
       delete: "isAdmin",
@@ -140,21 +140,27 @@ const rules = {
 
   /**
    * --------------------------------------------------------------------------
-   * CATEGORIES
+   * USERS
    * --------------------------------------------------------------------------
    */
-  categories: {
+  $users: {
     allow: {
-      view: "true",
-      create: "isAdmin",
-      update: "isAdmin",
-      delete: "isAdmin",
+      view: "isAdmin", // -- only admin users can see users
+      create: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
+      update: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
+      delete: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
     },
     bind: [
       "isAdmin",
       "auth.email in ['joeboylson@gmail.com', 'tom@proall.us']",
     ],
   },
+
+  /**
+   *
+   *
+   *
+   */
 } satisfies InstantRules;
 
 export default rules;

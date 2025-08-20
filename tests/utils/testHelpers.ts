@@ -109,8 +109,6 @@ export const testCreateAccess = async (
     const hasError =
       transactionResult.error !== undefined && transactionResult.error !== null;
 
-    console.log(transactionResult);
-
     return {
       userType,
       table,
@@ -127,6 +125,131 @@ export const testCreateAccess = async (
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
       transactionId: null,
+    };
+  }
+};
+
+// Helper to test update access for a specific table and user type
+export const testUpdateAccess = async (
+  table: string,
+  userType: UserType,
+  recordId: string,
+  updateData: Record<string, any>
+) => {
+  try {
+    const scopedDb = getDbForUserType(userType);
+
+    const transactionResult = await scopedDb.transact(
+      scopedDb.tx[table][recordId].update(updateData)
+    );
+
+    const hasError =
+      transactionResult.error !== undefined && transactionResult.error !== null;
+
+    return {
+      userType,
+      table,
+      recordId,
+      updateData,
+      success: !hasError,
+      error: hasError ? transactionResult.error : null,
+      transactionId: hasError ? null : transactionResult["tx-id"],
+    };
+  } catch (error) {
+    return {
+      userType,
+      table,
+      recordId,
+      updateData,
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      transactionId: null,
+    };
+  }
+};
+
+// Helper to test delete access for a specific table and user type
+export const testDeleteAccess = async (
+  table: string,
+  userType: UserType,
+  recordId: string
+) => {
+  try {
+    const scopedDb = getDbForUserType(userType);
+
+    const transactionResult = await scopedDb.transact(
+      scopedDb.tx[table][recordId].delete()
+    );
+
+    const hasError =
+      transactionResult.error !== undefined && transactionResult.error !== null;
+
+    return {
+      userType,
+      table,
+      recordId,
+      success: !hasError,
+      error: hasError ? transactionResult.error : null,
+      transactionId: hasError ? null : transactionResult["tx-id"],
+    };
+  } catch (error) {
+    return {
+      userType,
+      table,
+      recordId,
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      transactionId: null,
+    };
+  }
+};
+
+// Helper to test file upload for a specific user type
+export const testFileUpload = async (
+  userType: UserType,
+  fileName: string = "test-file.txt"
+) => {
+  try {
+    const scopedDb = getDbForUserType(userType);
+
+    // Add random string to filename to avoid conflicts
+    const randomSuffix = Math.random().toString(36).substring(2, 8);
+    const [name, extension] = fileName.split(".");
+    const uniqueFileName = `${name}-${randomSuffix}.${extension}`;
+
+    // Create a simple test file blob
+    const testContent = `Test file content ${Date.now()}`;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const file: any = new File([testContent], uniqueFileName, {
+      type: "text/plain",
+    });
+
+    // Upload file with proper options
+    const opts = {
+      contentType: file.type,
+      contentDisposition: "attachment",
+    };
+    
+    await scopedDb.storage.uploadFile(uniqueFileName, file, opts);
+
+    // If we get here, upload was successful
+    return {
+      userType,
+      fileName: uniqueFileName,
+      success: true,
+      error: null,
+      fileId: uniqueFileName,
+      uploadResult: "success",
+    };
+  } catch (error) {
+    return {
+      userType,
+      fileName: fileName,
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      fileId: null,
+      uploadResult: null,
     };
   }
 };
