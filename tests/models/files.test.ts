@@ -10,9 +10,6 @@ describe("Files Model Access Tests", () => {
   let fileId: string;
 
   describe("File Upload Tests", () => {
-    // NOTE: Storage upload permissions may not be enforced in test environment
-    // or may have separate configuration from database table permissions
-
     it("should allow admin to upload files", async () => {
       const result = await testFileUpload("admin", "admin-test-file.txt");
       expect(result.success).toBe(true);
@@ -20,18 +17,16 @@ describe("Files Model Access Tests", () => {
       expect(result.fileId).toBeTruthy();
     });
 
-    it("currently allows user to upload files (may be test env behavior)", async () => {
+    it("should NOT allow user to upload files", async () => {
       const result = await testFileUpload("user", "user-test-file.txt");
-      // TODO: This should be false in production - investigate storage permissions
-      expect(result.success).toBe(true);
-      expect(result.error).toBeNull();
+      expect(result.success).toBe(false);
+      expect(result.error).not.toBeNull();
     });
 
-    it("currently allows guest to upload files (may be test env behavior)", async () => {
+    it("should NOT allow guest to upload files", async () => {
       const result = await testFileUpload("guest", "guest-test-file.txt");
-      // TODO: This should be false in production - investigate storage permissions
-      expect(result.success).toBe(true);
-      expect(result.error).toBeNull();
+      expect(result.success).toBe(false);
+      expect(result.error).not.toBeNull();
     });
   });
 
@@ -65,7 +60,7 @@ describe("Files Model Access Tests", () => {
 
   describe("Update Access Tests", () => {
     it("should allow admin to update files", async () => {
-      const updateData = { name: "updated-file.txt" };
+      const updateData = { path: "updated/path/file.txt" };
       const result = await testUpdateAccess(
         "$files",
         "admin",
@@ -78,7 +73,7 @@ describe("Files Model Access Tests", () => {
     });
 
     it("should NOT allow user to update files", async () => {
-      const updateData = { name: "hacked-file.txt" };
+      const updateData = { path: "hacked/path/file.txt" };
       const result = await testUpdateAccess(
         "$files",
         "user",
@@ -90,7 +85,7 @@ describe("Files Model Access Tests", () => {
     });
 
     it("should NOT allow guest to update files", async () => {
-      const updateData = { name: "hacked-file.txt" };
+      const updateData = { path: "hacked/path/file.txt" };
       const result = await testUpdateAccess(
         "$files",
         "guest",
