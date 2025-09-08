@@ -26,7 +26,13 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
     prayerBlockId
       ? {
           prayerBlocks: {
-            litanyBlocks: {},
+            litanyBlocks: {
+              $: {
+                order: {
+                  order: "asc",
+                },
+              },
+            },
             $: { where: { id: prayerBlockId } },
           },
         }

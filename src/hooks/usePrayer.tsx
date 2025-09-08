@@ -12,7 +12,22 @@ export default function usePrayer(
     prayerId && !skip
       ? {
           prayers: {
-            prayerBlocks: { blockType: {}, litanyBlocks: {}, file: {} },
+            prayerBlocks: { 
+              blockType: {}, 
+              litanyBlocks: {
+                $: {
+                  order: {
+                    order: "asc",
+                  },
+                },
+              }, 
+              file: {},
+              $: {
+                order: {
+                  order: "asc",
+                },
+              },
+            },
             $: {
               where: {
                 id: prayerId,
