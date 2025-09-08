@@ -41,7 +41,7 @@ export default function Prayer() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen h-screen grid grid-cols-1 mx-auto content-start justify-items-start overflow-y-scroll">
+      <div className="w-screen h-screen grid grid-cols-1 mx-auto content-start justify-items-start">
         <NavigationHeader
           onPrevious={handlePrevious}
           onNext={handleNext}

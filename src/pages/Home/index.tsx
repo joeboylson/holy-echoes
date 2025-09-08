@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen grid grid-cols-1 mx-auto overflow-y-scroll gap-3 h-full content-start">
+      <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
         <div className="w-full h-[100px] mx-auto bg-[#0082cb] grid place-items-center shadow-lg z-10">
           <img src={Logo} alt="Holy Echoes App Logo" className="!w-[250px]" />
         </div>

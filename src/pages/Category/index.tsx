@@ -36,7 +36,7 @@ export default function Category() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen grid grid-cols-1 mx-auto overflow-y-scroll gap-3 h-full content-start">
+      <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
         <NavigationHeader
           backTo={Pages.HOME}
           onPrevious={handlePrevious}

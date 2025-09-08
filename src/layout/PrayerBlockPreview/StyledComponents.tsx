@@ -5,7 +5,8 @@ export const StyledPrayerBlockPreview = styled.div`
   height: calc(var(--header-height) - ${PRAYER_HEADER_HEIGHT}px);
   max-width: 600px;
   margin: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 24px;
 
   .container {
