@@ -4,6 +4,9 @@ import Logo from "@/assets/he-textlogo-white.png";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import { Link } from "react-router-dom";
+import FavoriteHomeItem from "@/layout/FavoriteHomeItem";
+
+console.debug(FavoriteHomeItem);
 
 export default function Home() {
   const { categoriesWithPrayers } = useCategories();
@@ -23,6 +26,11 @@ export default function Home() {
         <div className="px-6 w-full max-w-[600px] mx-auto pb-[100px]">
           <div className="py-6">
             <div className="grid gap-4 grid-cols-2">
+              {/**
+               * <FavoriteHomeItem />
+               * TODO: not yet...
+               * */}
+
               {categoriesWithPrayers.map((category) => (
                 <Link
                   key={category.id}

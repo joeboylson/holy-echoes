@@ -1,5 +1,12 @@
-import { id } from "@instantdb/admin";
-import { getDbAsAdmin, getDbAsUser, getDbAsGuest, UserType } from "./testDb";
+import { id, lookup } from "@instantdb/admin";
+import {
+  getDbAsAdmin,
+  getDbAsUser,
+  getDbAsGuest,
+  UserType,
+  getEmailForUserType,
+} from "./testDb";
+import { Favorite } from "@schema";
 
 // Helper function to get the appropriate database instance for user type
 export const getDbForUserType = (userType: UserType) => {
@@ -101,8 +108,9 @@ export const testCreateAccess = async (
   try {
     const scopedDb = getDbForUserType(userType);
 
+    const recordId = id();
     const transactionResult = await scopedDb.transact(
-      scopedDb.tx[table][id()].create(testData)
+      scopedDb.tx[table][recordId].create(testData)
     );
 
     const hasError =
@@ -115,6 +123,7 @@ export const testCreateAccess = async (
       success: !hasError,
       error: hasError ? transactionResult.error : null,
       transactionId: hasError ? null : transactionResult["tx-id"],
+      recordId,
     };
   } catch (error) {
     return {
@@ -124,6 +133,7 @@ export const testCreateAccess = async (
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
       transactionId: null,
+      recordId: "___",
     };
   }
 };
@@ -294,10 +304,81 @@ export const generateTestData = (table: string) => {
         inline: false,
       };
 
+    case "favorites":
+      return {
+        order: timestamp,
+      } as Favorite;
+
     default:
       return {
         name: `Test ${table} ${timestamp}`,
         order: timestamp,
       };
+  }
+};
+
+// Helper to create a favorite with proper user ownership linking
+export const testCreateFavoriteWithOwner = async (
+  userType: UserType,
+  testData?: Record<string, string | number | boolean>,
+  prayerId?: string
+) => {
+  try {
+    if (userType === "guest") {
+      return {
+        userType,
+        success: false,
+        error: "Guests cannot create favorites",
+        recordId: null,
+        transactionId: null,
+      };
+    }
+
+    const scopedDb = getDbForUserType(userType);
+    const email = getEmailForUserType(userType);
+    const favoriteId = id();
+    const favoriteData = testData || generateTestData("favorites");
+
+    // Create the favorite and link it to the user (owner) in one transaction
+    const transactions = [
+      scopedDb.tx.favorites[favoriteId].create(favoriteData),
+      scopedDb.tx.favorites[favoriteId].link({
+        owner: lookup("email", email),
+      }),
+    ];
+
+    // Also link to prayer if provided
+    if (prayerId) {
+      transactions.push(
+        scopedDb.tx.favorites[favoriteId].link({
+          prayer: prayerId,
+        })
+      );
+    }
+
+    const transactionResult = await scopedDb.transact(transactions);
+
+    const hasError =
+      transactionResult.error !== undefined && transactionResult.error !== null;
+
+    return {
+      userType,
+      testData: favoriteData,
+      success: !hasError,
+      error: hasError ? transactionResult.error : null,
+      transactionId: hasError ? null : transactionResult["tx-id"],
+      recordId: favoriteId,
+      linkedToPrayer: !!prayerId,
+    };
+  } catch (error) {
+    return {
+      userType,
+      testData: testData || {},
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      transactionId: null,
+      recordId: null,
+      linkedToPrayer: false,
+    };
   }
 };

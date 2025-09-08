@@ -40,4 +40,18 @@ export const getDbAsGuest = () => {
   return db.asUser({ guest: true });
 };
 
+// Helper function to get email for a user type
+export const getEmailForUserType = (userType: UserType) => {
+  switch (userType) {
+    case "admin":
+      return TEST_USERS.ADMIN.email;
+    case "user":
+      return TEST_USERS.USER.email;
+    case "guest":
+      throw new Error("Guest users do not have emails");
+    default:
+      throw new Error(`Unknown user type: ${userType}`);
+  }
+};
+
 export type UserType = "admin" | "user" | "guest";

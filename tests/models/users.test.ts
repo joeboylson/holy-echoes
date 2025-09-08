@@ -22,17 +22,17 @@ describe("Users Model Access Tests", () => {
       expect(userId).toBeTruthy();
     });
 
-    it("should NOT allow user to read users table", async () => {
+    it("should allow user to read users table", async () => {
       const result = await testReadAccess("$users", "user");
       expect(result.success).toBe(true);
-      expect(result.dataCount).toBe(0);
+      expect(result.dataCount).toBeGreaterThan(0);
       expect(result.error).toBeNull();
     });
 
-    it("should NOT allow guest to read users table", async () => {
+    it("should allow guest to read users table", async () => {
       const result = await testReadAccess("$users", "guest");
       expect(result.success).toBe(true);
-      expect(result.dataCount).toBe(0);
+      expect(result.dataCount).toBeGreaterThan(0);
       expect(result.error).toBeNull();
     });
   });

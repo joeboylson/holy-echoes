@@ -69,6 +69,10 @@ const _schema = i.schema({
       name: i.string().unique(), // Category names should be unique
       order: i.number().indexed(),
     }),
+
+    favorites: i.entity({
+      order: i.number().indexed(),
+    }),
   },
 
   links: {
@@ -106,6 +110,22 @@ const _schema = i.schema({
     prayerBlockLitany: {
       forward: { on: "litanyBlocks", has: "one", label: "prayerBlock" },
       reverse: { on: "prayerBlocks", has: "many", label: "litanyBlocks" },
+    },
+
+    // Favorites -> User relationship (many-to-one)
+    favoriteUser: {
+      forward: {
+        on: "favorites",
+        has: "one",
+        label: "owner",
+      },
+      reverse: { on: "$users", has: "many", label: "favorites" },
+    },
+
+    // Favorites -> Prayer relationship (many-to-one)
+    favoritePrayer: {
+      forward: { on: "favorites", has: "one", label: "prayer" },
+      reverse: { on: "prayers", has: "many", label: "favorites" },
     },
   },
 });
@@ -162,6 +182,13 @@ export type LitanyBlock = InstaQLEntity<
 
 // eslint-disable-next-line
 export type Category = InstaQLEntity<AppSchema, "categories", { prayers?: {} }>;
+
+// eslint-disable-next-line
+export type Favorite = InstaQLEntity<
+  AppSchema,
+  "favorites",
+  { owner?: {}; prayer?: {} }
+>;
 
 /**
  * TABLE NAMES

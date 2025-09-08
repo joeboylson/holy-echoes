@@ -145,15 +145,31 @@ const rules = {
    */
   $users: {
     allow: {
-      view: "isAdmin", // -- only admin users can see users
+      view: "true",
       create: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
       update: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
       delete: "false", // DO NOT CHANGE: these actions are for instantdb auth system only
     },
+  },
+
+  /**
+   * --------------------------------------------------------------------------
+   * FAVORITES
+   * --------------------------------------------------------------------------
+   */
+  favorites: {
     bind: [
-      "isAdmin",
-      "auth.email in ['joeboylson@gmail.com', 'tom@proall.us']",
+      "isOwner",
+      "auth.id != null && auth.id == data.owner",
+      "isAuthUser",
+      "auth.id != null",
     ],
+    allow: {
+      view: "isOwner",
+      create: "isAuthUser",
+      delete: "isOwner",
+      update: "isOwner",
+    },
   },
 
   /**

@@ -20,6 +20,9 @@ export default function usePrayers({
                 published: filterUnpublished == false ? undefined : true,
                 ["categories.id"]: filterByCategoryId,
               },
+              order: {
+                order: "asc",
+              },
             },
           },
         }
