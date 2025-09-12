@@ -32,7 +32,7 @@ enum LoginTabs {
   ENTER_MAGIC_CODE = "enter_magic_code",
 }
 
-export default function Login() {
+export default function AdminLogin() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<LoginTabs>(LoginTabs.ENTER_EMAIL);
   const [email, setEmail] = useState<string>();

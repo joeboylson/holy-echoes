@@ -2,14 +2,14 @@ import useUserFavorites from "@/hooks/useUserFavorites";
 import { Link } from "react-router-dom";
 
 export default function FavoriteHomeItem() {
-  const { favorites, userIsNotGuest } = useUserFavorites();
+  const { favorites } = useUserFavorites();
 
-  console.log({ userIsNotGuest });
+  console.log({ favorites });
 
   return (
     <Link
       key={"all"}
-      to={`#`}
+      to="/category/favorites"
       className="flex flex-col justify-between p-4 bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
     >
       <h2 className="text-lg font-semibold">Favorites</h2>

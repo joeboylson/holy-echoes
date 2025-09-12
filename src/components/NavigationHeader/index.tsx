@@ -1,16 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
+import FavoriteButton from "../FavoriteButton";
 
 interface NavigationHeaderProps {
   onPrevious?: () => void;
   onNext?: () => void;
   backTo: string;
+  prayerId?: string;
 }
 
 export default function NavigationHeader({
   onPrevious,
   onNext,
   backTo,
+  prayerId,
 }: NavigationHeaderProps) {
   const navigate = useNavigate();
 
@@ -23,7 +26,9 @@ export default function NavigationHeader({
         <ArrowLeft size={20} /> Back
       </button>
 
-      <div></div>
+      <div className="flex justify-end px-[20px]">
+        {prayerId && <FavoriteButton prayerId={prayerId} />}
+      </div>
 
       <div className="grid grid-cols-[24px_24px] gap-[24px] items-center h-6">
         {onPrevious ? (

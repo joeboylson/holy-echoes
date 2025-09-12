@@ -6,12 +6,49 @@ import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import useCategory from "@/hooks/useCategory";
 import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
+import useUserFavorites from "@/hooks/useUserFavorites";
+import FavoritePrayerItem from "@/components/FavoritePrayerItem";
+import styled from "styled-components";
+import { Reorderable, reorderReorderable } from "@/utils";
+import { Favorite, Prayer } from "@schema";
+import ReorderableList from "@/layout/ReorderableList";
+import { compact } from "lodash";
+import FavoritesCategory from "./FavoritesCategory";
+
+const StyledFavoritesList = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 12px;
+`;
+
+const FavoriteListItemsWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 4px;
+
+  .item {
+    border-bottom: 1px solid #ccc;
+  }
+`;
 
 export default function Category() {
   const { categoryId } = useParams();
   const navigate = useNavigate();
-  const { category, prevCategory, nextCategory, isLoading } =
-    useCategory(categoryId);
+  const { category, prevCategory, nextCategory, isLoading } = useCategory(
+    categoryId === "favorites" ? undefined : categoryId
+  );
+
+  const {
+    favorites,
+    isLoading: favoritesLoading,
+    userIsNotGuest,
+  } = useUserFavorites({
+    skip: categoryId !== "favorites",
+  });
+
   const { setStatusBarColor } = useStatusBar();
 
   useEffect(() => {
@@ -28,6 +65,12 @@ export default function Category() {
     return () => navigate(`/category/${nextCategory.id}`);
   }, [nextCategory, navigate]);
 
+  // Handle favorites special case
+  if (categoryId === "favorites") {
+    return <FavoritesCategory />;
+  }
+
+  // Handle regular categories
   if (isLoading) return <div>Loading...</div>;
 
   if (!category) {

@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
+import FavoriteButton from "@/components/FavoriteButton";
 
 export default function Prayer() {
   const { prayerId, categoryId } = useParams();
@@ -46,10 +47,16 @@ export default function Prayer() {
           onPrevious={handlePrevious}
           onNext={handleNext}
           backTo={categoryId ? `/category/${categoryId}` : "/home"}
+          prayerId={prayerId ?? ""}
         />
 
         {prayerId && (
-          <PrayerBlockPreview existingPrayer={prayer} key={prayerId} />
+          <div className="w-full relative">
+            <div className="absolute top-4 right-6 z-20"></div>
+            <div className="pt-[32px]">
+              <PrayerBlockPreview existingPrayer={prayer} key={prayerId} />
+            </div>
+          </div>
         )}
       </div>
     </LoggedInUserWrapper>

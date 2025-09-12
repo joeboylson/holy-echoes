@@ -1,7 +1,8 @@
 import Admin from "@/pages/Admin";
 import Configuration from "@/pages/Configuration";
 import Home from "@/pages/Home";
-import Login from "@/pages/Login";
+import AdminLogin from "@/pages/AdminLogin";
+import UserLogin from "@/pages/UserLogin";
 import Prayer from "@/pages/Prayer";
 import Category from "@/pages/Category";
 import { createBrowserRouter, Navigate } from "react-router-dom";
@@ -16,6 +17,7 @@ export enum Pages {
   SELECTED_ADMIN_PRAYER = "/admin/prayer/:prayerId",
   CONFIG = "/admin/config",
   LOGIN = "/admin/login",
+  USER_LOGIN = "/login",
 }
 
 export const router = createBrowserRouter([
@@ -53,6 +55,10 @@ export const router = createBrowserRouter([
   },
   {
     path: Pages.LOGIN,
-    element: <Login />,
+    element: <AdminLogin />,
+  },
+  {
+    path: Pages.USER_LOGIN,
+    element: <UserLogin />,
   },
 ]);

@@ -1,6 +1,5 @@
 import { db } from "@/database";
 import { id, lookup } from "@instantdb/react";
-import { useLoggedInUser } from "./useLoggedInUser";
 
 interface UseUserFavoritesOptions {
   skip?: boolean;
@@ -9,7 +8,7 @@ interface UseUserFavoritesOptions {
 export default function useUserFavorites({
   skip = false,
 }: UseUserFavoritesOptions = {}) {
-  const { user } = useLoggedInUser();
+  const { user } = db.useAuth();
 
   const { data, isLoading } = db.useQuery(
     !skip
@@ -19,8 +18,15 @@ export default function useUserFavorites({
               order: {
                 order: "asc",
               },
+              where: {
+                "prayer.id": {
+                  $isNull: false,
+                },
+              },
             },
-            prayer: {},
+            prayer: {
+              categories: {},
+            },
           },
         }
       : null
@@ -34,15 +40,12 @@ export default function useUserFavorites({
     }
 
     const favoriteId = id();
-    const maxOrder =
-      favorites.length > 0
-        ? Math.max(...favorites.map((f) => f.order || 0)) + 1
-        : 1;
+    const maxOrder = favorites.length;
 
     await db.transact([
       db.tx.favorites[favoriteId].create({ order: maxOrder }),
       db.tx.favorites[favoriteId].link({
-        owner: lookup("email", user.email),
+        owner: lookup("email", user?.email),
         prayer: prayerId,
       }),
     ]);
@@ -50,7 +53,7 @@ export default function useUserFavorites({
     return favoriteId;
   };
 
-  const userIsNotGuest = !!user?.id;
+  const userIsNotGuest = !!id;
 
   const removeFavorite = async (favoriteId: string) => {
     await db.transact(db.tx.favorites[favoriteId].delete());
