@@ -5,7 +5,6 @@ import { Pages } from "../../layout/App/router";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
-import Logo from "@/assets/he-textlogo-white.png";
 
 enum LoginStep {
   ENTER_EMAIL = "enter_email",
@@ -18,7 +17,6 @@ export default function UserLogin() {
   const { setStatusBarColor } = useStatusBar();
   const [step, setStep] = useState<LoginStep>(LoginStep.ENTER_EMAIL);
   const [email, setEmail] = useState<string>("");
-  const [emailIsSent, setEmailIsSent] = useState(false);
   const [code, setCode] = useState<string>("");
   const [message, setMessage] = useState<string>();
   const [returnTo, setReturnTo] = useState<string>();
@@ -50,11 +48,11 @@ export default function UserLogin() {
 
     try {
       await db.auth.sendMagicCode({ email: email.trim() });
-      setEmailIsSent(true);
       setStep(LoginStep.ENTER_CODE);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { body?: { message?: string }; message?: string };
       setMessage(
-        "Oops, there was an error: " + (err.body?.message || err.message)
+        "Oops, there was an error: " + (error.body?.message || error.message)
       );
     } finally {
       setIsLoading(false);
@@ -81,9 +79,10 @@ export default function UserLogin() {
       });
       // Redirect to the return URL or home
       navigate(returnTo || Pages.HOME);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { body?: { message?: string }; message?: string };
       setMessage(
-        "Oops, there was an error: " + (err.body?.message || err.message)
+        "Oops, there was an error: " + (error.body?.message || error.message)
       );
     } finally {
       setIsLoading(false);

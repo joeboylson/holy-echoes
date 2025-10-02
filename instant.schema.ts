@@ -144,49 +144,49 @@ export default schema;
  * ENTITY TYPES
  */
 
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type User = InstaQLEntity<AppSchema, "$users", { admin?: {} }>;
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type File = InstaQLEntity<AppSchema, "$files", { prayerBlocks?: {} }>;
 
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type Admin = InstaQLEntity<AppSchema, "admin", { $user?: {} }>;
 
 export type Prayer = InstaQLEntity<
   AppSchema,
   "prayers",
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   { categories?: {}; prayerBlocks?: {} }
 >;
 
 export type PrayerBlock = InstaQLEntity<
   AppSchema,
   "prayerBlocks",
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   { prayer?: {}; blockType?: {}; file?: {}; litanyBlocks?: {} }
 >;
 
 export type BlockType = InstaQLEntity<
   AppSchema,
   "blockTypes",
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   { prayerBlocks?: {} }
 >;
 
 export type LitanyBlock = InstaQLEntity<
   AppSchema,
   "litanyBlocks",
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   { prayerBlock?: {} }
 >;
 
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type Category = InstaQLEntity<AppSchema, "categories", { prayers?: {} }>;
 
-// eslint-disable-next-line
 export type Favorite = InstaQLEntity<
   AppSchema,
   "favorites",
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   { owner?: {}; prayer?: {} }
 >;
 

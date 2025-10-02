@@ -5,7 +5,6 @@ import { useEffect, useMemo } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
-import FavoriteButton from "@/components/FavoriteButton";
 
 export default function Prayer() {
   const { prayerId, categoryId } = useParams();

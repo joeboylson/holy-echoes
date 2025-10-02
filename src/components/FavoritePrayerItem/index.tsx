@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import type { Favorite, Prayer } from "@schema";
+import type { Favorite } from "@schema";
 import { Link } from "react-router-dom";
 import { Pages } from "@/layout/App/router";
-import { compact, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import { useMemo } from "react";
 
 const StyledPrayerListItem = styled.div`

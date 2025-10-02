@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { id } from "@instantdb/admin";
 import {
-  testCreateAccess,
   testReadAccess,
   testUpdateAccess,
   testDeleteAccess,
@@ -148,8 +147,12 @@ describe("Favorites Model Tests", () => {
 
       // Verify complete isolation between users
       if (userResult.data && adminResult.data) {
-        const userFavoriteIds = userResult.data.map((fav: any) => fav.id);
-        const adminFavoriteIds = adminResult.data.map((fav: any) => fav.id);
+        const userFavoriteIds = userResult.data.map(
+          (fav: { id: string }) => fav.id
+        );
+        const adminFavoriteIds = adminResult.data.map(
+          (fav: { id: string }) => fav.id
+        );
 
         // No overlap between user and admin favorites
         const hasOverlap = userFavoriteIds.some((id: string) =>

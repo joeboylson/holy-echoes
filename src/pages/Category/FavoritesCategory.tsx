@@ -8,7 +8,6 @@ import FavoritePrayerItem from "@/components/FavoritePrayerItem";
 import { Reorderable, reorderReorderable } from "@/utils";
 import { Favorite } from "@schema";
 import ReorderableList from "@/layout/ReorderableList";
-import { compact } from "lodash";
 
 export default function FavoritesCategory() {
   const {
