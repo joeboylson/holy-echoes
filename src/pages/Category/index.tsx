@@ -7,12 +7,15 @@ import useCategory from "@/hooks/useCategory";
 import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
 import FavoritesCategory from "./FavoritesCategory";
+import AllPrayersCategory from "./AllPrayersCategory";
 
 export default function Category() {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const { category, prevCategory, nextCategory, isLoading } = useCategory(
-    categoryId === "favorites" ? undefined : categoryId
+    categoryId === "favorites" || categoryId === "all-prayers"
+      ? undefined
+      : categoryId
   );
 
   const { setStatusBarColor } = useStatusBar();
@@ -31,9 +34,13 @@ export default function Category() {
     return () => navigate(`/category/${nextCategory.id}`);
   }, [nextCategory, navigate]);
 
-  // Handle favorites special case
+  // Handle special cases
   if (categoryId === "favorites") {
     return <FavoritesCategory />;
+  }
+
+  if (categoryId === "all-prayers") {
+    return <AllPrayersCategory />;
   }
 
   // Handle regular categories

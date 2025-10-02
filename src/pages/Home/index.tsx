@@ -5,6 +5,7 @@ import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import { Link } from "react-router-dom";
 import FavoriteHomeItem from "@/layout/FavoriteHomeItem";
+import AllPrayersHomeItem from "@/layout/AllPrayersHomeItem";
 
 export default function Home() {
   const { categoriesWithPrayers } = useCategories();
@@ -25,6 +26,7 @@ export default function Home() {
           <div className="py-6">
             <div className="grid gap-4 grid-cols-2">
               <FavoriteHomeItem />
+              <AllPrayersHomeItem />
 
               {categoriesWithPrayers.map((category) => (
                 <Link

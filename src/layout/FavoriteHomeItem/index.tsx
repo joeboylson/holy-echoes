@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 export default function FavoriteHomeItem() {
   const { favorites } = useUserFavorites();
 
-  console.log({ favorites });
-
   return (
     <Link
       key={"all"}
