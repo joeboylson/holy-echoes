@@ -1,6 +1,7 @@
 import { WithChildren } from "../../types";
 import { db } from "@/database";
 import { UserContext } from "../AdminAccessWrapper";
+import BottomNav from "@/components/BottomNav";
 
 export default function LoggedInUserWrapper({ children }: WithChildren) {
   return (
@@ -13,6 +14,7 @@ export default function LoggedInUserWrapper({ children }: WithChildren) {
           {children}
         </UserContext.Provider>
       </db.SignedOut>
+      <BottomNav />
     </div>
   );
 }
