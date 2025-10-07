@@ -38,6 +38,7 @@ export default function Header() {
         <nav className="flex gap-[12px]">
           <NavLink to={Pages.ADMIN}>Prayer Dashboard</NavLink>
           <NavLink to={Pages.CONFIG}>Configuration</NavLink>
+          <NavLink to={Pages.ALL_PRAYER_BLOCKS}>All Prayer Blocks</NavLink>
         </nav>
       </div>
       <button onClick={handleLogout}>Logout</button>

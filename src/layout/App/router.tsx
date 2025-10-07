@@ -1,5 +1,6 @@
 import Admin from "@/pages/Admin";
 import Configuration from "@/pages/Configuration";
+import AllPrayerBlocks from "@/pages/AllPrayerBlocks";
 import Home from "@/pages/Home";
 import AdminLogin from "@/pages/AdminLogin";
 import UserLogin from "@/pages/UserLogin";
@@ -20,6 +21,7 @@ export enum Pages {
   ADMIN = "/admin/prayer",
   SELECTED_ADMIN_PRAYER = "/admin/prayer/:prayerId",
   CONFIG = "/admin/config",
+  ALL_PRAYER_BLOCKS = "/admin/blocks",
   LOGIN = "/admin/login",
   USER_LOGIN = "/login",
 }
@@ -48,6 +50,10 @@ export const router = createBrowserRouter([
   {
     path: Pages.CONFIG,
     element: <Configuration />,
+  },
+  {
+    path: Pages.ALL_PRAYER_BLOCKS,
+    element: <AllPrayerBlocks />,
   },
   {
     path: Pages.SELECTED_ADMIN_PRAYER,
