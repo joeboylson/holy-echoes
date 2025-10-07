@@ -3,7 +3,7 @@ import { db } from "@/database";
 export default function useSearch(searchTerm: string) {
   const trimmedSearch = searchTerm.trim();
   const isValidSearch = trimmedSearch.length >= 3;
-  const searchPattern = `%${trimmedSearch.toLowerCase()}%`;
+  const searchPattern = `%${trimmedSearch}%`;
 
   // Only fetch if search term is at least 3 characters
   const { data: prayerData, isLoading: prayersLoading } = db.useQuery(
@@ -13,7 +13,7 @@ export default function useSearch(searchTerm: string) {
             $: {
               where: {
                 published: true,
-                name: { $like: searchPattern },
+                name: { $ilike: searchPattern },
               },
             },
           },
@@ -28,7 +28,7 @@ export default function useSearch(searchTerm: string) {
             prayer: {},
             $: {
               where: {
-                text: { $like: searchPattern },
+                text: { $ilike: searchPattern },
               },
             },
           },
