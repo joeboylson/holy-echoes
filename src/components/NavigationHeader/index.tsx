@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
 import FavoriteButton from "../FavoriteButton";
+import { themeClasses } from "@/styles/theme";
 
 interface NavigationHeaderProps {
   onPrevious?: () => void;
@@ -18,7 +19,7 @@ export default function NavigationHeader({
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-[50px] mx-auto bg-[#0082cb] grid grid-cols-[90px_1fr_72px] items-center px-6 shadow-lg z-10">
+    <div className={`w-full h-[50px] mx-auto ${themeClasses.header} grid grid-cols-[90px_1fr_72px] items-center px-6 shadow-lg z-10`}>
       <button
         onClick={() => navigate(backTo)}
         className="!flex items-center gap-2 !text-white no-underline font-medium hover:underline !bg-transparent !border-none cursor-pointer"

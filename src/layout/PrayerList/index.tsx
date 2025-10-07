@@ -21,7 +21,7 @@ const PrayerListItemsWrapper = styled.div`
   gap: 4px;
 
   .item {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--color-border);
   }
 `;
 

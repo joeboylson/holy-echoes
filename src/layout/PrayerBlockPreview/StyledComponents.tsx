@@ -13,7 +13,8 @@ export const StyledPrayerBlockPreview = styled.div`
     display: grid;
     width: 100%;
     grid-template-rows: 1fr 24px;
-    background-color: #fff;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     align-content: start;
     overflow-x: hidden;
   }
