@@ -1,14 +1,13 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
 import { db } from "@/database";
-import { UserContext } from "@/layout/AdminAccessWrapper";
 
 export default function Profile() {
   const { setStatusBarColor } = useStatusBar();
-  const { user } = useContext(UserContext);
+  const { user } = db.useAuth();
 
   useEffect(() => {
     setStatusBarColor("#0082cb");
