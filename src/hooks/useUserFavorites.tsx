@@ -19,7 +19,7 @@ export default function useUserFavorites({
                 order: "asc",
               },
               where: {
-                "prayer.id": {
+                prayer: {
                   $isNull: false,
                 },
               },
