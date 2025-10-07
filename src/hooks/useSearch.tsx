@@ -11,6 +11,7 @@ export default function useSearch(searchTerm: string) {
       ? {
           prayers: {
             prayerBlocks: {
+              blockType: {},
               litanyBlocks: {},
             },
             $: {
