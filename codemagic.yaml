@@ -9,6 +9,8 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.holyechoes.app
+      groups:
+        - Holy Echoes
       vars:
         # Ionic Xcode worskspace and scheme
         XCODE_WORKSPACE: "App.xcworkspace"
