@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useCategories from "@/hooks/useCategories";
-import Logo from "@/assets/he-textlogo-white.png";
+import Logo from "@/assets/he-icon-white.png";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ export default function Home() {
     <LoggedInUserWrapper>
       <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
         <div className="w-full h-[100px] mx-auto bg-[#0082cb] grid place-items-center shadow-lg z-10">
-          <img src={Logo} alt="Holy Echoes App Logo" className="!w-[250px]" />
+          <img src={Logo} alt="Holy Echoes App Logo" className="!w-[60px] !h-[60px] object-contain" />
         </div>
 
         <div className="px-6 w-full max-w-[600px] mx-auto pb-[100px]">

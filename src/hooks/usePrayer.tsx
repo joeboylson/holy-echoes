@@ -43,7 +43,7 @@ export default function usePrayer(
   const { prayers: allPrayers, isLoading: allPrayersLoading } = usePrayers({
     filterUnpublished: true,
     filterByCategoryId:
-      categoryId === "favorites" || categoryId === "all-prayers"
+      categoryId === "favorites" || categoryId === "all-prayers" || categoryId === "search"
         ? undefined
         : categoryId,
     skip: skip || skipNextPrevious, // Skip if usePrayer is skipped or navigation not needed

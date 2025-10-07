@@ -1,6 +1,6 @@
 import PrayerBlockPreview from "@/layout/PrayerBlockPreview";
 import usePrayer from "@/hooks/usePrayer";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
@@ -8,6 +8,8 @@ import NavigationHeader from "@/components/NavigationHeader";
 
 export default function Prayer() {
   const { prayerId, categoryId } = useParams();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("q");
   const navigate = useNavigate();
   const { prayer, prevNextPrayers, prayerLoading } = usePrayer(
     prayerId,
@@ -29,13 +31,17 @@ export default function Prayer() {
 
   const handlePrevious = useMemo(() => {
     if (!prevPrayer?.id || !categoryId) return undefined;
-    return () => navigate(`/category/${categoryId}/prayer/${prevPrayer.id}`);
-  }, [prevPrayer, categoryId, navigate]);
+    const url = `/category/${categoryId}/prayer/${prevPrayer.id}`;
+    const urlWithQuery = searchQuery ? `${url}?q=${encodeURIComponent(searchQuery)}` : url;
+    return () => navigate(urlWithQuery);
+  }, [prevPrayer, categoryId, searchQuery, navigate]);
 
   const handleNext = useMemo(() => {
     if (!nextPrayer?.id || !categoryId) return undefined;
-    return () => navigate(`/category/${categoryId}/prayer/${nextPrayer.id}`);
-  }, [nextPrayer, categoryId, navigate]);
+    const url = `/category/${categoryId}/prayer/${nextPrayer.id}`;
+    const urlWithQuery = searchQuery ? `${url}?q=${encodeURIComponent(searchQuery)}` : url;
+    return () => navigate(urlWithQuery);
+  }, [nextPrayer, categoryId, searchQuery, navigate]);
 
   if (prayerLoading) return <p>Loading...</p>;
 
@@ -45,7 +51,13 @@ export default function Prayer() {
         <NavigationHeader
           onPrevious={handlePrevious}
           onNext={handleNext}
-          backTo={categoryId ? `/category/${categoryId}` : "/home"}
+          backTo={
+            categoryId === "search" && searchQuery
+              ? `/search?q=${encodeURIComponent(searchQuery)}`
+              : categoryId
+              ? `/category/${categoryId}`
+              : "/home"
+          }
           prayerId={prayerId ?? ""}
         />
 

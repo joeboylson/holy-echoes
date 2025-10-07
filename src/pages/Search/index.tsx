@@ -6,16 +6,20 @@ import { Pages } from "@/layout/App/router";
 import { useDebounce } from "@/hooks/useDebounce";
 import useSearch from "@/hooks/useSearch";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import markdownit from "markdown-it";
+
+const md = markdownit({ html: true });
 
 export default function Search() {
   const { setStatusBarColor } = useStatusBar();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
+  const initialQuery = searchParams.get("q") || "";
+  const [searchTerm, setSearchTerm] = useState(initialQuery);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { prayerResults, prayerBlockResults, isLoading } = useSearch(
-    debouncedSearchTerm
-  );
+  const { prayerResults, prayerBlockResults, isLoading } =
+    useSearch(debouncedSearchTerm);
 
   useEffect(() => {
     setStatusBarColor("#0082cb");
@@ -38,6 +42,52 @@ export default function Search() {
         )}
       </>
     );
+  };
+
+  const highlightMarkdown = (text: string, query: string) => {
+    if (!query.trim()) {
+      return { __html: md.render(text) };
+    }
+
+    // Find the first match and extract surrounding context
+    const lowerText = text.toLowerCase();
+    const lowerQuery = query.toLowerCase();
+    const matchIndex = lowerText.indexOf(lowerQuery);
+
+    if (matchIndex === -1) {
+      return { __html: md.render(text) };
+    }
+
+    // Extract 25 characters before and after the match
+    let start = Math.max(0, matchIndex - 25);
+    let end = Math.min(text.length, matchIndex + query.length + 25);
+    let snippet = text.substring(start, end);
+
+    // If snippet contains line breaks, just show the line with the match
+    if (snippet.includes('\n')) {
+      const beforeMatch = text.substring(0, matchIndex);
+      const afterMatch = text.substring(matchIndex);
+      const lineStart = beforeMatch.lastIndexOf('\n') + 1;
+      const lineEnd = afterMatch.indexOf('\n');
+      const lineEndPos = lineEnd === -1 ? text.length : matchIndex + lineEnd;
+
+      start = lineStart;
+      end = lineEndPos;
+      snippet = text.substring(start, end);
+    }
+
+    // Add ellipsis if truncated
+    const prefix = start > 0 ? "..." : "";
+    const suffix = end < text.length ? "..." : "";
+    const fullSnippet = prefix + snippet + suffix;
+
+    // Highlight the query in the snippet
+    const highlightedText = fullSnippet.replace(
+      new RegExp(`(${query})`, "gi"),
+      '<mark class="bg-yellow-200">$1</mark>'
+    );
+
+    return { __html: md.render(highlightedText) };
   };
 
   return (
@@ -65,48 +115,58 @@ export default function Search() {
             <>
               {/* Prayer Results */}
               {prayerResults.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="text-xl font-semibold mb-4">
-                    Prayers ({prayerResults.length})
-                  </h2>
-                  <div className="space-y-2">
-                    {prayerResults.map((prayer) => (
+                <div className="space-y-2">
+                  {prayerResults.map((prayer) => {
+                    // Find first block with text content (likely a title/body block)
+                    const textBlock = prayer.prayerBlocks?.find(
+                      (block) => block.text
+                    );
+                    const previewText = textBlock?.text
+                      ? textBlock.text.substring(0, 50) +
+                        (textBlock.text.length > 50 ? "..." : "")
+                      : "";
+
+                    return (
                       <Link
                         key={prayer.id}
-                        to={`/prayer/${prayer.id}`}
+                        to={`/category/search/prayer/${prayer.id}?q=${encodeURIComponent(debouncedSearchTerm)}`}
                         className="block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
                       >
-                        <div className="font-medium">
+                        <div className="text-lg font-medium">
                           {highlightText(prayer.name, debouncedSearchTerm)}
                         </div>
+                        {previewText && (
+                          <div className="text-sm text-gray-500 mt-1">
+                            {previewText}
+                          </div>
+                        )}
                       </Link>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
               )}
 
               {/* Prayer Block Results */}
               {prayerBlockResults.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-4">
-                    Prayer Blocks ({prayerBlockResults.length})
-                  </h2>
-                  <div className="space-y-2">
-                    {prayerBlockResults.map((block) => (
-                      <Link
-                        key={block.id}
-                        to={`/prayer/${block.prayer?.id}`}
-                        className="block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
-                      >
-                        <div className="font-medium text-sm text-gray-600 mb-1">
-                          {block.prayer?.name}
-                        </div>
-                        <div className="text-sm">
-                          {highlightText(block.text || "", debouncedSearchTerm)}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                <div className="space-y-2">
+                  {prayerBlockResults.map((block) => (
+                    <Link
+                      key={block.id}
+                      to={`/category/search/prayer/${block.prayer?.id}?q=${encodeURIComponent(debouncedSearchTerm)}`}
+                      className="block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
+                    >
+                      <div className="text-lg font-medium text-gray-900 mb-1">
+                        {block.prayer?.name}
+                      </div>
+                      <div
+                        className="text-sm"
+                        dangerouslySetInnerHTML={highlightMarkdown(
+                          block.text || "",
+                          debouncedSearchTerm
+                        )}
+                      />
+                    </Link>
+                  ))}
                 </div>
               )}
 

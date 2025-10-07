@@ -36,7 +36,7 @@ const _schema = i.schema({
     }),
 
     prayers: i.entity({
-      name: i.string().indexed(),
+      name: i.string(),
       order: i.number().indexed(),
       published: i.boolean().indexed(),
       // NOTE: createdAt and updatedAt could be added for audit trail
@@ -45,7 +45,7 @@ const _schema = i.schema({
     }),
 
     prayerBlocks: i.entity({
-      text: i.string().optional().indexed(), // Some blocks might not have text (e.g., images)
+      text: i.string().optional(), // Some blocks might not have text (e.g., images)
       order: i.number().indexed(),
       reference: i.string().optional(), // Not all blocks have references
       spaceAbove: i.boolean().optional(),

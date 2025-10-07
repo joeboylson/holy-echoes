@@ -7,6 +7,7 @@ import { StyledPrayerBlockPreview } from "./StyledComponents";
 import { Reorderable, reorderReorderable } from "@/utils";
 import { useMemo } from "react";
 import usePrayer from "@/hooks/usePrayer";
+import heIconBlue from "@/assets/he-icon-blue.png";
 
 interface _props {
   filterUnpublished?: boolean;
@@ -54,6 +55,9 @@ export default function PrayerBlockPreview({
         enabled={enableReorder}
         renderItem={(item) => <Block data-id="Block" prayerBlock={item} />}
       />
+      <div className="flex justify-center pt-12 pb-12">
+        <img src={heIconBlue} alt="Holy Echoes" className="w-[50px] h-[50px] object-contain" />
+      </div>
     </StyledPrayerBlockPreview>
   );
 }

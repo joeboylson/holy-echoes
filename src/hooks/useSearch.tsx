@@ -1,19 +1,21 @@
 import { db } from "@/database";
+import { useMemo } from "react";
 
 export default function useSearch(searchTerm: string) {
   const trimmedSearch = searchTerm.trim();
   const isValidSearch = trimmedSearch.length >= 3;
-  const searchPattern = `%${trimmedSearch}%`;
 
-  // Only fetch if search term is at least 3 characters
-  const { data: prayerData, isLoading: prayersLoading } = db.useQuery(
+  // Fetch all prayers with prayer blocks and litany blocks
+  const { data, isLoading } = db.useQuery(
     isValidSearch
       ? {
           prayers: {
+            prayerBlocks: {
+              litanyBlocks: {},
+            },
             $: {
               where: {
                 published: true,
-                name: { $ilike: searchPattern },
               },
             },
           },
@@ -21,24 +23,71 @@ export default function useSearch(searchTerm: string) {
       : null
   );
 
-  const { data: blockData, isLoading: blocksLoading } = db.useQuery(
-    isValidSearch
-      ? {
-          prayerBlocks: {
-            prayer: {},
-            $: {
-              where: {
-                text: { $ilike: searchPattern },
-              },
-            },
-          },
+  // Filter prayers by name
+  const prayerResults = useMemo(() => {
+    if (!isValidSearch || !data?.prayers) return [];
+
+    const lowerSearch = trimmedSearch.toLowerCase();
+    return data.prayers.filter((prayer) =>
+      prayer.name.toLowerCase().includes(lowerSearch)
+    );
+  }, [data, trimmedSearch, isValidSearch]);
+
+  // Filter prayer blocks by text or litany content
+  const prayerBlockResults = useMemo(() => {
+    if (!isValidSearch || !data?.prayers) return [];
+
+    const lowerSearch = trimmedSearch.toLowerCase();
+    const blocks: any[] = [];
+    const seenPrayerIds = new Set<string>();
+
+    data.prayers.forEach((prayer) => {
+      prayer.prayerBlocks?.forEach((block) => {
+        // Skip if we've already added a block from this prayer
+        if (seenPrayerIds.has(prayer.id)) return;
+
+        // Skip image/icon blocks
+        const blockTypeName = block.blockType?.name;
+        if (
+          blockTypeName === "Image" ||
+          blockTypeName === "Small Image" ||
+          blockTypeName === "Icon"
+        ) {
+          return;
         }
-      : null
-  );
+
+        // Check block text
+        if (block.text && block.text.toLowerCase().includes(lowerSearch)) {
+          blocks.push({ ...block, prayer });
+          seenPrayerIds.add(prayer.id);
+          return;
+        }
+
+        // Check litany blocks (call and response)
+        if (block.litanyBlocks && block.litanyBlocks.length > 0) {
+          const hasMatch = block.litanyBlocks.some((litany) => {
+            const callMatch =
+              litany.call && litany.call.toLowerCase().includes(lowerSearch);
+            const responseMatch =
+              litany.response &&
+              litany.response.toLowerCase().includes(lowerSearch);
+            return callMatch || responseMatch;
+          });
+
+          if (hasMatch) {
+            blocks.push({ ...block, prayer });
+            seenPrayerIds.add(prayer.id);
+          }
+        }
+      });
+    });
+
+    return blocks;
+  }, [data, trimmedSearch, isValidSearch]);
 
   return {
-    prayerResults: prayerData?.prayers ?? [],
-    prayerBlockResults: blockData?.prayerBlocks ?? [],
-    isLoading: prayersLoading || blocksLoading,
+    prayerResults,
+    prayerBlockResults,
+    isLoading: isValidSearch ? isLoading : false,
   };
 }
