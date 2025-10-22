@@ -9,6 +9,7 @@ import { Reorderable, reorderReorderable } from "@/utils";
 import { Favorite } from "@schema";
 import ReorderableList from "@/layout/ReorderableList";
 import ScrollablePageLayout from "@/components/ScrollablePageLayout";
+import LoginPrompt from "@/layout/LoginPrompt";
 
 export default function FavoritesCategory() {
   const {
@@ -30,24 +31,7 @@ export default function FavoritesCategory() {
       <LoggedInUserWrapper>
         <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
           <div className="px-6 w-full max-w-[600px] mx-auto flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <h2 className="text-xl font-semibold mb-4">
-                Please log in to view favorites
-              </h2>
-              <p className="text-gray-600 mb-6">
-                You need to be logged in to save and view your favorite prayers.
-              </p>
-              <button
-                onClick={() =>
-                  (window.location.href = `/login?returnTo=${encodeURIComponent(
-                    "/category/favorites"
-                  )}`)
-                }
-                className="bg-[#0082cb] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#006ba6] transition-colors"
-              >
-                Log In
-              </button>
-            </div>
+            <LoginPrompt returnTo="/category/favorites" />
           </div>
         </ScrollablePageLayout>
       </LoggedInUserWrapper>

@@ -53,7 +53,7 @@ export default function useUserFavorites({
     return favoriteId;
   };
 
-  const userIsNotGuest = !!id;
+  const userIsNotGuest = !!user?.id;
 
   const removeFavorite = async (favoriteId: string) => {
     await db.transact(db.tx.favorites[favoriteId].delete());

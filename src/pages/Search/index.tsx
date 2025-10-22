@@ -65,11 +65,11 @@ export default function Search() {
     let snippet = text.substring(start, end);
 
     // If snippet contains line breaks, just show the line with the match
-    if (snippet.includes('\n')) {
+    if (snippet.includes("\n")) {
       const beforeMatch = text.substring(0, matchIndex);
       const afterMatch = text.substring(matchIndex);
-      const lineStart = beforeMatch.lastIndexOf('\n') + 1;
-      const lineEnd = afterMatch.indexOf('\n');
+      const lineStart = beforeMatch.lastIndexOf("\n") + 1;
+      const lineEnd = afterMatch.indexOf("\n");
       const lineEndPos = lineEnd === -1 ? text.length : matchIndex + lineEnd;
 
       start = lineStart;
@@ -93,9 +93,12 @@ export default function Search() {
 
   return (
     <LoggedInUserWrapper>
-      <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
+      <ScrollablePageLayout
+        variant="50"
+        header={<NavigationHeader backTo={Pages.HOME} />}
+      >
         <div className="px-6 w-full max-w-[600px] mx-auto">
-          <div className="mb-6">
+          <div className="my-6">
             <Input
               type="text"
               placeholder="Search prayers..."
@@ -128,7 +131,9 @@ export default function Search() {
                     return (
                       <Link
                         key={prayer.id}
-                        to={`/category/search/prayer/${prayer.id}?q=${encodeURIComponent(debouncedSearchTerm)}`}
+                        to={`/category/search/prayer/${
+                          prayer.id
+                        }?q=${encodeURIComponent(debouncedSearchTerm)}`}
                         className="block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
                       >
                         <div className="text-lg font-medium">
@@ -151,7 +156,9 @@ export default function Search() {
                   {prayerBlockResults.map((block) => (
                     <Link
                       key={block.id}
-                      to={`/category/search/prayer/${block.prayer?.id}?q=${encodeURIComponent(debouncedSearchTerm)}`}
+                      to={`/category/search/prayer/${
+                        block.prayer?.id
+                      }?q=${encodeURIComponent(debouncedSearchTerm)}`}
                       className="block p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
                     >
                       <div className="text-lg font-medium text-gray-900 mb-1">
