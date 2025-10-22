@@ -5,6 +5,7 @@ import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
 import { db } from "@/database";
 import ScrollablePageLayout from "@/components/ScrollablePageLayout";
+import { Button } from "@/components/ui/button";
 
 export default function Profile() {
   const { setStatusBarColor } = useStatusBar();
@@ -36,12 +37,13 @@ export default function Profile() {
                   <p className="text-lg text-gray-900">{user.email}</p>
                 </div>
 
-                <button
+                <Button
+                  variant="destructive"
                   onClick={handleSignOut}
-                  className="w-full bg-red-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-red-700 transition-colors"
+                  className="w-full"
                 >
                   Sign Out
-                </button>
+                </Button>
               </>
             ) : (
               <div className="text-center py-8">

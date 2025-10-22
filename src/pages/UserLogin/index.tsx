@@ -5,6 +5,7 @@ import { Pages } from "../../layout/App/router";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
+import { Button } from "@/components/ui/button";
 
 enum LoginStep {
   ENTER_EMAIL = "enter_email",
@@ -139,13 +140,15 @@ export default function UserLogin() {
                       />
                     </div>
 
-                    <button
+                    <Button
+                      variant="primary"
+                      size="lg"
                       onClick={handleSubmitEmail}
                       disabled={isLoading || !email.trim()}
-                      className="w-full bg-[#0082cb] text-white py-4 px-4 rounded-lg font-medium hover:bg-[#006ba6] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors text-lg"
+                      className="w-full text-lg"
                     >
                       {isLoading ? "Sending..." : "Send Code"}
-                    </button>
+                    </Button>
                   </div>
 
                   <div className="text-center text-sm text-gray-500 leading-relaxed">
@@ -197,21 +200,24 @@ export default function UserLogin() {
                       />
                     </div>
 
-                    <button
+                    <Button
+                      variant="primary"
+                      size="lg"
                       onClick={handleSubmitCode}
                       disabled={isLoading || code.length !== 6}
-                      className="w-full bg-[#0082cb] text-white py-4 px-4 rounded-lg font-medium hover:bg-[#006ba6] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors text-lg"
+                      className="w-full text-lg"
                     >
                       {isLoading ? "Signing In..." : "Sign In"}
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
+                      variant="secondary"
                       onClick={handleBackToEmail}
                       disabled={isLoading}
-                      className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full"
                     >
                       Use Different Email
-                    </button>
+                    </Button>
                   </div>
 
                   <div className="text-center text-sm text-gray-500 leading-relaxed">

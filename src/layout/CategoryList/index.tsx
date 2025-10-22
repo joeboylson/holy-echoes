@@ -4,6 +4,7 @@ import { Reorderable, reorderReorderable } from "@/utils/";
 import useCategories from "@/hooks/useCategories";
 import DeleteButton from "@/components/DeleteButton";
 import { CategoryListItem } from "./CategoryListItem";
+import { Button } from "@/components/ui/button";
 
 const StyledCategoryList = styled.div`
   display: grid;
@@ -42,7 +43,7 @@ export default function CategoriesList() {
 
   return (
     <StyledCategoryList>
-      <button onClick={handleAddNewCategory}>Add New Category</button>
+      <Button onClick={handleAddNewCategory}>Add New Category</Button>
       <PrayerListItemsWrapper>
         <ReorderableList
           items={categories}

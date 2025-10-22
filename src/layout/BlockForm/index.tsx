@@ -25,6 +25,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import TwoColumnInput from "@/components/TwoColumnInput";
 import ImageBlockForm from "../ImageBlockForm";
+import { Button } from "@/components/ui/button";
 
 const {
   BODY,
@@ -227,9 +228,9 @@ export default function BlockForm({
       </BlockContent>
 
       <BlockControls>
-        <button onClick={deleteBlock}>
-          <TrashSimple size={20} weight="duotone" color="var(--red-10)" />
-        </button>
+        <Button variant="destructive" size="icon" onClick={deleteBlock}>
+          <TrashSimple size={20} weight="duotone" />
+        </Button>
       </BlockControls>
     </StyledBlockForm>
   );

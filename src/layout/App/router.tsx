@@ -8,6 +8,7 @@ import Prayer from "@/pages/Prayer";
 import Category from "@/pages/Category";
 import Search from "@/pages/Search";
 import Profile from "@/pages/Profile";
+import DevShowcase from "@/pages/DevShowcase";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 export enum Pages {
@@ -24,6 +25,7 @@ export enum Pages {
   ALL_PRAYER_BLOCKS = "/admin/blocks",
   LOGIN = "/admin/login",
   USER_LOGIN = "/login",
+  DEV_SHOWCASE = "/dev/showcase",
 }
 
 export const router = createBrowserRouter([
@@ -78,5 +80,9 @@ export const router = createBrowserRouter([
   {
     path: Pages.PROFILE,
     element: <Profile />,
+  },
+  {
+    path: Pages.DEV_SHOWCASE,
+    element: <DevShowcase />,
   },
 ]);

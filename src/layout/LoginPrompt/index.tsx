@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
 interface LoginPromptProps {
   returnTo?: string;
 }
@@ -8,19 +11,18 @@ export default function LoginPrompt({ returnTo = "/category/favorites" }: LoginP
   };
 
   return (
-    <div className="text-center">
-      <h2 className="text-xl font-semibold mb-4">
-        Please log in to use favorites
-      </h2>
-      <p className="text-gray-600 mb-6">
-        You need to be logged in to save and view your favorite prayers.
-      </p>
-      <button
-        onClick={handleLogin}
-        className="bg-[#0082cb] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#006ba6] transition-colors"
-      >
-        Log In
-      </button>
-    </div>
+    <Card className="min-w-[300px] max-w-md mx-auto">
+      <CardHeader className="text-center">
+        <CardTitle>Please log in to use favorites</CardTitle>
+        <CardDescription>
+          You need to be logged in to save and view your favorite prayers.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex justify-center">
+        <Button variant="primary" size="lg" onClick={handleLogin}>
+          Log In
+        </Button>
+      </CardContent>
+    </Card>
   );
 }

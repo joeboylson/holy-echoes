@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import { db } from "@/database";
 import { StyledTwoColumnRow } from "./StyledComponents";
 import { LitanyBlock } from "@schema";
+import { Button } from "@/components/ui/button";
 
 interface _props {
   row: LitanyBlock;
@@ -42,9 +43,9 @@ export default function TwoColumnRow({ row }: _props) {
         defaultValue={response}
       />
 
-      <button onClick={removeRow}>
-        <TrashSimple size={20} weight="duotone" color="var(--red-10)" />
-      </button>
+      <Button variant="destructive" size="icon" onClick={removeRow}>
+        <TrashSimple size={20} weight="duotone" />
+      </Button>
     </StyledTwoColumnRow>
   );
 }

@@ -5,6 +5,7 @@ import { db } from "@/database";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Pages } from "../App/router";
 import { HEADER_HEIGHT } from "@/constants/layout";
+import { Button } from "@/components/ui/button";
 
 const StyledHeader = styled.div`
   background-color: #ddd;
@@ -41,7 +42,7 @@ export default function Header() {
           <NavLink to={Pages.ALL_PRAYER_BLOCKS}>All Prayer Blocks</NavLink>
         </nav>
       </div>
-      <button onClick={handleLogout}>Logout</button>
+      <Button variant="outline" onClick={handleLogout}>Logout</Button>
     </StyledHeader>
   );
 }

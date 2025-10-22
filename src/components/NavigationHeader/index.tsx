@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
 import FavoriteButton from "../FavoriteButton";
+import { Button } from "@/components/ui/button";
 
 interface NavigationHeaderProps {
   onPrevious?: () => void;
@@ -19,12 +20,13 @@ export default function NavigationHeader({
 
   return (
     <div className="w-full h-[50px] mx-auto bg-[#0082cb] grid grid-cols-[90px_1fr_72px] items-center px-6 shadow-lg z-10">
-      <button
+      <Button
+        variant="ghost"
         onClick={() => navigate(backTo)}
-        className="!flex items-center gap-2 !text-white no-underline font-medium hover:underline !bg-transparent !border-none cursor-pointer"
+        className="!text-white hover:!text-white hover:!bg-transparent hover:underline !justify-start !p-0"
       >
         <ArrowLeft size={20} /> Back
-      </button>
+      </Button>
 
       <div className="flex justify-end px-[20px]">
         {prayerId && <FavoriteButton prayerId={prayerId} />}
@@ -32,23 +34,27 @@ export default function NavigationHeader({
 
       <div className="grid grid-cols-[24px_24px] gap-[24px] items-center h-6">
         {onPrevious ? (
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onPrevious}
-            className="!bg-transparent !border-none cursor-pointer !p-0 !h-[24px]"
+            className="!bg-transparent !p-0 !h-[24px] !w-[24px] hover:!bg-transparent"
           >
             <CaretLeft size={24} weight="bold" color="#FFFFFF" />
-          </button>
+          </Button>
         ) : (
           <span />
         )}
 
         {onNext ? (
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onNext}
-            className="!bg-transparent !border-none cursor-pointer !p-0 !h-[24px]"
+            className="!bg-transparent !p-0 !h-[24px] !w-[24px] hover:!bg-transparent"
           >
             <CaretRight size={24} weight="bold" color="#FFFFFF" />
-          </button>
+          </Button>
         ) : (
           <span />
         )}
