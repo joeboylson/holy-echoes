@@ -17,6 +17,7 @@ export default function Search() {
   const [searchParams] = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const [searchTerm, setSearchTerm] = useState(initialQuery);
+  const [hasSearched, setHasSearched] = useState(!!initialQuery);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const { prayerResults, prayerBlockResults, isLoading } =
@@ -25,6 +26,16 @@ export default function Search() {
   useEffect(() => {
     setStatusBarColor("#0082cb");
   }, [setStatusBarColor]);
+
+  useEffect(() => {
+    // Transition to top when there are results
+    if (
+      (prayerResults.length > 0 || prayerBlockResults.length > 0) &&
+      !hasSearched
+    ) {
+      setHasSearched(true);
+    }
+  }, [prayerResults, prayerBlockResults, hasSearched]);
 
   const highlightText = (text: string, query: string) => {
     if (!query.trim()) return text;
@@ -97,14 +108,32 @@ export default function Search() {
         variant="50"
         header={<NavigationHeader backTo={Pages.HOME} />}
       >
-        <div className="px-6 w-full max-w-[600px] mx-auto">
-          <div className="my-6">
+        <div
+          className="w-full px-6 max-w-[600px] mx-auto transition-transform duration-700 ease-in-out"
+          style={{
+            transform: !hasSearched ? 'translateY(30vh)' : 'translateY(0)',
+          }}
+        >
+          {!hasSearched && (
+            <div className="text-center space-y-2 mb-6">
+              <h1 className="text-3xl font-bold text-gray-900">
+                Search Prayers
+              </h1>
+              <p className="text-gray-600">
+                Find prayers by name or content
+              </p>
+            </div>
+          )}
+
+          <div className={!hasSearched ? "" : "my-6"}>
             <Input
               type="text"
               placeholder="Search prayers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full"
+              className={`w-full transition-all duration-700 ease-in-out ${
+                !hasSearched ? "text-lg h-14" : ""
+              }`}
               autoFocus
             />
           </div>
