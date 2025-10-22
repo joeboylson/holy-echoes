@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import useCategories from "@/hooks/useCategories";
-import Logo from "@/assets/he-icon-white.png";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import { Link } from "react-router-dom";
 import FavoriteHomeItem from "@/layout/FavoriteHomeItem";
 import AllPrayersHomeItem from "@/layout/AllPrayersHomeItem";
+import ScrollablePageLayout from "@/components/ScrollablePageLayout";
+import HomeHeader from "@/layout/HomeHeader";
 
 export default function Home() {
   const { categoriesWithPrayers } = useCategories();
@@ -17,16 +18,8 @@ export default function Home() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
-        <div className="w-full h-[100px] mx-auto bg-[#0082cb] flex items-center justify-center gap-4 shadow-lg z-10">
-          <img src={Logo} alt="Holy Echoes App Logo" className="!w-[60px] !h-[60px] object-contain" />
-          <div className="flex flex-col">
-            <h1 className="text-white text-2xl font-bold m-0 leading-tight">Holy Echoes</h1>
-            <p className="text-white text-sm m-0 leading-tight">Traditional Catholic Prayers</p>
-          </div>
-        </div>
-
-        <div className="px-6 w-full max-w-[600px] mx-auto pb-[100px]">
+      <ScrollablePageLayout variant="100" header={<HomeHeader />}>
+        <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="py-6">
             <div className="grid gap-4 grid-cols-2">
               <FavoriteHomeItem />
@@ -47,7 +40,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </ScrollablePageLayout>
     </LoggedInUserWrapper>
   );
 }

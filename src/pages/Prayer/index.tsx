@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
+import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 
 export default function Prayer() {
   const { prayerId, categoryId } = useParams();
@@ -47,20 +48,23 @@ export default function Prayer() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen h-screen grid grid-cols-1 mx-auto content-start justify-items-start">
-        <NavigationHeader
-          onPrevious={handlePrevious}
-          onNext={handleNext}
-          backTo={
-            categoryId === "search" && searchQuery
-              ? `/search?q=${encodeURIComponent(searchQuery)}`
-              : categoryId
-              ? `/category/${categoryId}`
-              : "/home"
-          }
-          prayerId={prayerId ?? ""}
-        />
-
+      <ScrollablePageLayout
+        variant="50"
+        header={
+          <NavigationHeader
+            onPrevious={handlePrevious}
+            onNext={handleNext}
+            backTo={
+              categoryId === "search" && searchQuery
+                ? `/search?q=${encodeURIComponent(searchQuery)}`
+                : categoryId
+                ? `/category/${categoryId}`
+                : "/home"
+            }
+            prayerId={prayerId ?? ""}
+          />
+        }
+      >
         {prayerId && (
           <div className="w-full relative">
             <div className="absolute top-4 right-6 z-20"></div>
@@ -69,7 +73,7 @@ export default function Prayer() {
             </div>
           </div>
         )}
-      </div>
+      </ScrollablePageLayout>
     </LoggedInUserWrapper>
   );
 }

@@ -4,6 +4,7 @@ import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
 import { db } from "@/database";
+import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 
 export default function Profile() {
   const { setStatusBarColor } = useStatusBar();
@@ -19,10 +20,8 @@ export default function Profile() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
-        <NavigationHeader backTo={Pages.HOME} />
-
-        <div className="px-6 w-full max-w-[600px] mx-auto pb-24">
+      <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
+        <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="py-6 border-b">
             <h1 className="text-2xl font-bold text-center">Profile</h1>
           </div>
@@ -57,7 +56,7 @@ export default function Profile() {
             )}
           </div>
         </div>
-      </div>
+      </ScrollablePageLayout>
     </LoggedInUserWrapper>
   );
 }

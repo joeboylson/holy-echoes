@@ -8,6 +8,7 @@ import FavoritePrayerItem from "@/components/FavoritePrayerItem";
 import { Reorderable, reorderReorderable } from "@/utils";
 import { Favorite } from "@schema";
 import ReorderableList from "@/layout/ReorderableList";
+import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 
 export default function FavoritesCategory() {
   const {
@@ -27,9 +28,7 @@ export default function FavoritesCategory() {
   if (!userIsNotGuest) {
     return (
       <LoggedInUserWrapper>
-        <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
-          <NavigationHeader backTo={Pages.HOME} />
-
+        <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
           <div className="px-6 w-full max-w-[600px] mx-auto flex-1 flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-xl font-semibold mb-4">
@@ -50,7 +49,7 @@ export default function FavoritesCategory() {
               </button>
             </div>
           </div>
-        </div>
+        </ScrollablePageLayout>
       </LoggedInUserWrapper>
     );
   }
@@ -61,9 +60,7 @@ export default function FavoritesCategory() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
-        <NavigationHeader backTo={Pages.HOME} />
-
+      <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
         <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="py-6 border-b">
             <h1 className="text-2xl font-bold text-center">Favorites</h1>
@@ -84,7 +81,7 @@ export default function FavoritesCategory() {
             />
           )}
         </div>
-      </div>
+      </ScrollablePageLayout>
     </LoggedInUserWrapper>
   );
 }

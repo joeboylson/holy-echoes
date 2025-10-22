@@ -8,6 +8,7 @@ import useSearch from "@/hooks/useSearch";
 import { Input } from "@/components/ui/input";
 import { Link, useSearchParams } from "react-router-dom";
 import markdownit from "markdown-it";
+import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 
 const md = markdownit({ html: true });
 
@@ -92,10 +93,8 @@ export default function Search() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
-        <NavigationHeader backTo={Pages.HOME} />
-
-        <div className="px-6 w-full max-w-[600px] mx-auto pb-24">
+      <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
+        <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="mb-6">
             <Input
               type="text"
@@ -179,7 +178,7 @@ export default function Search() {
             </>
           )}
         </div>
-      </div>
+      </ScrollablePageLayout>
     </LoggedInUserWrapper>
   );
 }

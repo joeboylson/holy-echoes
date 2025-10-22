@@ -8,6 +8,7 @@ import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
 import FavoritesCategory from "./FavoritesCategory";
 import AllPrayersCategory from "./AllPrayersCategory";
+import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 
 export default function Category() {
   const { categoryId } = useParams();
@@ -52,13 +53,16 @@ export default function Category() {
 
   return (
     <LoggedInUserWrapper>
-      <div className="w-screen grid grid-cols-1 mx-auto gap-3 h-full content-start">
-        <NavigationHeader
-          backTo={Pages.HOME}
-          onPrevious={handlePrevious}
-          onNext={handleNext}
-        />
-
+      <ScrollablePageLayout
+        variant="50"
+        header={
+          <NavigationHeader
+            backTo={Pages.HOME}
+            onPrevious={handlePrevious}
+            onNext={handleNext}
+          />
+        }
+      >
         <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="py-6 border-b">
             <h1 className="text-2xl font-bold text-center">{category.name}</h1>
@@ -66,7 +70,7 @@ export default function Category() {
 
           <PrayerList filterByCategory={category} />
         </div>
-      </div>
+      </ScrollablePageLayout>
     </LoggedInUserWrapper>
   );
 }
