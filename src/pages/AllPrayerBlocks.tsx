@@ -1,5 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-
 import styled from "styled-components";
 import AdminAccessWrapper from "../layout/AdminAccessWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";
@@ -14,10 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
 import { cascadeDeletePrayerBlock } from "@/utils/prayerBlock";
 import type { PrayerBlock } from "@schema";
 import { BlockTypeNames } from "@schema";
+import DeleteButton from "@/components/DeleteButton";
 
 const StyledAllPrayerBlocks = styled.div`
   padding: 24px;
@@ -66,18 +64,6 @@ const BlockItem = styled.div`
     font-size: 13px;
     max-height: 100px;
     overflow-y: auto;
-  }
-`;
-
-const DeleteButton = styled.button`
-  padding: 8px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  height: fit-content;
-
-  &:hover {
-    opacity: 0.7;
   }
 `;
 
@@ -217,13 +203,10 @@ export default function AllPrayerBlocks() {
                     </p>
                   )}
                 </div>
-                <DeleteButton onClick={() => handleDeleteBlock(block)}>
-                  <TrashSimpleIcon
-                    size={20}
-                    weight="duotone"
-                    color="var(--red-10)"
-                  />
-                </DeleteButton>
+                <DeleteButton
+                  onClick={() => handleDeleteBlock(block)}
+                  itemName="Block"
+                />
               </BlockItem>
             );
           })}

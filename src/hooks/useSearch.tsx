@@ -1,5 +1,6 @@
 import { db } from "@/database";
 import { useMemo } from "react";
+import type { Prayer, PrayerBlock } from "@schema";
 
 export default function useSearch(searchTerm: string) {
   const trimmedSearch = searchTerm.trim();
@@ -39,7 +40,7 @@ export default function useSearch(searchTerm: string) {
     if (!isValidSearch || !data?.prayers) return [];
 
     const lowerSearch = trimmedSearch.toLowerCase();
-    const blocks: any[] = [];
+    const blocks: (PrayerBlock & { prayer: Prayer })[] = [];
     const seenPrayerIds = new Set<string>();
 
     data.prayers.forEach((prayer) => {

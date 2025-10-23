@@ -1,5 +1,5 @@
 import { Textarea } from "@/components/ui/textarea";
-import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
+import { TrashSimpleIcon } from "@phosphor-icons/react";
 import { debounce } from "lodash";
 import { db } from "@/database";
 import { StyledTwoColumnRow } from "./StyledComponents";
@@ -44,7 +44,7 @@ export default function TwoColumnRow({ row }: _props) {
       />
 
       <Button variant="destructive" size="icon" onClick={removeRow}>
-        <TrashSimple size={20} weight="duotone" />
+        <TrashSimpleIcon size={20} weight="duotone" />
       </Button>
     </StyledTwoColumnRow>
   );

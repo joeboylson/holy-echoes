@@ -245,7 +245,7 @@ export default function BlockForm({
 
         <BlockControls>
           <Button variant="destructive" size="icon" onClick={deleteBlock}>
-            <TrashSimpleIcon size={20} weight="duotone" />
+            <TrashSimpleIcon size={20} weight="duotone" color="red" />
           </Button>
         </BlockControls>
       </CardContent>
