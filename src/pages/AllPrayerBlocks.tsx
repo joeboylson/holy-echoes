@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TrashSimple } from "@phosphor-icons/react";
+import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
 import { cascadeDeletePrayerBlock } from "@/utils/prayerBlock";
 import type { PrayerBlock } from "@schema";
 import { BlockTypeNames } from "@schema";
@@ -218,7 +218,7 @@ export default function AllPrayerBlocks() {
                   )}
                 </div>
                 <DeleteButton onClick={() => handleDeleteBlock(block)}>
-                  <TrashSimple
+                  <TrashSimpleIcon
                     size={20}
                     weight="duotone"
                     color="var(--red-10)"

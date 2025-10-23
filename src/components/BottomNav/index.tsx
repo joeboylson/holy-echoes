@@ -1,14 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
-import { House, Heart, MagnifyingGlass, User } from "@phosphor-icons/react";
+import { House as HouseIcon, Heart as HeartIcon, MagnifyingGlass as MagnifyingGlassIcon, User as UserIcon } from "@phosphor-icons/react";
 
 export default function BottomNav() {
   const location = useLocation();
 
   const navItems = [
-    { to: "/home", icon: House },
-    { to: "/category/favorites", icon: Heart },
-    { to: "/search", icon: MagnifyingGlass },
-    { to: "/profile", icon: User },
+    { to: "/home", icon: HouseIcon },
+    { to: "/category/favorites", icon: HeartIcon },
+    { to: "/search", icon: MagnifyingGlassIcon },
+    { to: "/profile", icon: UserIcon },
   ];
 
   const isActive = (path: string) => {

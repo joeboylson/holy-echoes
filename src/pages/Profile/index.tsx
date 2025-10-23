@@ -6,6 +6,7 @@ import { Pages } from "@/layout/App/router";
 import { db } from "@/database";
 import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Profile() {
   const { setStatusBarColor } = useStatusBar();
@@ -46,15 +47,19 @@ export default function Profile() {
                 </Button>
               </>
             ) : (
-              <div className="text-center py-8">
-                <p className="text-gray-600 mb-4">You are not signed in</p>
-                <a
-                  href="/login"
-                  className="inline-block bg-[#0082cb] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#006ba6] transition-colors no-underline"
-                >
-                  Sign In
-                </a>
-              </div>
+              <Card>
+                <CardHeader className="text-center">
+                  <CardTitle>You are not signed in</CardTitle>
+                  <CardDescription>
+                    Sign in to access your profile and save your favorite prayers.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex justify-center">
+                  <Button variant="primary" size="lg" asChild>
+                    <a href="/login">Sign In</a>
+                  </Button>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>

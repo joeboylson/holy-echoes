@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Link, useSearchParams } from "react-router-dom";
 import markdownit from "markdown-it";
 import ScrollablePageLayout from "@/components/ScrollablePageLayout";
+import clsx from "clsx";
 
 const md = markdownit({ html: true });
 
@@ -102,18 +103,34 @@ export default function Search() {
     return { __html: md.render(highlightedText) };
   };
 
+  // Conditional class variables
+  const containerClasses = clsx(
+    "w-full px-6 max-w-[600px] mx-auto",
+    "transition-transform duration-700 ease-in-out",
+    {
+      "translate-y-[30vh]": !hasSearched,
+      "translate-y-0": hasSearched,
+    }
+  );
+
+  const inputWrapperClasses = clsx({
+    "my-6": hasSearched,
+  });
+
+  const inputClasses = clsx(
+    "w-full transition-all duration-700 ease-in-out",
+    {
+      "text-lg h-14": !hasSearched,
+    }
+  );
+
   return (
     <LoggedInUserWrapper>
       <ScrollablePageLayout
         variant="50"
         header={<NavigationHeader backTo={Pages.HOME} />}
       >
-        <div
-          className="w-full px-6 max-w-[600px] mx-auto transition-transform duration-700 ease-in-out"
-          style={{
-            transform: !hasSearched ? 'translateY(30vh)' : 'translateY(0)',
-          }}
-        >
+        <div className={containerClasses}>
           {!hasSearched && (
             <div className="text-center space-y-2 mb-6">
               <h1 className="text-3xl font-bold text-gray-900">
@@ -125,15 +142,13 @@ export default function Search() {
             </div>
           )}
 
-          <div className={!hasSearched ? "" : "my-6"}>
+          <div className={inputWrapperClasses}>
             <Input
               type="text"
               placeholder="Search prayers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full transition-all duration-700 ease-in-out ${
-                !hasSearched ? "text-lg h-14" : ""
-              }`}
+              className={inputClasses}
               autoFocus
             />
           </div>

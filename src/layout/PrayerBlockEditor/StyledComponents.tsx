@@ -15,5 +15,5 @@ export const BlocksWrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 12px;
   align-content: start;
-  padding: 0 36px;
+  padding-left: 24px;
 `;

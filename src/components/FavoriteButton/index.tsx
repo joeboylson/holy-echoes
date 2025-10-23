@@ -1,4 +1,4 @@
-import { Heart } from "@phosphor-icons/react";
+import { Heart as HeartIcon } from "@phosphor-icons/react";
 import useUserFavorites from "@/hooks/useUserFavorites";
 import { useState } from "react";
 import {
@@ -64,7 +64,7 @@ export default function FavoriteButton({
           isCurrentlyFavorited ? "Remove from favorites" : "Add to favorites"
         }
       >
-        <Heart size={20} weight={isCurrentlyFavorited ? "fill" : "regular"} />
+        <HeartIcon size={20} weight={isCurrentlyFavorited ? "fill" : "regular"} />
       </button>
 
       <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>

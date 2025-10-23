@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { debounce } from "lodash";
-import { TrashSimple } from "@phosphor-icons/react";
+import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
 import { removeBlock, cascadeDeletePrayerBlock } from "../../utils";
 import { db } from "@/database";
 import { BlockTypeNames, type BlockType, type PrayerBlock } from "@schema";
@@ -20,12 +20,12 @@ import {
   BlockControls,
   MarkdownEditor,
   SpaceAboveWrapper,
-  StyledBlockForm,
 } from "./StyledComponents";
 import { Switch } from "@/components/ui/switch";
 import TwoColumnInput from "@/components/TwoColumnInput";
 import ImageBlockForm from "../ImageBlockForm";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const {
   BODY,
@@ -103,135 +103,152 @@ export default function BlockForm({
   );
 
   return (
-    <StyledBlockForm>
-      <BlockContent>
-        {showSpacerAbove && (
-          <SpaceAboveWrapper>
-            <p>
-              {prayerBlock.spaceAbove
-                ? "Has Spacing Above:"
-                : "No Spacing Above:"}
-            </p>
-            <Switch
-              checked={prayerBlock.spaceAbove}
-              onCheckedChange={handleSpaceAboveChange}
-            />
-          </SpaceAboveWrapper>
-        )}
-
-        <Select
-          defaultValue={prayerBlock.blockType?.id ?? ""}
-          onValueChange={handleTypeChange}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Choose Block Type" />
-          </SelectTrigger>
-          <SelectContent>
-            {blockTypes.map((blockType) => (
-              <SelectItem key={blockType.id} value={blockType.id ?? ""}>
-                {blockType.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <BlockContentValues>
-          {blockTypeName && (
-            <>
-              {blockTypeName === CENTERED_TITLE && (
-                <>
-                  <i>Large centered title</i>
-                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
-                </>
-              )}
-
-              {[IMAGE, SMALL_IMAGE, ICON].includes(
-                blockTypeName as BlockTypeNames
-              ) && <ImageBlockForm prayerBlock={prayerBlock} />}
-
-              {[BODY, BODY_CENTERED].includes(
-                blockTypeName as BlockTypeNames
-              ) && (
-                <>
-                  <i>
-                    {blockTypeName === BODY_CENTERED ? "Centered" : "Standard"}
-                    &nbsp;body text.
-                  </i>
-                  <i>Use italics, bold, and underline.</i>
-                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
-                </>
-              )}
-
-              {blockTypeName === INFO_TEXT && (
-                <>
-                  <i>Small & centered information text.</i>
-                  <i>Use italics, bold, and underline.</i>
-                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
-                </>
-              )}
-
-              {blockTypeName === REFERENCE && (
-                <>
-                  <i>Small & centered reference text.</i>
-                  <i>ALWAYS italics.</i>
-                  <MarkdownEditor markdown={text} onChange={handleBodyChange} />
-                </>
-              )}
-
-              {blockTypeName === QUOTE && (
-                <>
-                  <i>
-                    Small left-justified quote with right-justified attribution.
-                  </i>
-                  <i>Automatic quotations and attribution dash</i>
-                  <i>ALWAYS italics.</i>
-                  <Textarea
-                    defaultValue={text}
-                    onChange={(e) => handleBodyChange(`${e.target.value}`)}
-                  />
-                  <Input
-                    defaultValue={reference}
-                    onChange={(e) => handleReferenceChange(e.target.value)}
-                  />
-                </>
-              )}
-
-              {blockTypeName === LITANY && (
-                <>
-                  <i>Input a litany</i>
-                  <LitanyInput prayerBlockId={prayerBlock.id} />
-                </>
-              )}
-
-              {blockTypeName === TWO_COLUMN && (
-                <>
-                  <i>Input a two-column prayer</i>
-                  <TwoColumnInput prayerBlockId={prayerBlock.id} />
-                </>
-              )}
-
-              {blockTypeName === SPACER && (
-                <>
-                  <i>Add a custom spacer between other blocks</i>
-                  <Input
-                    defaultValue={text === "" ? 24 : text}
-                    onChange={(e) => handleBodyChange(e.target.value)}
-                    min={0}
-                    max={100}
-                    type="number"
-                  />
-                </>
-              )}
-            </>
+    <Card className="py-0">
+      <CardContent className="p-3 grid grid-cols-[1fr_24px] gap-1 items-start">
+        <BlockContent>
+          {showSpacerAbove && (
+            <SpaceAboveWrapper>
+              <p>
+                {prayerBlock.spaceAbove
+                  ? "Has Spacing Above:"
+                  : "No Spacing Above:"}
+              </p>
+              <Switch
+                checked={prayerBlock.spaceAbove}
+                onCheckedChange={handleSpaceAboveChange}
+              />
+            </SpaceAboveWrapper>
           )}
-        </BlockContentValues>
-      </BlockContent>
 
-      <BlockControls>
-        <Button variant="destructive" size="icon" onClick={deleteBlock}>
-          <TrashSimple size={20} weight="duotone" />
-        </Button>
-      </BlockControls>
-    </StyledBlockForm>
+          <Select
+            defaultValue={prayerBlock.blockType?.id ?? ""}
+            onValueChange={handleTypeChange}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Choose Block Type" />
+            </SelectTrigger>
+            <SelectContent>
+              {blockTypes.map((blockType) => (
+                <SelectItem key={blockType.id} value={blockType.id ?? ""}>
+                  {blockType.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <BlockContentValues>
+            {blockTypeName && (
+              <>
+                {blockTypeName === CENTERED_TITLE && (
+                  <>
+                    <i>Large centered title</i>
+                    <MarkdownEditor
+                      markdown={text}
+                      onChange={handleBodyChange}
+                    />
+                  </>
+                )}
+
+                {[IMAGE, SMALL_IMAGE, ICON].includes(
+                  blockTypeName as BlockTypeNames
+                ) && <ImageBlockForm prayerBlock={prayerBlock} />}
+
+                {[BODY, BODY_CENTERED].includes(
+                  blockTypeName as BlockTypeNames
+                ) && (
+                  <>
+                    <i>
+                      {blockTypeName === BODY_CENTERED
+                        ? "Centered"
+                        : "Standard"}
+                      &nbsp;body text.
+                    </i>
+                    <i>Use italics, bold, and underline.</i>
+                    <MarkdownEditor
+                      markdown={text}
+                      onChange={handleBodyChange}
+                    />
+                  </>
+                )}
+
+                {blockTypeName === INFO_TEXT && (
+                  <>
+                    <i>Small & centered information text.</i>
+                    <i>Use italics, bold, and underline.</i>
+                    <MarkdownEditor
+                      markdown={text}
+                      onChange={handleBodyChange}
+                    />
+                  </>
+                )}
+
+                {blockTypeName === REFERENCE && (
+                  <>
+                    <i>Small & centered reference text.</i>
+                    <i>ALWAYS italics.</i>
+                    <MarkdownEditor
+                      markdown={text}
+                      onChange={handleBodyChange}
+                    />
+                  </>
+                )}
+
+                {blockTypeName === QUOTE && (
+                  <>
+                    <i>
+                      Small left-justified quote with right-justified
+                      attribution.
+                    </i>
+                    <i>Automatic quotations and attribution dash</i>
+                    <i>ALWAYS italics.</i>
+                    <Textarea
+                      defaultValue={text}
+                      onChange={(e) => handleBodyChange(`${e.target.value}`)}
+                    />
+                    <Input
+                      defaultValue={reference}
+                      onChange={(e) => handleReferenceChange(e.target.value)}
+                    />
+                  </>
+                )}
+
+                {blockTypeName === LITANY && (
+                  <>
+                    <i>Input a litany</i>
+                    <LitanyInput prayerBlockId={prayerBlock.id} />
+                  </>
+                )}
+
+                {blockTypeName === TWO_COLUMN && (
+                  <>
+                    <i>Input a two-column prayer</i>
+                    <TwoColumnInput prayerBlockId={prayerBlock.id} />
+                  </>
+                )}
+
+                {blockTypeName === SPACER && (
+                  <>
+                    <i>Add a custom spacer between other blocks</i>
+                    <Input
+                      defaultValue={text === "" ? 24 : text}
+                      onChange={(e) => handleBodyChange(e.target.value)}
+                      min={0}
+                      max={100}
+                      type="number"
+                    />
+                  </>
+                )}
+              </>
+            )}
+          </BlockContentValues>
+        </BlockContent>
+
+        <BlockControls>
+          <Button variant="destructive" size="icon" onClick={deleteBlock}>
+            <TrashSimpleIcon size={20} weight="duotone" />
+          </Button>
+        </BlockControls>
+      </CardContent>
+    </Card>
   );
 }

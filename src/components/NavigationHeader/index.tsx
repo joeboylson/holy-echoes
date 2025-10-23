@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { ArrowLeft as ArrowLeftIcon, CaretLeft as CaretLeftIcon, CaretRight as CaretRightIcon } from "@phosphor-icons/react";
 import FavoriteButton from "../FavoriteButton";
 import { Button } from "@/components/ui/button";
 
@@ -25,7 +25,7 @@ export default function NavigationHeader({
         onClick={() => navigate(backTo)}
         className="!text-white hover:!text-white hover:!bg-transparent hover:underline !justify-start !p-0"
       >
-        <ArrowLeft size={20} /> Back
+        <ArrowLeftIcon size={20} /> Back
       </Button>
 
       <div className="flex justify-end px-[20px]">
@@ -40,7 +40,7 @@ export default function NavigationHeader({
             onClick={onPrevious}
             className="!bg-transparent !p-0 !h-[24px] !w-[24px] hover:!bg-transparent"
           >
-            <CaretLeft size={24} weight="bold" color="#FFFFFF" />
+            <CaretLeftIcon size={24} weight="bold" color="#FFFFFF" />
           </Button>
         ) : (
           <span />
@@ -53,7 +53,7 @@ export default function NavigationHeader({
             onClick={onNext}
             className="!bg-transparent !p-0 !h-[24px] !w-[24px] hover:!bg-transparent"
           >
-            <CaretRight size={24} weight="bold" color="#FFFFFF" />
+            <CaretRightIcon size={24} weight="bold" color="#FFFFFF" />
           </Button>
         ) : (
           <span />

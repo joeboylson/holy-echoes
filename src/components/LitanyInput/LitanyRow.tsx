@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { TrashSimple } from "@phosphor-icons/react";
+import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
 import { debounce } from "lodash";
 import { db } from "@/database";
 import { StyledLitanyRow } from "./StyledComponents";
@@ -60,7 +60,7 @@ export default function LitanyRow({ row }: _props) {
       </div>
 
       <Button variant="destructive" size="icon" onClick={removeRow}>
-        <TrashSimple size={20} weight="duotone" />
+        <TrashSimpleIcon size={20} weight="duotone" />
       </Button>
     </StyledLitanyRow>
   );

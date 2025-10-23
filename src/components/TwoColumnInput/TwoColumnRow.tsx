@@ -1,5 +1,5 @@
 import { Textarea } from "@/components/ui/textarea";
-import { TrashSimple } from "@phosphor-icons/react";
+import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
 import { debounce } from "lodash";
 import { db } from "@/database";
 import { StyledTwoColumnRow } from "./StyledComponents";

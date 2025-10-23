@@ -1,5 +1,5 @@
 import { Dialog } from "@/components/ui/dialog";
-import { Check } from "@phosphor-icons/react";
+import { Check as CheckIcon } from "@phosphor-icons/react";
 import { ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -29,7 +29,7 @@ export default function useConfirmModal({
         {content}
 
         <Button variant="primary" onClick={handleConfirm}>
-          <Check size={16} weight="bold" /> Confirm
+          <CheckIcon size={16} weight="bold" /> Confirm
         </Button>
       </Dialog>
     );

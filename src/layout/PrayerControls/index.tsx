@@ -4,11 +4,7 @@ import { id } from "@instantdb/react";
 import { Pages } from "../App/router";
 import { useNavigate } from "react-router-dom";
 import AddNewButton from "../../components/AddNewButton";
-import {
-  ControlRow,
-  ControlRowWrapper,
-  StyledPrayerControls,
-} from "./StyledComponents";
+import { ControlRow, StyledPrayerControls } from "./StyledComponents";
 import { cascadeDeletePrayer } from "../../utils";
 import DeleteButton from "../../components/DeleteButton";
 import { compact, debounce } from "lodash";
@@ -16,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { SelectWithCreate } from "@/components/SelectWithCreate";
 import { useState } from "react";
 import useCategories from "@/hooks/useCategories";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface _props {
   prayer?: Prayer;
@@ -122,45 +119,47 @@ export default function PrayerControls({ prayer }: _props) {
       <AddNewButton onClick={addNewPrayer} itemName="Prayer" />
 
       {prayer && (
-        <ControlRowWrapper>
-          <b>Edit Prayer Information:</b>
-          <ControlRow>
-            <p>Prayer Name:</p>
-            <input
-              defaultValue={prayer.name}
-              onChange={(e) => handleNameChange(e.target.value)}
-            />
-          </ControlRow>
+        <Card>
+          <CardContent className="space-y-2">
+            <b>Edit Prayer Information:</b>
+            <ControlRow>
+              <p>Prayer Name:</p>
+              <input
+                defaultValue={prayer.name}
+                onChange={(e) => handleNameChange(e.target.value)}
+              />
+            </ControlRow>
 
-          <ControlRow>
-            <p>{prayer.published ? "Published:" : "Not Published:"}</p>
-            <Switch
-              checked={prayer.published}
-              onCheckedChange={handleIsPublishedChange}
-              disabled={isSaving}
-            />
-          </ControlRow>
+            <ControlRow>
+              <p>{prayer.published ? "Published:" : "Not Published:"}</p>
+              <Switch
+                checked={prayer.published}
+                onCheckedChange={handleIsPublishedChange}
+                disabled={isSaving}
+              />
+            </ControlRow>
 
-          <ControlRow>
-            <p>Delete Prayer:</p>
-            <DeleteButton onClick={deletePrayer} itemName="Prayer" />
-          </ControlRow>
+            <ControlRow>
+              <p>Delete Prayer:</p>
+              <DeleteButton onClick={deletePrayer} itemName="Prayer" />
+            </ControlRow>
 
-          <hr />
+            <hr />
 
-          <ControlRow>
-            <p>Categories:</p>
-            <SelectWithCreate
-              placeholder={"+ Add a category"}
-              onSelect={addPrayerCategory}
-              onDeselect={removePrayerCategory}
-              onCreate={handleAddNewCategory}
-              options={categoriesAsOptions}
-              disabled={categoriesLoading || isSaving}
-              values={selectedCategoryIds}
-            />
-          </ControlRow>
-        </ControlRowWrapper>
+            <ControlRow>
+              <p>Categories:</p>
+              <SelectWithCreate
+                placeholder={"+ Add a category"}
+                onSelect={addPrayerCategory}
+                onDeselect={removePrayerCategory}
+                onCreate={handleAddNewCategory}
+                options={categoriesAsOptions}
+                disabled={categoriesLoading || isSaving}
+                values={selectedCategoryIds}
+              />
+            </ControlRow>
+          </CardContent>
+        </Card>
       )}
     </StyledPrayerControls>
   );

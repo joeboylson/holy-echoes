@@ -1,23 +1,5 @@
-import { Plus } from "@phosphor-icons/react";
-import styled from "styled-components";
-
-const StyledNewButton = styled.button`
-  display: flex;
-  align-items: center;
-  background-color: var(--grass-10);
-  color: white;
-  border: 0;
-  outline: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  place-items: center;
-  width: fit-content;
-
-  > span {
-    padding-right: 8px;
-    fill: white;
-  }
-`;
+import { Plus as PlusIcon } from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
 
 interface _props {
   itemName: string;
@@ -26,9 +8,9 @@ interface _props {
 
 export default function AddNewButton({ itemName, onClick }: _props) {
   return (
-    <StyledNewButton onClick={onClick}>
-      <span>Add New {itemName}</span>
-      <Plus size={16} />
-    </StyledNewButton>
+    <Button variant="success" onClick={onClick}>
+      Add New {itemName}
+      <PlusIcon size={16} />
+    </Button>
   );
 }

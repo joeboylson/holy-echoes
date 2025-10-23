@@ -5,7 +5,7 @@ import PrayerBlockPreview from "../layout/PrayerBlockPreview";
 import AdminAccessWrapper from "../layout/AdminAccessWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";
 import WindowTooSmall from "../components/WindowTooSmall";
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { CaretLeft as CaretLeftIcon, CaretRight as CaretRightIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { HEADER_HEIGHT } from "@/constants/layout";
 
@@ -70,9 +70,9 @@ export default function Admin() {
         <PrayerListWrapper className={className}>
           <TogglePrayerListButton onClick={togglePrayerList}>
             {hidePrayerList ? (
-              <CaretRight size={24} color="var(--blue-10)" weight="bold" />
+              <CaretRightIcon size={24} color="var(--blue-10)" weight="bold" />
             ) : (
-              <CaretLeft size={24} color="var(--blue-10)" weight="bold" />
+              <CaretLeftIcon size={24} color="var(--blue-10)" weight="bold" />
             )}
           </TogglePrayerListButton>
 
