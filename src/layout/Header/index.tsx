@@ -8,15 +8,19 @@ import { HEADER_HEIGHT } from "@/constants/layout";
 import { Button } from "@/components/ui/button";
 
 const StyledHeader = styled.div`
-  background-color: #ddd;
+  background-color: #0082cb;
   padding: 0 24px;
   display: grid;
   grid-template-columns: 1fr 100px;
   align-items: center;
   height: ${HEADER_HEIGHT}px;
 
+  p {
+    color: white;
+  }
+
   a {
-    color: blue;
+    color: white;
     &.active {
       text-decoration: underline;
     }
@@ -35,14 +39,16 @@ export default function Header() {
   return (
     <StyledHeader data-id="StyledHeader">
       <div className="flex gap-[36px]">
-        <p>{user?.email}</p>
+        <p className="font-[800]">{user?.email}</p>
         <nav className="flex gap-[12px]">
           <NavLink to={Pages.ADMIN}>Prayer Dashboard</NavLink>
           <NavLink to={Pages.CONFIG}>Configuration</NavLink>
           <NavLink to={Pages.ALL_PRAYER_BLOCKS}>All Prayer Blocks</NavLink>
         </nav>
       </div>
-      <Button variant="outline" onClick={handleLogout}>Logout</Button>
+      <Button variant="outline" onClick={handleLogout}>
+        Logout
+      </Button>
     </StyledHeader>
   );
 }
