@@ -12,7 +12,7 @@ export default function Prayer() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("q");
   const navigate = useNavigate();
-  const { prayer, prevNextPrayers, prayerLoading } = usePrayer(
+  const { prayer, prevPrayer, nextPrayer, prayerLoading } = usePrayer(
     prayerId,
     categoryId
   );
@@ -21,14 +21,6 @@ export default function Prayer() {
   useEffect(() => {
     setStatusBarColor("#0082cb");
   }, [setStatusBarColor]);
-
-  const prevPrayer = prevNextPrayers.find(
-    (p) => (p?.order ?? 0) < (prayer?.order ?? 0)
-  );
-
-  const nextPrayer = prevNextPrayers.find(
-    (p) => (p?.order ?? 0) > (prayer?.order ?? 0)
-  );
 
   const handlePrevious = useMemo(() => {
     if (!prevPrayer?.id || !categoryId) return undefined;

@@ -1,6 +1,8 @@
 import { db } from "@/database";
 import { first } from "lodash";
 import usePrayers from "./usePrayers";
+import useUserFavorites from "./useUserFavorites";
+import { useMemo } from "react";
 
 export default function usePrayer(
   prayerId?: string,
@@ -12,15 +14,15 @@ export default function usePrayer(
     prayerId && !skip
       ? {
           prayers: {
-            prayerBlocks: { 
-              blockType: {}, 
+            prayerBlocks: {
+              blockType: {},
               litanyBlocks: {
                 $: {
                   order: {
                     order: "asc",
                   },
                 },
-              }, 
+              },
               file: {},
               $: {
                 order: {
@@ -33,6 +35,7 @@ export default function usePrayer(
                 id: prayerId,
               },
             },
+            favorites: {},
           },
         }
       : null
@@ -40,29 +43,54 @@ export default function usePrayer(
 
   const prayer = first(data?.prayers ?? []);
 
+  const isFavoritesCategory = categoryId === "favorites";
+
+  // For favorites, use the favorites list instead of all prayers
+  const { favorites, isLoading: favoritesLoading } = useUserFavorites({
+    skip: skip || skipNextPrevious || !isFavoritesCategory,
+  });
+
   const { prayers: allPrayers, isLoading: allPrayersLoading } = usePrayers({
     filterUnpublished: true,
     filterByCategoryId:
-      categoryId === "favorites" || categoryId === "all-prayers" || categoryId === "search"
+      categoryId === "all-prayers" || categoryId === "search" || isFavoritesCategory
         ? undefined
         : categoryId,
-    skip: skip || skipNextPrevious, // Skip if usePrayer is skipped or navigation not needed
+    skip: skip || skipNextPrevious || isFavoritesCategory,
   });
 
-  const currentIndex = allPrayers.findIndex((p) => p.id === prayerId);
-  const prevPrayer =
-    currentIndex > 0 ? allPrayers[currentIndex - 1] : undefined;
-  const nextPrayer =
-    currentIndex < allPrayers.length - 1
-      ? allPrayers[currentIndex + 1]
-      : undefined;
+  const prevPrayer = useMemo(() => {
+    if (isFavoritesCategory) {
+      const favoritePrayers = favorites.map((f) => f.prayer).filter(Boolean);
+      const currentIndex = favoritePrayers.findIndex((p) => p?.id === prayerId);
+      return currentIndex > 0 ? favoritePrayers[currentIndex - 1] : undefined;
+    } else {
+      const currentIndex = allPrayers.findIndex((p) => p.id === prayerId);
+      return currentIndex > 0 ? allPrayers[currentIndex - 1] : undefined;
+    }
+  }, [isFavoritesCategory, favorites, allPrayers, prayerId]);
 
-  const prevNextPrayers = [prevPrayer, nextPrayer].filter(Boolean);
+  const nextPrayer = useMemo(() => {
+    if (isFavoritesCategory) {
+      const favoritePrayers = favorites.map((f) => f.prayer).filter(Boolean);
+      const currentIndex = favoritePrayers.findIndex((p) => p?.id === prayerId);
+      return currentIndex < favoritePrayers.length - 1
+        ? favoritePrayers[currentIndex + 1]
+        : undefined;
+    } else {
+      const currentIndex = allPrayers.findIndex((p) => p.id === prayerId);
+      return currentIndex < allPrayers.length - 1
+        ? allPrayers[currentIndex + 1]
+        : undefined;
+    }
+  }, [isFavoritesCategory, favorites, allPrayers, prayerId]);
 
   return {
     prayer,
     prayerLoading:
-      (!skip && prayerLoading) || (!skipNextPrevious && allPrayersLoading),
-    prevNextPrayers,
+      (!skip && prayerLoading) ||
+      (!skipNextPrevious && (isFavoritesCategory ? favoritesLoading : allPrayersLoading)),
+    prevPrayer,
+    nextPrayer,
   };
 }
