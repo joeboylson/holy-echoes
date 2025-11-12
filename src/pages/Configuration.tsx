@@ -7,10 +7,12 @@ import WindowTooSmall from "../components/WindowTooSmall";
 import { HEADER_HEIGHT } from "@/constants/layout";
 import { useState } from "react";
 import CategoriesList from "@/layout/CategoryList";
+import SeasonsList from "@/layout/SeasonsList";
 import { Button } from "@/components/ui/button";
 
 export enum ConfigOptions {
   CATEGORIES = "Categories",
+  SEASONS = "Seasons",
 }
 
 const StyledConfiguration = styled.div`
@@ -35,10 +37,10 @@ export default function Configuration() {
     <AdminAccessWrapper data-id="AdminAccessWrapper">
       <StyledConfiguration data-id="StyledConfiguration">
         <div className="grid [align-content:flex-start] gap-[8px]">
-          {Object.values(ConfigOptions).map((configOption) => {
+          {Object.values(ConfigOptions).map((option) => {
             return (
-              <Button onClick={() => setConfigOption(configOption)}>
-                {configOption}
+              <Button key={option} onClick={() => setConfigOption(option)}>
+                {option}
               </Button>
             );
           })}
@@ -51,6 +53,15 @@ export default function Configuration() {
                 Edit & Reorder Categories:
               </h1>
               <CategoriesList />
+            </div>
+          )}
+
+          {configOption === ConfigOptions.SEASONS && (
+            <div className="grid gap-[24px] ">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                Edit & Manage Seasons:
+              </h1>
+              <SeasonsList />
             </div>
           )}
         </div>

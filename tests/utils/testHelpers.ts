@@ -309,6 +309,19 @@ export const generateTestData = (table: string) => {
         order: timestamp,
       } as Favorite;
 
+    case "seasons":
+      // Use current month and day for test data
+      const now = new Date();
+      return {
+        name: `Test Season ${timestamp}`,
+        color: "#0082cb",
+        startMonth: now.getMonth() + 1, // 1-12
+        startDay: now.getDate(), // 1-31
+        endMonth: 12, // Default to December
+        endDay: 31, // Default to Dec 31
+        published: false,
+      };
+
     default:
       return {
         name: `Test ${table} ${timestamp}`,

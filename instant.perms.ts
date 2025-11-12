@@ -140,6 +140,24 @@ const rules = {
 
   /**
    * --------------------------------------------------------------------------
+   * SEASONS
+   * --------------------------------------------------------------------------
+   */
+  seasons: {
+    allow: {
+      view: "data.published || isAdmin", // users can only see published seasons
+      create: "isAdmin",
+      update: "isAdmin",
+      delete: "isAdmin",
+    },
+    bind: [
+      "isAdmin",
+      "auth.email in ['joeboylson@gmail.com', 'tom@proall.us']",
+    ],
+  },
+
+  /**
+   * --------------------------------------------------------------------------
    * USERS
    * --------------------------------------------------------------------------
    */

@@ -73,6 +73,16 @@ const _schema = i.schema({
     favorites: i.entity({
       order: i.number().indexed(),
     }),
+
+    seasons: i.entity({
+      name: i.string(),
+      color: i.string(),
+      startMonth: i.number().indexed(), // 1-12 (January = 1, December = 12)
+      startDay: i.number().indexed(), // 1-31
+      endMonth: i.number().indexed(), // 1-12 (January = 1, December = 12)
+      endDay: i.number().indexed(), // 1-31
+      published: i.boolean().indexed(),
+    }),
   },
 
   links: {
@@ -126,6 +136,18 @@ const _schema = i.schema({
     favoritePrayer: {
       forward: { on: "favorites", has: "one", label: "prayer" },
       reverse: { on: "prayers", has: "many", label: "favorites" },
+    },
+
+    // Season -> File relationship (one-to-one) for featured image
+    seasonFile: {
+      forward: { on: "seasons", has: "one", label: "file" },
+      reverse: { on: "$files", has: "many", label: "seasons" },
+    },
+
+    // Season -> Prayers relationship (one-to-many) for featured prayers
+    seasonPrayers: {
+      forward: { on: "prayers", has: "one", label: "season" },
+      reverse: { on: "seasons", has: "many", label: "prayers" },
     },
   },
 });
@@ -188,6 +210,13 @@ export type Favorite = InstaQLEntity<
   "favorites",
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   { owner?: {}; prayer?: {} }
+>;
+
+export type Season = InstaQLEntity<
+  AppSchema,
+  "seasons",
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  { file?: {}; prayers?: {} }
 >;
 
 /**

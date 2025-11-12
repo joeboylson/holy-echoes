@@ -10,9 +10,11 @@ const LoadingIconWrapper = styled.div`
 type _props = {
   src: string;
   alt: string;
+  style?: React.CSSProperties;
+  className?: string;
 };
 
-export default function AsyncImage({ src, alt }: _props) {
+export default function AsyncImage({ src, alt, style, className }: _props) {
   const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -41,7 +43,14 @@ export default function AsyncImage({ src, alt }: _props) {
           <LoadingIcon />
         </LoadingIconWrapper>
       ) : (
-        <img src={loadedSrc} alt={alt} loading="lazy" decoding="async" />
+        <img
+          src={loadedSrc}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          style={style}
+          className={className}
+        />
       )}
     </>
   );
