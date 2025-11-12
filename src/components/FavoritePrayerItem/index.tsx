@@ -1,47 +1,8 @@
-import styled from "styled-components";
 import type { Favorite } from "@schema";
 import { Link } from "react-router-dom";
 import { Pages } from "@/layout/App/router";
 import { isEmpty } from "lodash";
 import { useMemo } from "react";
-
-const StyledPrayerListItem = styled.div`
-  position: relative;
-  overflow: hidden;
-  height: 36px;
-  align-items: center;
-  align-items: center;
-  display: grid;
-
-  &:hover,
-  &.active {
-    a {
-      color: black;
-      font-weight: bold;
-    }
-  }
-
-  a {
-    color: #555555;
-    text-decoration: none;
-    line-height: 36px;
-  }
-`;
-
-const UnpublishedTag = styled.p`
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 10px;
-  margin: 6px;
-  padding: 0 8px;
-  line-height: 24px;
-  pointer-events: none;
-  background-color: var(--blue-10);
-  color: white;
-  text-transform: uppercase;
-  border-radius: 36px;
-`;
 
 interface FavoritePrayerItemProps {
   favorite: Favorite;
@@ -63,11 +24,18 @@ export default function FavoritePrayerItem({
   );
 
   return (
-    <StyledPrayerListItem>
-      <Link to={to}>{prayerName}</Link>
+    <div className="relative overflow-hidden h-9 items-center grid">
+      <Link
+        to={to}
+        className="text-gray-600 no-underline leading-9 hover:text-black hover:font-bold"
+      >
+        {prayerName}
+      </Link>
       {!favorite.prayer?.published && (
-        <UnpublishedTag>Not Published</UnpublishedTag>
+        <p className="absolute top-0 right-0 text-[10px] m-1.5 px-2 leading-6 pointer-events-none bg-[var(--blue-10)] text-white uppercase rounded-full">
+          Not Published
+        </p>
       )}
-    </StyledPrayerListItem>
+    </div>
   );
 }

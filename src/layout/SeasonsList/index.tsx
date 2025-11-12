@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import useSeasons from "@/hooks/useSeasons";
 import usePrayers from "@/hooks/usePrayers";
 import { Button } from "@/components/ui/button";
@@ -7,13 +6,6 @@ import {
   monthDayToDayOfYear,
   dayOfYearToMonthDay,
 } from "@/utils/seasonDateHelpers";
-
-const StyledSeasonsList = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  align-content: start;
-  gap: 12px;
-`;
 
 export default function SeasonsList() {
   const {
@@ -66,7 +58,7 @@ export default function SeasonsList() {
   };
 
   return (
-    <StyledSeasonsList>
+    <div className="grid grid-cols-1 content-start gap-3">
       <Button onClick={handleAddNewSeason}>Add New Season</Button>
 
       {/* Season Timeline with multi-handle slider and all season details */}
@@ -82,6 +74,6 @@ export default function SeasonsList() {
           onUnlinkFile={unlinkFileFromSeason}
         />
       )}
-    </StyledSeasonsList>
+    </div>
   );
 }

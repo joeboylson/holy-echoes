@@ -3,11 +3,12 @@ import Block from "../../components/Block";
 import ReorderableList from "../ReorderableList";
 import type { Prayer } from "@schema";
 import { useParams } from "react-router-dom";
-import { StyledPrayerBlockPreview } from "./StyledComponents";
 import { Reorderable, reorderReorderable } from "@/utils";
 import { useMemo } from "react";
 import usePrayer from "@/hooks/usePrayer";
 import heIconBlue from "@/assets/he-icon-blue.png";
+
+const PRAYER_HEADER_HEIGHT = 36 + 16;
 
 interface _props {
   filterUnpublished?: boolean;
@@ -44,10 +45,11 @@ export default function PrayerBlockPreview({
   if (prayerLoading) return <p>loading...</p>;
 
   return (
-    <StyledPrayerBlockPreview
+    <div
       data-id="StyledPrayerBlockPreview"
       key={prayerId}
-      className="w-full"
+      className="w-full max-w-[600px] mx-auto overflow-y-auto overflow-x-hidden p-6 pb-[20vh]"
+      style={{ height: `calc(var(--header-height) - ${PRAYER_HEADER_HEIGHT}px)` }}
     >
       <ReorderableList
         items={prayer?.prayerBlocks ?? []}
@@ -58,6 +60,6 @@ export default function PrayerBlockPreview({
       <div className="flex justify-center pt-12 pb-12">
         <img src={heIconBlue} alt="Holy Echoes" className="w-[50px] h-[50px] object-contain" />
       </div>
-    </StyledPrayerBlockPreview>
+    </div>
   );
 }

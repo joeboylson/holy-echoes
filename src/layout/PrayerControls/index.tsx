@@ -4,7 +4,6 @@ import { id } from "@instantdb/react";
 import { Pages } from "../App/router";
 import { useNavigate } from "react-router-dom";
 import AddNewButton from "../../components/AddNewButton";
-import { ControlRow, StyledPrayerControls } from "./StyledComponents";
 import { cascadeDeletePrayer } from "../../utils";
 import DeleteButton from "../../components/DeleteButton";
 import { compact, debounce } from "lodash";
@@ -115,38 +114,38 @@ export default function PrayerControls({ prayer }: _props) {
   if (isLoading) return <span />;
 
   return (
-    <StyledPrayerControls>
+    <div className="grid grid-cols-1 gap-1">
       <AddNewButton onClick={addNewPrayer} itemName="Prayer" />
 
       {prayer && (
         <Card>
           <CardContent className="space-y-2">
             <b>Edit Prayer Information:</b>
-            <ControlRow>
+            <div className="grid grid-cols-[120px_1fr] gap-2 h-fit items-center">
               <p>Prayer Name:</p>
               <input
                 defaultValue={prayer.name}
                 onChange={(e) => handleNameChange(e.target.value)}
               />
-            </ControlRow>
+            </div>
 
-            <ControlRow>
+            <div className="grid grid-cols-[120px_1fr] gap-2 h-fit items-center">
               <p>{prayer.published ? "Published:" : "Not Published:"}</p>
               <Switch
                 checked={prayer.published}
                 onCheckedChange={handleIsPublishedChange}
                 disabled={isSaving}
               />
-            </ControlRow>
+            </div>
 
-            <ControlRow>
+            <div className="grid grid-cols-[120px_1fr] gap-2 h-fit items-center">
               <p>Delete Prayer:</p>
               <DeleteButton onClick={deletePrayer} itemName="Prayer" />
-            </ControlRow>
+            </div>
 
             <hr />
 
-            <ControlRow>
+            <div className="grid grid-cols-[120px_1fr] gap-2 h-fit items-center">
               <p>Categories:</p>
               <SelectWithCreate
                 placeholder={"+ Add a category"}
@@ -157,10 +156,10 @@ export default function PrayerControls({ prayer }: _props) {
                 disabled={categoriesLoading || isSaving}
                 values={selectedCategoryIds}
               />
-            </ControlRow>
+            </div>
           </CardContent>
         </Card>
       )}
-    </StyledPrayerControls>
+    </div>
   );
 }

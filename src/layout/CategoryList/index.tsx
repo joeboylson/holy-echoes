@@ -1,29 +1,9 @@
-import styled from "styled-components";
 import ReorderableList from "@/layout/ReorderableList";
 import { Reorderable, reorderReorderable } from "@/utils/";
 import useCategories from "@/hooks/useCategories";
 import DeleteButton from "@/components/DeleteButton";
 import { CategoryListItem } from "./CategoryListItem";
 import { Button } from "@/components/ui/button";
-
-const StyledCategoryList = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  align-content: start;
-  gap: 12px;
-`;
-
-const PrayerListItemsWrapper = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  align-content: start;
-  gap: 4px;
-
-  .item {
-    border-bottom: 1px solid #ccc;
-  }
-`;
 
 export default function CategoriesList() {
   const {
@@ -42,15 +22,15 @@ export default function CategoriesList() {
   const handleAddNewCategory = () => addNewCategory("New Category");
 
   return (
-    <StyledCategoryList>
+    <div className="grid grid-cols-1 content-start gap-3">
       <Button onClick={handleAddNewCategory}>Add New Category</Button>
-      <PrayerListItemsWrapper>
+      <div className="w-full grid grid-cols-1 content-start gap-1">
         <ReorderableList
           items={categories}
           onReorder={handleOnReorder}
           renderItem={(item) => {
             return (
-              <div className="item flex gap-[24px] py-[6px] items-center">
+              <div className="flex gap-6 py-1.5 items-center border-b border-gray-300">
                 <DeleteButton
                   itemName="Category"
                   onClick={() => deleteCategory(item)}
@@ -66,7 +46,7 @@ export default function CategoriesList() {
           }}
           enabled={true}
         />
-      </PrayerListItemsWrapper>
-    </StyledCategoryList>
+      </div>
+    </div>
   );
 }

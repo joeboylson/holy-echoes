@@ -14,13 +14,7 @@ import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
 import { removeBlock, cascadeDeletePrayerBlock } from "../../utils";
 import { db } from "@/database";
 import { BlockTypeNames, type BlockType, type PrayerBlock } from "@schema";
-import {
-  BlockContent,
-  BlockContentValues,
-  BlockControls,
-  MarkdownEditor,
-  SpaceAboveWrapper,
-} from "./StyledComponents";
+import { MDXEditor } from "@mdxeditor/editor";
 import { Switch } from "@/components/ui/switch";
 import TwoColumnInput from "@/components/TwoColumnInput";
 import ImageBlockForm from "../ImageBlockForm";
@@ -105,9 +99,9 @@ export default function BlockForm({
   return (
     <Card className="py-0">
       <CardContent className="p-3 grid grid-cols-[1fr_24px] gap-1 items-start">
-        <BlockContent>
+        <div className="grid grid-cols-1 gap-3 items-start [&_i]:text-xs">
           {showSpacerAbove && (
-            <SpaceAboveWrapper>
+            <div className="grid grid-cols-[150px_1fr] gap-1 h-8 items-center">
               <p>
                 {prayerBlock.spaceAbove
                   ? "Has Spacing Above:"
@@ -117,7 +111,7 @@ export default function BlockForm({
                 checked={prayerBlock.spaceAbove}
                 onCheckedChange={handleSpaceAboveChange}
               />
-            </SpaceAboveWrapper>
+            </div>
           )}
 
           <Select
@@ -136,15 +130,16 @@ export default function BlockForm({
             </SelectContent>
           </Select>
 
-          <BlockContentValues>
+          <div className="grid grid-cols-1 gap-1 items-start border-l border-black/10 pl-3">
             {blockTypeName && (
               <>
                 {blockTypeName === CENTERED_TITLE && (
                   <>
                     <i>Large centered title</i>
-                    <MarkdownEditor
+                    <MDXEditor
                       markdown={text}
                       onChange={handleBodyChange}
+                      className="border border-[#ddd] rounded-lg"
                     />
                   </>
                 )}
@@ -164,9 +159,10 @@ export default function BlockForm({
                       &nbsp;body text.
                     </i>
                     <i>Use italics, bold, and underline.</i>
-                    <MarkdownEditor
+                    <MDXEditor
                       markdown={text}
                       onChange={handleBodyChange}
+                      className="border border-[#ddd] rounded-lg"
                     />
                   </>
                 )}
@@ -175,9 +171,10 @@ export default function BlockForm({
                   <>
                     <i>Small & centered information text.</i>
                     <i>Use italics, bold, and underline.</i>
-                    <MarkdownEditor
+                    <MDXEditor
                       markdown={text}
                       onChange={handleBodyChange}
+                      className="border border-[#ddd] rounded-lg"
                     />
                   </>
                 )}
@@ -186,9 +183,10 @@ export default function BlockForm({
                   <>
                     <i>Small & centered reference text.</i>
                     <i>ALWAYS italics.</i>
-                    <MarkdownEditor
+                    <MDXEditor
                       markdown={text}
                       onChange={handleBodyChange}
+                      className="border border-[#ddd] rounded-lg"
                     />
                   </>
                 )}
@@ -240,14 +238,14 @@ export default function BlockForm({
                 )}
               </>
             )}
-          </BlockContentValues>
-        </BlockContent>
+          </div>
+        </div>
 
-        <BlockControls>
+        <div className="flex flex-col justify-between items-center min-h-[100px] [&_button]:bg-transparent [&_button]:border-0 [&_button]:outline-0">
           <Button variant="destructive" size="icon" onClick={deleteBlock}>
             <TrashSimpleIcon size={20} weight="duotone" color="red" />
           </Button>
-        </BlockControls>
+        </div>
       </CardContent>
     </Card>
   );

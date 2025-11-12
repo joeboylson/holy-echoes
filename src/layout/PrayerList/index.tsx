@@ -1,29 +1,9 @@
-import styled from "styled-components";
 import PrayerListItem from "./PrayerListItem";
 import ReorderableList from "@/layout/ReorderableList";
 import { Reorderable, reorderReorderable } from "@/utils/";
 import { useMemo } from "react";
 import usePrayers from "@/hooks/usePrayers";
 import { Category } from "@schema";
-
-const StyledPrayerList = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  align-content: start;
-  gap: 12px;
-`;
-
-const PrayerListItemsWrapper = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  align-content: start;
-  gap: 4px;
-
-  .item {
-    border-bottom: 1px solid #ccc;
-  }
-`;
 
 interface _props {
   filterUnpublished?: boolean;
@@ -51,15 +31,15 @@ export default function PrayerList({
   if (isLoading) return <span />;
 
   return (
-    <StyledPrayerList className="pb-[20vh]">
-      <PrayerListItemsWrapper>
+    <div className="grid grid-cols-1 content-start gap-3 pb-[20vh]">
+      <div className="w-full grid grid-cols-1 content-start gap-1 [&_.item]:border-b [&_.item]:border-gray-300">
         <ReorderableList
           items={orderedPrayers}
           onReorder={handleOnReorder}
           enabled={enableReorder}
           renderItem={(item) => <PrayerListItem prayer={item} />}
         />
-      </PrayerListItemsWrapper>
-    </StyledPrayerList>
+      </div>
+    </div>
   );
 }

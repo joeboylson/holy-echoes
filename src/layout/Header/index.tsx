@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useContext } from "react";
 import { UserContext } from "../AdminAccessWrapper";
 import { db } from "@/database";
@@ -6,26 +5,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Pages } from "../App/router";
 import { HEADER_HEIGHT } from "@/constants/layout";
 import { Button } from "@/components/ui/button";
-
-const StyledHeader = styled.div`
-  background-color: #0082cb;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: 1fr 100px;
-  align-items: center;
-  height: ${HEADER_HEIGHT}px;
-
-  p {
-    color: white;
-  }
-
-  a {
-    color: white;
-    &.active {
-      text-decoration: underline;
-    }
-  }
-`;
 
 export default function Header() {
   const navigate = useNavigate();
@@ -37,18 +16,22 @@ export default function Header() {
   };
 
   return (
-    <StyledHeader data-id="StyledHeader">
-      <div className="flex gap-[36px]">
-        <p className="font-[800]">{user?.email}</p>
-        <nav className="flex gap-[12px]">
-          <NavLink to={Pages.ADMIN}>Prayer Dashboard</NavLink>
-          <NavLink to={Pages.CONFIG}>Configuration</NavLink>
-          <NavLink to={Pages.ALL_PRAYER_BLOCKS}>All Prayer Blocks</NavLink>
+    <header
+      className="bg-[#0082cb] px-6 grid grid-cols-[1fr_100px] items-center text-white"
+      style={{ height: `${HEADER_HEIGHT}px` }}
+      data-id="StyledHeader"
+    >
+      <div className="flex gap-9">
+        <p className="font-extrabold text-white">{user?.email}</p>
+        <nav className="flex gap-3">
+          <NavLink to={Pages.ADMIN} className="text-white hover:text-white [&.active]:underline">Prayer Dashboard</NavLink>
+          <NavLink to={Pages.CONFIG} className="text-white hover:text-white [&.active]:underline">Configuration</NavLink>
+          <NavLink to={Pages.ALL_PRAYER_BLOCKS} className="text-white hover:text-white [&.active]:underline">All Prayer Blocks</NavLink>
         </nav>
       </div>
       <Button variant="outline" onClick={handleLogout}>
         Logout
       </Button>
-    </StyledHeader>
+    </header>
   );
 }

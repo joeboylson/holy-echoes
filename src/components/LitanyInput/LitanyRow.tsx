@@ -3,7 +3,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { TrashSimple as TrashSimpleIcon } from "@phosphor-icons/react";
 import { debounce } from "lodash";
 import { db } from "@/database";
-import { StyledLitanyRow } from "./StyledComponents";
 import { LitanyBlock } from "@schema";
 import { Button } from "@/components/ui/button";
 
@@ -39,7 +38,7 @@ export default function LitanyRow({ row }: _props) {
   };
 
   return (
-    <StyledLitanyRow key={row.id}>
+    <div key={row.id} className="grid grid-cols-[3fr_3fr_1fr_1fr_36px] gap-1 items-center justify-items-center [&_button]:p-0 [&_button]:m-0 [&_button]:bg-transparent [&_button]:border-0">
       <Textarea
         onChange={(e) => updateRowCall(e.target.value)}
         defaultValue={call}
@@ -62,6 +61,6 @@ export default function LitanyRow({ row }: _props) {
       <Button variant="destructive" size="icon" onClick={removeRow}>
         <TrashSimpleIcon size={20} weight="duotone" />
       </Button>
-    </StyledLitanyRow>
+    </div>
   );
 }

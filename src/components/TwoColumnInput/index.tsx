@@ -6,11 +6,6 @@ import { first } from "lodash";
 import { db } from "@/database";
 import { id } from "@instantdb/react";
 import { Reorderable, reorderReorderable } from "../../utils";
-import {
-  TwoColumnRowWrapper,
-  RowHeader,
-  StyledTwoColumnRow,
-} from "./StyledComponents";
 
 interface _props {
   prayerBlockId?: string;
@@ -61,11 +56,11 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
   }, [prayerBlockId, numberOfItems]);
 
   return (
-    <TwoColumnRowWrapper>
-      <StyledTwoColumnRow className="header">
-        <RowHeader>Left</RowHeader>
-        <RowHeader>Right</RowHeader>
-      </StyledTwoColumnRow>
+    <div className="grid grid-cols-1 gap-2 pt-3">
+      <div className="grid grid-cols-[1fr_1fr_36px] gap-1 items-center justify-items-center pr-8">
+        <p className="text-center">Left</p>
+        <p className="text-center">Right</p>
+      </div>
 
       <ReorderableList
         items={litanyBlocks}
@@ -75,6 +70,6 @@ export default function TwoColumnInput({ prayerBlockId }: _props) {
       />
 
       <AddNewButton onClick={handleAddNewRow} itemName="Row" />
-    </TwoColumnRowWrapper>
+    </div>
   );
 }

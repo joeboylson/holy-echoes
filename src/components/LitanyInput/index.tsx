@@ -5,11 +5,6 @@ import { first } from "lodash";
 import { db } from "@/database";
 import { id } from "@instantdb/react";
 import { Reorderable, reorderReorderable } from "@/utils";
-import {
-  LitanyRowWrapper,
-  RowHeader,
-  StyledLitanyRow,
-} from "./StyledComponents";
 import LitanyRow from "./LitanyRow";
 import clsx from "clsx";
 
@@ -69,18 +64,18 @@ export default function LitanyInput({ prayerBlockId }: _props) {
   if (isLoading) return <span />;
 
   return (
-    <LitanyRowWrapper
+    <div
       key={prayerBlockId}
-      className={clsx({
-        "is-disabled": addRowLoading,
+      className={clsx("grid grid-cols-1 gap-2 pt-3", {
+        "opacity-25 pointer-events-none": addRowLoading,
       })}
     >
-      <StyledLitanyRow className="header">
-        <RowHeader>Call</RowHeader>
-        <RowHeader>Response</RowHeader>
-        <RowHeader>Super</RowHeader>
-        <RowHeader>Inline?</RowHeader>
-      </StyledLitanyRow>
+      <div className="grid grid-cols-[3fr_3fr_1fr_1fr_36px] gap-1 items-center justify-items-center pr-8">
+        <p className="text-center">Call</p>
+        <p className="text-center">Response</p>
+        <p className="text-center">Super</p>
+        <p className="text-center">Inline?</p>
+      </div>
 
       <ReorderableList
         items={litanyBlocks ?? []}
@@ -90,6 +85,6 @@ export default function LitanyInput({ prayerBlockId }: _props) {
       />
 
       <AddNewButton onClick={handleAddNewRow} itemName="Row" />
-    </LitanyRowWrapper>
+    </div>
   );
 }

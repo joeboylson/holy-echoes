@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 
-import styled from "styled-components";
 import AdminAccessWrapper from "../layout/AdminAccessWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";
 import WindowTooSmall from "../components/WindowTooSmall";
@@ -15,16 +14,6 @@ export enum ConfigOptions {
   SEASONS = "Seasons",
 }
 
-const StyledConfiguration = styled.div`
-  padding: 24px;
-  width: 100vw;
-  height: calc(var(--header-height) - ${HEADER_HEIGHT}px);
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 24px;
-  overflow: hidden;
-`;
-
 export default function Configuration() {
   const [configOption, setConfigOption] = useState<ConfigOptions>(
     ConfigOptions.CATEGORIES
@@ -35,7 +24,11 @@ export default function Configuration() {
 
   return (
     <AdminAccessWrapper data-id="AdminAccessWrapper">
-      <StyledConfiguration data-id="StyledConfiguration">
+      <div
+        className="p-6 w-screen grid grid-cols-[200px_1fr] gap-6 overflow-hidden"
+        style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }}
+        data-id="StyledConfiguration"
+      >
         <div className="grid [align-content:flex-start] gap-[8px]">
           {Object.values(ConfigOptions).map((option) => {
             return (
@@ -65,7 +58,7 @@ export default function Configuration() {
             </div>
           )}
         </div>
-      </StyledConfiguration>
+      </div>
     </AdminAccessWrapper>
   );
 }

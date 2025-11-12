@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { db } from "@/database";
 import { Pages } from "../layout/App/router";
 import { Card } from "@/components/ui/card";
@@ -12,20 +11,6 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
-
-export const StyledLogin = styled.div`
-  width: 100vw;
-  height: var(--header-height);
-  display: grid;
-  place-items: center;
-`;
-
-export const LoginForm = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 100%;
-  gap: 12px;
-`;
 
 enum LoginTabs {
   ENTER_EMAIL = "enter_email",

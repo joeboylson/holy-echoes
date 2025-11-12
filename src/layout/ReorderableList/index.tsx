@@ -2,11 +2,6 @@ import clsx from "clsx";
 import { JSX, useEffect, useState } from "react";
 import { DotsSix } from "@phosphor-icons/react";
 
-import {
-  ReorderableItem,
-  StyledReorderableContainer,
-} from "./StyledComponents";
-
 interface _props<T extends { id?: string; order: number }> {
   items: T[];
   onReorder: (items: T[]) => Promise<void>;
@@ -60,27 +55,32 @@ export default function ReorderableList<T extends { id?: string; order: number }
   };
 
   return (
-    <StyledReorderableContainer
+    <div
       key="list"
-      className={clsx({
-        "is-disabled": isLoading,
+      className={clsx("overflow-y-auto", {
+        "opacity-50 pointer-events-none": isLoading,
       })}
       data-id="ReorderableList"
     >
       {items.map((item, index) => {
         return (
-          <ReorderableItem
+          <div
             key={item.id}
             draggable={enabled}
             onDragStart={() => handleDragStart(index)}
             onDragOver={(e) => handleDragOver(index, e)}
             onDrop={() => handleDrop(index)}
             onDragEnd={handleDragEnd}
-            className={clsx(itemClass, {
-              "is-disabled": isLoading || !enabled,
-              "is-hovered-over": index === hoverIndex,
-              "is-dragged": index === draggedIndex,
-            })}
+            className={clsx(
+              "relative grid grid-cols-[1fr_24px] items-center overflow-visible",
+              "after:content-[''] after:block after:absolute after:top-[calc(50%-12px)] after:left-3 after:w-6 after:h-6 after:bg-red-500/75 after:rounded-xl after:hidden",
+              itemClass,
+              {
+                "grid-cols-[1fr_24px]": isLoading || !enabled,
+                "after:block": index === hoverIndex,
+                "opacity-10 cursor-ns-resize after:opacity-0": index === draggedIndex,
+              }
+            )}
           >
             <>{renderItem(item)}</>
             {enabled && (
@@ -88,9 +88,9 @@ export default function ReorderableList<T extends { id?: string; order: number }
                 <DotsSix size={20} weight="bold" />
               </span>
             )}
-          </ReorderableItem>
+          </div>
         );
       })}
-    </StyledReorderableContainer>
+    </div>
   );
 }

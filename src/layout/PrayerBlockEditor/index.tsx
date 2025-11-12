@@ -2,7 +2,6 @@ import { db } from "@/database";
 import { id } from "@instantdb/react";
 import { first } from "lodash";
 import { useParams } from "react-router-dom";
-import { BlocksWrapper, StyledPrayerBlockEditor } from "./StyledComponents";
 import BlockForm from "../BlockForm";
 import PrayerControls from "../PrayerControls";
 import AddNewButton from "../../components/AddNewButton";
@@ -78,12 +77,12 @@ export default function PrayerBlockEditor() {
   if (isLoading) return <span />;
 
   return (
-    <StyledPrayerBlockEditor>
+    <div className="grid grid-cols-1 gap-9 items-start overflow-y-scroll pr-3 pb-[100px]">
       <PrayerControls prayer={prayer} key={prayer?.id ?? "new"} />
 
       {prayer && (
         <>
-          <BlocksWrapper key={prayer?.id ?? "new"}>
+          <div className="grid grid-cols-1 gap-3 items-start pl-6" key={prayer?.id ?? "new"}>
             {prayerBlocks.map((prayerBlock) => {
               return (
                 <BlockForm
@@ -94,11 +93,11 @@ export default function PrayerBlockEditor() {
                 />
               );
             })}
-          </BlocksWrapper>
+          </div>
 
           <AddNewButton onClick={addNewPrayerBlock} itemName="Block" />
         </>
       )}
-    </StyledPrayerBlockEditor>
+    </div>
   );
 }

@@ -1,15 +1,4 @@
-import { LitanyWrapper } from "./StyledComponents";
-import styled from "styled-components";
 import { PrayerBlock } from "@schema";
-
-const IndentedResponseWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-`;
-
-const IndentedResponse = styled.p`
-  text-indent: 24px;
-`;
 
 interface _props {
   prayerBlock: PrayerBlock;
@@ -17,8 +6,13 @@ interface _props {
 }
 
 export default function LitanyBlock({ prayerBlock, className }: _props) {
+  const baseClass = className?.includes("space-above") ? "pt-6" : "";
+
   return (
-    <LitanyWrapper data-id="LitanyWrapper" className={className}>
+    <div
+      data-id="LitanyWrapper"
+      className={`min-h-4 text-[#2c2c2c] text-[21px] leading-[27.3px] grid grid-cols-1 gap-4 [&>p]:leading-[23.1px] [&_*]:font-['Neuton',_serif] ${baseClass} ${className}`}
+    >
       {(prayerBlock.litanyBlocks ?? []).map((i) => {
         const { call, response, superscript, inline } = i;
 
@@ -33,15 +27,15 @@ export default function LitanyBlock({ prayerBlock, className }: _props) {
           );
 
         return (
-          <IndentedResponseWrapper>
+          <div className="grid grid-cols-1">
             <p>
               {`${call}`}
               <sup>&nbsp;{superscript}</sup>
             </p>
-            <IndentedResponse>{response ?? ""}</IndentedResponse>
-          </IndentedResponseWrapper>
+            <p className="indent-6">{response ?? ""}</p>
+          </div>
         );
       })}
-    </LitanyWrapper>
+    </div>
   );
 }

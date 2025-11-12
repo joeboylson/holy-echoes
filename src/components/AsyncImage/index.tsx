@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
 import LoadingIcon from "../LoadingIcon";
-import styled from "styled-components";
-
-const LoadingIconWrapper = styled.div`
-  display: grid;
-  place-items: center;
-`;
 
 type _props = {
   src: string;
@@ -39,9 +33,9 @@ export default function AsyncImage({ src, alt, style, className }: _props) {
   return (
     <>
       {!loadedSrc ? (
-        <LoadingIconWrapper>
+        <div className="grid place-items-center">
           <LoadingIcon />
-        </LoadingIconWrapper>
+        </div>
       ) : (
         <img
           src={loadedSrc}

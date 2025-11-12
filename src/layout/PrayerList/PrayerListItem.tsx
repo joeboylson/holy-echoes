@@ -1,47 +1,8 @@
-import styled from "styled-components";
 import type { Prayer } from "@schema";
 import { Link, useParams } from "react-router-dom";
 import { Pages } from "../App/router";
 import { compact, isEmpty } from "lodash";
 import { useMemo } from "react";
-
-const StyledPrayerListItem = styled.div`
-  position: relative;
-  overflow: hidden;
-  height: 36px;
-  align-items: center;
-  align-items: center;
-  display: grid;
-
-  &:hover,
-  &.active {
-    a {
-      color: black;
-      font-weight: bold;
-    }
-  }
-
-  a {
-    color: #555555;
-    text-decoration: none;
-    line-height: 36px;
-  }
-`;
-
-const UnpublishedTag = styled.p`
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 10px;
-  margin: 6px;
-  padding: 0 8px;
-  line-height: 24px;
-  pointer-events: none;
-  background-color: var(--blue-10);
-  color: white;
-  text-transform: uppercase;
-  border-radius: 36px;
-`;
 
 interface _props {
   prayer: Prayer;
@@ -80,9 +41,18 @@ export default function PrayerListItem({ prayer }: _props) {
   );
 
   return (
-    <StyledPrayerListItem className={className}>
-      <Link to={to}>{prayerName}</Link>
-      {!prayer.published && <UnpublishedTag>Not Published</UnpublishedTag>}
-    </StyledPrayerListItem>
+    <div className={`relative overflow-hidden h-9 items-center grid ${className}`}>
+      <Link
+        to={to}
+        className="text-gray-600 no-underline leading-9 hover:text-black hover:font-bold [.active_&]:text-black [.active_&]:font-bold"
+      >
+        {prayerName}
+      </Link>
+      {!prayer.published && (
+        <p className="absolute top-0 right-0 text-[10px] m-1.5 px-2 leading-6 pointer-events-none bg-[var(--blue-10)] text-white uppercase rounded-full">
+          Not Published
+        </p>
+      )}
+    </div>
   );
 }

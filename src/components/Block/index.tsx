@@ -1,18 +1,6 @@
 import { PrayerBlock, BlockTypeNames } from "@schema";
 import markdownit from "markdown-it";
 import LitanyBlock from "./LitanyBlock";
-import {
-  BlockImage,
-  BlockImageIcon,
-  BlockImageSmall,
-  BlockSpacer,
-  Body,
-  BodyCentered,
-  CenteredTitle,
-  InfoText,
-  Quote,
-  Reference,
-} from "./StyledComponents";
 import TwoColumnBlock from "./TwoColumnBlock";
 import AsyncImage from "../AsyncImage";
 
@@ -43,52 +31,65 @@ export default function Block({ prayerBlock }: _props) {
   const src = prayerBlock?.file?.url;
   const reference = prayerBlock.reference ?? "";
 
+  const baseClasses = "min-h-4 text-[#2c2c2c] text-[21px] leading-[27.3px] [&_*]:font-['Neuton',_serif]";
+  const spaceAbove = prayerBlock.spaceAbove ? "pt-6" : "";
   const propsNoContent = {
     className: prayerBlock.spaceAbove ? "space-above" : "",
   };
 
-  const props = {
-    ...propsNoContent,
+  const htmlProps = {
     dangerouslySetInnerHTML: { __html: md.render(text) },
   };
 
-  if (blockTypeName === BODY) return <Body {...props} />;
-  if (blockTypeName === BODY_CENTERED) return <BodyCentered {...props} />;
+  if (blockTypeName === BODY)
+    return <div className={`${baseClasses} ${spaceAbove}`} {...htmlProps} />;
+
+  if (blockTypeName === BODY_CENTERED)
+    return <div className={`${baseClasses} text-center ${spaceAbove}`} {...htmlProps} />;
+
   if (blockTypeName === CENTERED_TITLE)
-    return <CenteredTitle data-id="Centered Title" {...props} />;
-  if (blockTypeName === INFO_TEXT) return <InfoText {...props} />;
-  if (blockTypeName === REFERENCE) return <Reference {...props} />;
+    return (
+      <h1
+        data-id="Centered Title"
+        className={`${baseClasses} text-center text-[30px] font-bold leading-[33px] ${spaceAbove}`}
+        {...htmlProps}
+      />
+    );
+
+  if (blockTypeName === INFO_TEXT)
+    return <div className={`${baseClasses} text-[16px] leading-[20.8px] text-center ${spaceAbove}`} {...htmlProps} />;
+
+  if (blockTypeName === REFERENCE)
+    return <div className={`${baseClasses} text-[16px] leading-[20.8px] text-center italic font-light ${spaceAbove}`} {...htmlProps} />;
+
   if (blockTypeName === QUOTE) {
     return (
-      <Quote>
-        <div
-          {...props}
-          dangerouslySetInnerHTML={{ __html: md.render(`"${text}"`) }}
-        />
+      <div className={`${baseClasses} text-[16px] leading-[20.8px] italic font-light grid [&>:nth-child(2)]:justify-self-end ${spaceAbove}`}>
+        <div dangerouslySetInnerHTML={{ __html: md.render(`"${text}"`) }} />
         <p className="preview-quote-reference">— {reference}</p>
-      </Quote>
+      </div>
     );
   }
 
   if (blockTypeName === IMAGE && src)
     return (
-      <BlockImage {...propsNoContent}>
+      <div className={`${baseClasses} w-full ${spaceAbove}`}>
         <AsyncImage src={src} alt="" />
-      </BlockImage>
+      </div>
     );
 
   if (blockTypeName === SMALL_IMAGE && src)
     return (
-      <BlockImageSmall {...propsNoContent}>
+      <div className={`${baseClasses} w-[68%] mx-auto ${spaceAbove}`}>
         <AsyncImage src={src} alt="" />
-      </BlockImageSmall>
+      </div>
     );
 
   if (blockTypeName === ICON && src)
     return (
-      <BlockImageIcon {...propsNoContent}>
+      <div className={`${baseClasses} w-9 mx-auto ${spaceAbove}`}>
         <AsyncImage src={src} alt="" />
-      </BlockImageIcon>
+      </div>
     );
 
   if (blockTypeName === LITANY)
@@ -98,7 +99,7 @@ export default function Block({ prayerBlock }: _props) {
     return <TwoColumnBlock prayerBlock={prayerBlock} {...propsNoContent} />;
 
   if (blockTypeName === SPACER)
-    return <BlockSpacer height={text} {...propsNoContent} />;
+    return <div style={{ height: `${text}px` }} className={spaceAbove} />;
 
   return <span />;
 }

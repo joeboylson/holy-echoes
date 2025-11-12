@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import AdminAccessWrapper from "../layout/AdminAccessWrapper";
 import { useWindowSize } from "@uidotdev/usehooks";
 import WindowTooSmall from "../components/WindowTooSmall";
@@ -16,64 +15,6 @@ import { cascadeDeletePrayerBlock } from "@/utils/prayerBlock";
 import type { PrayerBlock } from "@schema";
 import { BlockTypeNames } from "@schema";
 import DeleteButton from "@/components/DeleteButton";
-
-const StyledAllPrayerBlocks = styled.div`
-  padding: 24px;
-  width: 100vw;
-  height: calc(100vh - ${HEADER_HEIGHT}px);
-  display: grid;
-  gap: 24px;
-  overflow: hidden;
-`;
-
-const BlocksList = styled.div`
-  display: grid;
-  gap: 12px;
-  overflow-y: auto;
-  height: calc(100vh - ${HEADER_HEIGHT}px - 100px);
-  align-content: start;
-  padding-bottom: 48px;
-`;
-
-const BlockItem = styled.div`
-  padding: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: white;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
-
-  h3 {
-    margin: 0 0 8px 0;
-    font-weight: 600;
-    color: var(--blue-10);
-  }
-
-  p {
-    margin: 4px 0;
-    font-size: 14px;
-    color: #666;
-  }
-
-  .block-text {
-    margin-top: 8px;
-    padding: 8px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    font-size: 13px;
-    max-height: 100px;
-    overflow-y: auto;
-  }
-`;
-
-const BlockImage = styled.img<{ $isIcon?: boolean }>`
-  margin-top: 8px;
-  max-width: ${(props) => (props.$isIcon ? "50px" : "200px")};
-  max-height: ${(props) => (props.$isIcon ? "50px" : "200px")};
-  border-radius: 4px;
-  border: 1px solid #ddd;
-`;
 
 export default function AllPrayerBlocks() {
   const [selectedBlockTypeId, setSelectedBlockTypeId] = useState<
@@ -125,16 +66,16 @@ export default function AllPrayerBlocks() {
   if (isLoading) {
     return (
       <AdminAccessWrapper>
-        <StyledAllPrayerBlocks>
+        <div className="p-6 w-screen grid gap-6 overflow-hidden" style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }}>
           <p>Loading...</p>
-        </StyledAllPrayerBlocks>
+        </div>
       </AdminAccessWrapper>
     );
   }
 
   return (
     <AdminAccessWrapper data-id="AdminAccessWrapper">
-      <StyledAllPrayerBlocks data-id="StyledAllPrayerBlocks">
+      <div className="p-6 w-screen grid gap-6 overflow-hidden" style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }} data-id="StyledAllPrayerBlocks">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-4">
             All Prayer Blocks
@@ -164,7 +105,7 @@ export default function AllPrayerBlocks() {
           </div>
         </div>
 
-        <BlocksList>
+        <div className="grid gap-3 overflow-y-auto content-start pb-12" style={{ height: `calc(100vh - ${HEADER_HEIGHT}px - 100px)` }}>
           {filteredBlocks.map((block) => {
             const blockTypeName = block.blockType?.name as BlockTypeNames;
             const isImageBlock = [
@@ -175,30 +116,34 @@ export default function AllPrayerBlocks() {
             const isIcon = blockTypeName === BlockTypeNames.ICON;
 
             return (
-              <BlockItem key={block.id}>
+              <div key={block.id} className="p-4 border border-gray-300 rounded-lg bg-white grid grid-cols-[1fr_auto] gap-4">
                 <div>
-                  <h3>{block.blockType?.name ?? "No Block Type"}</h3>
-                  <p>
+                  <h3 className="m-0 mb-2 font-semibold text-[var(--blue-10)]">{block.blockType?.name ?? "No Block Type"}</h3>
+                  <p className="my-1 text-sm text-gray-600">
                     <strong>Prayer:</strong> {block.prayer?.name ?? "Unknown"}
                   </p>
-                  <p>
+                  <p className="my-1 text-sm text-gray-600">
                     <strong>Order:</strong> {block.order}
                   </p>
                   {isImageBlock && block.file?.url && (
-                    <BlockImage
+                    <img
                       src={block.file.url}
                       alt="Block image"
-                      $isIcon={isIcon}
+                      className="mt-2 rounded border border-gray-300"
+                      style={{
+                        maxWidth: isIcon ? "50px" : "200px",
+                        maxHeight: isIcon ? "50px" : "200px"
+                      }}
                     />
                   )}
                   {block.text && (
-                    <div className="block-text">
+                    <div className="mt-2 p-2 bg-gray-100 rounded text-xs max-h-[100px] overflow-y-auto">
                       <strong>Text:</strong>
                       <div>{block.text}</div>
                     </div>
                   )}
                   {block.reference && (
-                    <p>
+                    <p className="my-1 text-sm text-gray-600">
                       <strong>Reference:</strong> {block.reference}
                     </p>
                   )}
@@ -207,11 +152,11 @@ export default function AllPrayerBlocks() {
                   onClick={() => handleDeleteBlock(block)}
                   itemName="Block"
                 />
-              </BlockItem>
+              </div>
             );
           })}
-        </BlocksList>
-      </StyledAllPrayerBlocks>
+        </div>
+      </div>
     </AdminAccessWrapper>
   );
 }

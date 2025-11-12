@@ -1,21 +1,7 @@
-import styled from "styled-components";
-
-const StyledWindowTooSmall = styled.div`
-  width: 100vw;
-  height: var(--header-height);
-  display: grid;
-  place-items: center;
-
-  * {
-    padding: 24px;
-    max-width: 500px;
-  }
-`;
-
 export default function WindowTooSmall() {
   return (
-    <StyledWindowTooSmall>
-      <p>
+    <div className="w-screen h-screen grid place-items-center">
+      <p className="p-6 max-w-[500px]">
         It looks like your window is a bit too small to display this page
         properly.
         <br />
@@ -26,6 +12,6 @@ export default function WindowTooSmall() {
         <br />
         Thanks!
       </p>
-    </StyledWindowTooSmall>
+    </div>
   );
 }
