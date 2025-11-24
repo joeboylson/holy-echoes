@@ -30,6 +30,8 @@ dist-ssr
 
 # testing
 /coverage
+tests/screenshots
+tests/videos
 
 # production
 /build

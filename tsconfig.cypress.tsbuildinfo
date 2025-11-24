@@ -1,0 +1,1 @@
+{"root":["./tests/e2e/homepage.cy.ts","./tests/e2e/screenshots-mobile.cy.ts","./tests/e2e/screenshots.cy.ts","./cypress.config.ts"],"version":"5.9.2"}

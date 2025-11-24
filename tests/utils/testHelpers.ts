@@ -186,6 +186,31 @@ export const testDeleteAccess = async (
   try {
     const scopedDb = getDbForUserType(userType);
 
+    // Special handling for $files table - use storage.deleteFile instead
+    if (table === "$files") {
+      try {
+        await scopedDb.storage.deleteFile(recordId);
+        return {
+          userType,
+          table,
+          recordId,
+          success: true,
+          error: null,
+          transactionId: "storage-delete-success",
+        };
+      } catch (storageError) {
+        return {
+          userType,
+          table,
+          recordId,
+          success: false,
+          error: storageError instanceof Error ? storageError.message : "Unknown storage error",
+          transactionId: null,
+        };
+      }
+    }
+
+    // For regular tables, use transaction delete
     const transactionResult = await scopedDb.transact(
       scopedDb.tx[table][recordId].delete()
     );

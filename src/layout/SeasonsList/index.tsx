@@ -20,7 +20,7 @@ export default function SeasonsList() {
     unlinkFileFromSeason,
   } = useSeasons();
 
-  const { prayers } = usePrayers({ filterUnpublished: false });
+  const { prayers } = usePrayers({ filterUnpublished: true });
 
   if (seasonsLoading) return <span />;
 

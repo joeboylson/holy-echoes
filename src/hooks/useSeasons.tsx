@@ -100,10 +100,7 @@ export default function useSeasons() {
     await db.transact([db.tx.seasons[season.id].delete()]);
   }
 
-  async function editSeason(
-    season: Season,
-    newSeasonValues: Partial<Season>
-  ) {
+  async function editSeason(season: Season, newSeasonValues: Partial<Season>) {
     if (!season.id) return;
     await db.transact([
       db.tx.seasons[season.id].update({
@@ -113,27 +110,19 @@ export default function useSeasons() {
   }
 
   async function linkPrayerToSeason(prayerId: string, seasonId: string) {
-    await db.transact([
-      db.tx.prayers[prayerId].link({ season: seasonId }),
-    ]);
+    await db.transact([db.tx.prayers[prayerId].link({ season: seasonId })]);
   }
 
   async function unlinkPrayerFromSeason(prayerId: string, seasonId: string) {
-    await db.transact([
-      db.tx.prayers[prayerId].unlink({ season: seasonId }),
-    ]);
+    await db.transact([db.tx.prayers[prayerId].unlink({ season: seasonId })]);
   }
 
   async function linkFileToSeason(fileId: string, seasonId: string) {
-    await db.transact([
-      db.tx.seasons[seasonId].link({ file: fileId }),
-    ]);
+    await db.transact([db.tx.seasons[seasonId].link({ file: fileId })]);
   }
 
   async function unlinkFileFromSeason(seasonId: string, fileId: string) {
-    await db.transact([
-      db.tx.seasons[seasonId].unlink({ file: fileId }),
-    ]);
+    await db.transact([db.tx.seasons[seasonId].unlink({ file: fileId })]);
   }
 
   return {
