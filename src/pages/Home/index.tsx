@@ -26,8 +26,6 @@ export default function Home() {
           <div className="py-6">
             <FeaturedPrayersCarousel />
 
-            <hr className="my-6 border-gray-300" />
-
             <div className="grid gap-4 grid-cols-2">
               <FavoriteHomeItem />
               <AllPrayersHomeItem />

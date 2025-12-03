@@ -19,7 +19,7 @@ export default function FeaturedPrayersCarousel() {
   if (featuredPrayers.length === 0) return null;
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 bg-white border border-gray-200 rounded-lg shadow p-4">
       {currentSeason.file?.url ? (
         <AspectRatio ratio={2 / 1} className="mb-4">
           <div
