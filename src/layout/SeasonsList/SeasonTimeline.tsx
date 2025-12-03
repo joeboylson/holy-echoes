@@ -8,6 +8,8 @@ import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { SeasonListItem } from "./SeasonListItem";
 import DeleteButton from "@/components/DeleteButton";
+import { Button } from "@/components/ui/button";
+import { ArrowUpIcon } from "@phosphor-icons/react";
 
 type SeasonTimelineProps = {
   seasons: Season[];
@@ -18,6 +20,7 @@ type SeasonTimelineProps = {
   onUnlinkPrayer: (prayerId: string, seasonId: string) => void;
   onLinkFile: (fileId: string, seasonId: string) => void;
   onUnlinkFile: (seasonId: string, fileId: string) => void;
+  onAddSeasonBefore: (season: Season) => void;
 };
 
 export function SeasonTimeline({
@@ -29,6 +32,7 @@ export function SeasonTimeline({
   onUnlinkPrayer,
   onLinkFile,
   onUnlinkFile,
+  onAddSeasonBefore,
 }: SeasonTimelineProps) {
   // Sort seasons by start day for display
   const sortedSeasons = useMemo(() => {
@@ -55,7 +59,10 @@ export function SeasonTimeline({
 
       // For other seasons, the end day is one day before the next season starts
       const nextSeason = sortedSeasons[index + 1];
-      const nextStartDay = monthDayToDayOfYear(nextSeason.startMonth, nextSeason.startDay);
+      const nextStartDay = monthDayToDayOfYear(
+        nextSeason.startMonth,
+        nextSeason.startDay
+      );
       return nextStartDay - 1;
     });
   }, [sortedSeasons]);
@@ -71,46 +78,52 @@ export function SeasonTimeline({
   // Debounce timer ref
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSliderChange = useCallback((newValues: number[]) => {
-    // Update local state immediately for smooth UI
-    setLocalSliderValues(newValues);
+  const handleSliderChange = useCallback(
+    (newValues: number[]) => {
+      // Update local state immediately for smooth UI
+      setLocalSliderValues(newValues);
 
-    // Clear existing timer
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
+      // Clear existing timer
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
 
-    // Debounce the actual database update
-    debounceTimerRef.current = setTimeout(() => {
-      // Update seasons based on slider values (which represent end days)
-      newValues.forEach((endDayOfYear, index) => {
-        const season = sortedSeasons[index];
-        const { month: endMonth, day: endDay } = dayOfYearToMonthDay(endDayOfYear);
+      // Debounce the actual database update
+      debounceTimerRef.current = setTimeout(() => {
+        // Update seasons based on slider values (which represent end days)
+        newValues.forEach((endDayOfYear, index) => {
+          const season = sortedSeasons[index];
+          const { month: endMonth, day: endDay } =
+            dayOfYearToMonthDay(endDayOfYear);
 
-        // Update this season's end date
-        onUpdateSeason(season, {
-          endMonth,
-          endDay,
+          // Update this season's end date
+          onUpdateSeason(season, {
+            endMonth,
+            endDay,
+          });
+
+          // If this is not the last season, update the NEXT season's start date
+          // to be one day after this season's end date
+          if (index < sortedSeasons.length - 1) {
+            const nextSeason = sortedSeasons[index + 1];
+            const nextStartDay = endDayOfYear + 1;
+            const { month: startMonth, day: startDay } = dayOfYearToMonthDay(
+              nextStartDay > 365 ? 1 : nextStartDay
+            );
+
+            onUpdateSeason(nextSeason, {
+              startMonth,
+              startDay,
+            });
+          }
         });
 
-        // If this is not the last season, update the NEXT season's start date
-        // to be one day after this season's end date
-        if (index < sortedSeasons.length - 1) {
-          const nextSeason = sortedSeasons[index + 1];
-          const nextStartDay = endDayOfYear + 1;
-          const { month: startMonth, day: startDay } = dayOfYearToMonthDay(nextStartDay > 365 ? 1 : nextStartDay);
-
-          onUpdateSeason(nextSeason, {
-            startMonth,
-            startDay,
-          });
-        }
-      });
-
-      // Show success toast
-      toast.success("Season dates updated successfully");
-    }, 500); // 500ms debounce
-  }, [sortedSeasons, onUpdateSeason]);
+        // Show success toast
+        toast.success("Season dates updated successfully");
+      }, 500); // 500ms debounce
+    },
+    [sortedSeasons, onUpdateSeason]
+  );
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -139,7 +152,10 @@ export function SeasonTimeline({
       // End day comes from the slider value
       const endDay = localSliderValues[index];
 
-      const duration = endDay >= startDay ? endDay - startDay + 1 : 365 - startDay + endDay + 1;
+      const duration =
+        endDay >= startDay
+          ? endDay - startDay + 1
+          : 365 - startDay + endDay + 1;
       const startPercent = ((startDay - 1) / 365) * 100;
       const widthPercent = (duration / 365) * 100;
 
@@ -194,34 +210,38 @@ export function SeasonTimeline({
 
       {/* Visual Timeline */}
       <div className="relative h-16 w-full bg-white rounded border overflow-hidden">
-        {visualBlocks.map(({ season, startPercent, widthPercent, wrapsAround }) => (
-          <div key={season.id}>
-            {/* Main block */}
-            <div
-              className="absolute h-full flex items-center justify-center text-white text-xs font-medium px-2 transition-all border-r-2 border-l-2 border-white"
-              style={{
-                backgroundColor: season.color,
-                left: `${startPercent}%`,
-                width: wrapsAround ? `${100 - startPercent}%` : `${widthPercent}%`,
-              }}
-            >
-              <span className="truncate">{season.name}</span>
-            </div>
-            {/* Wrap-around block for seasons that cross year boundary */}
-            {wrapsAround && (
+        {visualBlocks.map(
+          ({ season, startPercent, widthPercent, wrapsAround }) => (
+            <div key={season.id}>
+              {/* Main block */}
               <div
                 className="absolute h-full flex items-center justify-center text-white text-xs font-medium px-2 transition-all border-r-2 border-l-2 border-white"
                 style={{
                   backgroundColor: season.color,
-                  left: '0%',
-                  width: `${widthPercent - (100 - startPercent)}%`,
+                  left: `${startPercent}%`,
+                  width: wrapsAround
+                    ? `${100 - startPercent}%`
+                    : `${widthPercent}%`,
                 }}
               >
                 <span className="truncate">{season.name}</span>
               </div>
-            )}
-          </div>
-        ))}
+              {/* Wrap-around block for seasons that cross year boundary */}
+              {wrapsAround && (
+                <div
+                  className="absolute h-full flex items-center justify-center text-white text-xs font-medium px-2 transition-all border-r-2 border-l-2 border-white"
+                  style={{
+                    backgroundColor: season.color,
+                    left: "0%",
+                    width: `${widthPercent - (100 - startPercent)}%`,
+                  }}
+                >
+                  <span className="truncate">{season.name}</span>
+                </div>
+              )}
+            </div>
+          )
+        )}
 
         {/* Empty space block (if seasons don't cover full year) */}
         {emptySpaceBlock && (
@@ -253,33 +273,50 @@ export function SeasonTimeline({
         {sortedSeasons.map((season, index) => {
           const block = visualBlocks[index];
           return (
-            <div
-              key={season.id}
-              className="p-4 bg-white rounded border-2"
-              style={{ borderColor: season.color }}
-            >
-              <div className="flex gap-4 items-start">
-                <DeleteButton
-                  itemName="Season"
-                  onClick={() => onDeleteSeason(season)}
-                  icon
-                />
+            <div key={season.id} className="grid gap-4">
+              {/* Add Season Before button */}
+              <Button
+                onClick={() => onAddSeasonBefore(season)}
+                variant="primary"
+                size="sm"
+                className="w-[200px]"
+              >
+                <ArrowUpIcon />
+                Add Season Before
+              </Button>
 
-                <SeasonListItem
-                  season={season}
-                  prayers={prayers}
-                  startDay={block?.startDay}
-                  endDay={block?.endDay}
-                  onSave={(updates) => onUpdateSeason(season, updates)}
-                  onLinkPrayer={(prayerId) => onLinkPrayer(prayerId, season.id)}
-                  onUnlinkPrayer={(prayerId) => onUnlinkPrayer(prayerId, season.id)}
-                  onLinkFile={(fileId) => onLinkFile(fileId, season.id)}
-                  onUnlinkFile={() => {
-                    if (season.file?.id) {
-                      onUnlinkFile(season.id, season.file.id);
+              {/* Season card */}
+              <div
+                className="p-4 bg-white rounded border-2"
+                style={{ borderColor: season.color }}
+              >
+                <div className="flex gap-4 items-start">
+                  <DeleteButton
+                    itemName="Season"
+                    onClick={() => onDeleteSeason(season)}
+                    icon
+                  />
+
+                  <SeasonListItem
+                    season={season}
+                    prayers={prayers}
+                    startDay={block?.startDay}
+                    endDay={block?.endDay}
+                    onSave={(updates) => onUpdateSeason(season, updates)}
+                    onLinkPrayer={(prayerId) =>
+                      onLinkPrayer(prayerId, season.id)
                     }
-                  }}
-                />
+                    onUnlinkPrayer={(prayerId) =>
+                      onUnlinkPrayer(prayerId, season.id)
+                    }
+                    onLinkFile={(fileId) => onLinkFile(fileId, season.id)}
+                    onUnlinkFile={() => {
+                      if (season.file?.id) {
+                        onUnlinkFile(season.id, season.file.id);
+                      }
+                    }}
+                  />
+                </div>
               </div>
             </div>
           );

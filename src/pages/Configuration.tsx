@@ -39,7 +39,7 @@ export default function Configuration() {
           })}
         </div>
 
-        <div>
+        <div className="overflow-y-auto h-full pb-12">
           {configOption === ConfigOptions.CATEGORIES && (
             <div className="grid gap-[24px] ">
               <h1 className="text-2xl font-bold tracking-tight text-gray-900">
