@@ -7,7 +7,8 @@ export default defineConfig({
     supportFile: false,
     screenshotsFolder: "tests/screenshots",
     videosFolder: "tests/videos",
-    setupNodeEvents(on, config) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setupNodeEvents(_on, _config) {
       // implement node event listeners here
     },
   },

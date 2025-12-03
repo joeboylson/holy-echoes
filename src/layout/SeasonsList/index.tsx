@@ -7,6 +7,7 @@ import {
   dayOfYearToMonthDay,
 } from "@/utils/seasonDateHelpers";
 import { ArrowDownIcon } from "@phosphor-icons/react";
+import { Season } from "@schema";
 
 export default function SeasonsList() {
   const {
@@ -25,7 +26,7 @@ export default function SeasonsList() {
 
   if (seasonsLoading) return <span />;
 
-  const handleAddSeasonBefore = async (targetSeason: any) => {
+  const handleAddSeasonBefore = async (targetSeason: Season) => {
     // Sort seasons by start date
     const sortedSeasons = [...seasons].sort((a, b) => {
       const aDayOfYear = monthDayToDayOfYear(a.startMonth, a.startDay);

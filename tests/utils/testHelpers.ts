@@ -334,7 +334,7 @@ export const generateTestData = (table: string) => {
         order: timestamp,
       } as Favorite;
 
-    case "seasons":
+    case "seasons": {
       // Use current month and day for test data
       const now = new Date();
       return {
@@ -346,6 +346,7 @@ export const generateTestData = (table: string) => {
         endDay: 31, // Default to Dec 31
         published: false,
       };
+    }
 
     default:
       return {
