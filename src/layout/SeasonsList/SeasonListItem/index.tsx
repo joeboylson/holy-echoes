@@ -99,10 +99,13 @@ export function SeasonListItem({
           </div>
         ) : isEmpty(season?.file?.url) ? (
           <label className="w-[200px] h-[200px] flex items-center justify-center border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-gray-400 transition-colors">
-            <div className="text-center">
+            <div className="text-center px-4">
               <span className="text-sm text-gray-500">
                 Click to upload image
               </span>
+              <p className="text-xs text-gray-400 mt-2">
+                (Use 2:1 ratio image)
+              </p>
               <Input
                 type="file"
                 accept="image/*"
