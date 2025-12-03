@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import useSeasons from "@/hooks/useSeasons";
 import {
   Carousel,
@@ -8,6 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import HolyCardPrayerItem from "@/components/HolyCardPrayerItem";
 
 export default function FeaturedPrayersCarousel() {
   const { currentSeason } = useSeasons();
@@ -38,7 +38,9 @@ export default function FeaturedPrayersCarousel() {
           </div>
         </AspectRatio>
       ) : (
-        <h2 className="text-xl font-bold mb-3">{currentSeason.name}</h2>
+        <h2 className="text-xl font-bold mb-3 text-center ">
+          {currentSeason.name}
+        </h2>
       )}
 
       <Carousel
@@ -46,20 +48,15 @@ export default function FeaturedPrayersCarousel() {
           align: "start",
           loop: true,
         }}
-        className="w-full pb-12"
+        className="w-full py-[12px]"
       >
-        <CarouselContent>
+        <CarouselContent className="pb-[48px] px-[8px]">
           {featuredPrayers.map((prayer) => (
             <CarouselItem
               key={prayer.id}
-              className="basis-4/5 md:basis-1/2 lg:basis-1/2"
+              className="basis-2/4 md:basis-1/2 lg:basis-1/3"
             >
-              <Link
-                to={`/category/season/prayer/${prayer.id}`}
-                className="block p-3 bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
-              >
-                <span className="font-medium">{prayer.name}</span>
-              </Link>
+              <HolyCardPrayerItem prayerId={prayer.id} />
             </CarouselItem>
           ))}
         </CarouselContent>
