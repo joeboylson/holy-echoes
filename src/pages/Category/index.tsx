@@ -2,6 +2,7 @@ import PrayerList from "../../layout/PrayerList";
 import { useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useStatusBar } from "@/contexts/StatusBarContext";
+import { useHeaderColor } from "@/contexts/HeaderColorContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import useCategory from "@/hooks/useCategory";
 import NavigationHeader from "@/components/NavigationHeader";
@@ -20,10 +21,11 @@ export default function Category() {
   );
 
   const { setStatusBarColor } = useStatusBar();
+  const { headerColor } = useHeaderColor();
 
   useEffect(() => {
-    setStatusBarColor("#0082cb");
-  }, [setStatusBarColor]);
+    setStatusBarColor(headerColor);
+  }, [setStatusBarColor, headerColor]);
 
   const handlePrevious = useMemo(() => {
     if (!prevCategory?.id) return undefined;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
+import { useHeaderColor } from "@/contexts/HeaderColorContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
@@ -15,6 +16,7 @@ const md = markdownit({ html: true });
 
 export default function Search() {
   const { setStatusBarColor } = useStatusBar();
+  const { headerColor } = useHeaderColor();
   const [searchParams] = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const [searchTerm, setSearchTerm] = useState(initialQuery);
@@ -25,8 +27,8 @@ export default function Search() {
     useSearch(debouncedSearchTerm);
 
   useEffect(() => {
-    setStatusBarColor("#0082cb");
-  }, [setStatusBarColor]);
+    setStatusBarColor(headerColor);
+  }, [setStatusBarColor, headerColor]);
 
   useEffect(() => {
     // Transition to top when there are results

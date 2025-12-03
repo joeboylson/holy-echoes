@@ -3,6 +3,7 @@ import usePrayer from "@/hooks/usePrayer";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
+import { useHeaderColor } from "@/contexts/HeaderColorContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
 import ScrollablePageLayout from "@/components/ScrollablePageLayout";
@@ -18,9 +19,10 @@ export default function Prayer() {
   );
 
   const { setStatusBarColor } = useStatusBar();
+  const { headerColor } = useHeaderColor();
   useEffect(() => {
-    setStatusBarColor("#0082cb");
-  }, [setStatusBarColor]);
+    setStatusBarColor(headerColor);
+  }, [setStatusBarColor, headerColor]);
 
   const handlePrevious = useMemo(() => {
     if (!prevPrayer?.id || !categoryId) return undefined;

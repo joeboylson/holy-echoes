@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
+import { useHeaderColor } from "@/contexts/HeaderColorContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
@@ -10,11 +11,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function Profile() {
   const { setStatusBarColor } = useStatusBar();
+  const { headerColor } = useHeaderColor();
   const { user } = db.useAuth();
 
   useEffect(() => {
-    setStatusBarColor("#0082cb");
-  }, [setStatusBarColor]);
+    setStatusBarColor(headerColor);
+  }, [setStatusBarColor, headerColor]);
 
   const handleSignOut = () => {
     db.auth.signOut();

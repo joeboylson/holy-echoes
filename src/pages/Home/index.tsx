@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useCategories from "@/hooks/useCategories";
-import useSeasons from "@/hooks/useSeasons";
 import { useStatusBar } from "@/contexts/StatusBarContext";
+import { useHeaderColor } from "@/contexts/HeaderColorContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import { Link } from "react-router-dom";
 import FavoriteHomeItem from "@/layout/FavoriteHomeItem";
@@ -12,18 +12,16 @@ import HomeHeader from "@/layout/HomeHeader";
 
 export default function Home() {
   const { categoriesWithPrayers } = useCategories();
-  const { currentSeason } = useSeasons();
   const { setStatusBarColor } = useStatusBar();
-
-  const seasonColor = currentSeason?.color ?? "#0082cb";
+  const { headerColor } = useHeaderColor();
 
   useEffect(() => {
-    setStatusBarColor(seasonColor);
-  }, [setStatusBarColor, seasonColor]);
+    setStatusBarColor(headerColor);
+  }, [setStatusBarColor, headerColor]);
 
   return (
     <LoggedInUserWrapper>
-      <ScrollablePageLayout variant="100" header={<HomeHeader color={seasonColor} />}>
+      <ScrollablePageLayout variant="100" header={<HomeHeader />}>
         <div className="px-6 w-full max-w-[600px] mx-auto">
           <div className="py-6">
             <FeaturedPrayersCarousel />

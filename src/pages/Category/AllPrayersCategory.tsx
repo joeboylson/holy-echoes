@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useStatusBar } from "@/contexts/StatusBarContext";
+import { useHeaderColor } from "@/contexts/HeaderColorContext";
 import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import NavigationHeader from "@/components/NavigationHeader";
 import { Pages } from "@/layout/App/router";
@@ -8,10 +9,11 @@ import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 
 export default function AllPrayersCategory() {
   const { setStatusBarColor } = useStatusBar();
+  const { headerColor } = useHeaderColor();
 
   useEffect(() => {
-    setStatusBarColor("#0082cb");
-  }, [setStatusBarColor]);
+    setStatusBarColor(headerColor);
+  }, [setStatusBarColor, headerColor]);
 
   return (
     <LoggedInUserWrapper>

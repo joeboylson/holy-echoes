@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft as ArrowLeftIcon, CaretLeft as CaretLeftIcon, CaretRight as CaretRightIcon } from "@phosphor-icons/react";
 import FavoriteButton from "../FavoriteButton";
 import { Button } from "@/components/ui/button";
+import { useHeaderColor } from "@/contexts/HeaderColorContext";
 
 interface NavigationHeaderProps {
   onPrevious?: () => void;
@@ -17,9 +18,13 @@ export default function NavigationHeader({
   prayerId,
 }: NavigationHeaderProps) {
   const navigate = useNavigate();
+  const { headerColor } = useHeaderColor();
 
   return (
-    <div className="w-full h-[50px] mx-auto bg-[#0082cb] grid grid-cols-[90px_1fr_72px] items-center px-6 shadow-lg z-10">
+    <div
+      className="w-full h-[50px] mx-auto grid grid-cols-[90px_1fr_72px] items-center px-6 shadow-lg z-10"
+      style={{ backgroundColor: headerColor }}
+    >
       <Button
         variant="ghost"
         onClick={() => navigate(backTo)}
