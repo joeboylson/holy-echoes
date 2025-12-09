@@ -1,5 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft as ArrowLeftIcon, CaretLeft as CaretLeftIcon, CaretRight as CaretRightIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeft as ArrowLeftIcon,
+  CaretLeft as CaretLeftIcon,
+  CaretRight as CaretRightIcon,
+} from "@phosphor-icons/react";
 import FavoriteButton from "../FavoriteButton";
 import { Button } from "@/components/ui/button";
 import { useHeaderColor } from "@/contexts/HeaderColorContext";
@@ -28,24 +32,25 @@ export default function NavigationHeader({
       <Button
         variant="ghost"
         onClick={() => navigate(backTo)}
-        className="!text-white hover:!text-white hover:!bg-transparent hover:underline !justify-start !p-0"
+        className="!text-white hover:!text-white hover:!bg-transparent hover:underline !justify-start !p-0 [&_svg]:!size-[28px] flex items-center text-[22px]"
       >
-        <ArrowLeftIcon size={20} /> Back
+        <ArrowLeftIcon weight="bold" />
+        <span className="font-bold pl-[4px] pt-[1px]">Back</span>
       </Button>
 
       <div className="flex justify-end px-[20px]">
         {prayerId && <FavoriteButton prayerId={prayerId} />}
       </div>
 
-      <div className="grid grid-cols-[24px_24px] gap-[24px] items-center h-6">
+      <div className="grid grid-cols-[28px_28px] gap-[16px] items-center">
         {onPrevious ? (
           <Button
             variant="ghost"
             size="icon"
             onClick={onPrevious}
-            className="!bg-transparent !p-0 !h-[24px] !w-[24px] hover:!bg-transparent"
+            className="!bg-transparent !p-0 !h-[28px] !w-[28px] hover:!bg-transparent [&_svg]:!size-[28px]"
           >
-            <CaretLeftIcon size={24} weight="bold" color="#FFFFFF" />
+            <CaretLeftIcon weight="bold" color="#FFFFFF" />
           </Button>
         ) : (
           <span />
@@ -56,9 +61,9 @@ export default function NavigationHeader({
             variant="ghost"
             size="icon"
             onClick={onNext}
-            className="!bg-transparent !p-0 !h-[24px] !w-[24px] hover:!bg-transparent"
+            className="!bg-transparent !p-0 !h-[28px] !w-[28px] hover:!bg-transparent [&_svg]:!size-[28px]"
           >
-            <CaretRightIcon size={24} weight="bold" color="#FFFFFF" />
+            <CaretRightIcon weight="bold" color="#FFFFFF" />
           </Button>
         ) : (
           <span />

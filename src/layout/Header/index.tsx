@@ -24,9 +24,24 @@ export default function Header() {
       <div className="flex gap-9">
         <p className="font-extrabold text-white">{user?.email}</p>
         <nav className="flex gap-3">
-          <NavLink to={Pages.ADMIN} className="text-white hover:text-white [&.active]:underline">Prayer Dashboard</NavLink>
-          <NavLink to={Pages.CONFIG} className="text-white hover:text-white [&.active]:underline">Configuration</NavLink>
-          <NavLink to={Pages.ALL_PRAYER_BLOCKS} className="text-white hover:text-white [&.active]:underline">All Prayer Blocks</NavLink>
+          <NavLink
+            to={Pages.ADMIN}
+            className="text-white hover:text-white [&.active]:underline"
+          >
+            Prayer Dashboard
+          </NavLink>
+          <NavLink
+            to={Pages.CONFIG}
+            className="text-white hover:text-white [&.active]:underline"
+          >
+            Configuration
+          </NavLink>
+          <NavLink
+            to={Pages.ALL_PRAYER_BLOCKS}
+            className="text-white hover:text-white [&.active]:underline"
+          >
+            All Prayer Blocks
+          </NavLink>
         </nav>
       </div>
       <Button variant="outline" onClick={handleLogout}>

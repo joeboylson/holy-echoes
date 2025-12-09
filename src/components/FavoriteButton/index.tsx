@@ -58,13 +58,13 @@ export default function FavoriteButton({
         className={`flex items-center justify-center rounded-full transition-colors !bg-transparent !border-0 !p-0 ${
           isCurrentlyFavorited
             ? "!text-red-600 !hover:bg-red-200"
-            : "!text-gray-600 !hover:bg-gray-200"
+            : "!text-white !hover:bg-gray-200"
         } ${className}`}
         title={
           isCurrentlyFavorited ? "Remove from favorites" : "Add to favorites"
         }
       >
-        <HeartIcon size={20} weight={isCurrentlyFavorited ? "fill" : "regular"} />
+        <HeartIcon size={28} weight={isCurrentlyFavorited ? "fill" : "bold"} />
       </button>
 
       <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
