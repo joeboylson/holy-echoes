@@ -6,7 +6,7 @@ export default function HomeHeader() {
 
   return (
     <div
-      className="w-full h-[100px] mx-auto flex items-center justify-center gap-4 shadow-lg z-10"
+      className="w-full h-[100px] mx-auto flex items-center justify-center gap-4 shadow-lg z-10 border-b-[#ffb600] border-b-[6px]"
       style={{ backgroundColor: headerColor }}
     >
       <img
