@@ -8,7 +8,6 @@ exports.default = (0, cypress_1.defineConfig)({
         supportFile: false,
         screenshotsFolder: "tests/screenshots",
         videosFolder: "tests/videos",
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         setupNodeEvents: function (_on, _config) {
             // implement node event listeners here
         },

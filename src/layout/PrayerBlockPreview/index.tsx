@@ -47,9 +47,12 @@ export default function PrayerBlockPreview({
   return (
     <div
       data-id="StyledPrayerBlockPreview"
+      id="StyledPrayerBlockPreview"
       key={prayerId}
       className="w-full max-w-[600px] mx-auto overflow-y-auto overflow-x-hidden p-6 pb-[20vh]"
-      style={{ height: `calc(var(--header-height) - ${PRAYER_HEADER_HEIGHT}px)` }}
+      style={{
+        height: `calc(var(--header-height) - ${PRAYER_HEADER_HEIGHT}px)`,
+      }}
     >
       <ReorderableList
         items={prayer?.prayerBlocks ?? []}
@@ -58,7 +61,11 @@ export default function PrayerBlockPreview({
         renderItem={(item) => <Block data-id="Block" prayerBlock={item} />}
       />
       <div className="flex justify-center pt-12 pb-12">
-        <img src={heIconBlue} alt="Holy Echoes" className="w-[50px] h-[50px] object-contain" />
+        <img
+          src={heIconBlue}
+          alt="Holy Echoes"
+          className="w-[50px] h-[50px] object-contain"
+        />
       </div>
     </div>
   );

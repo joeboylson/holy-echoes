@@ -23,7 +23,7 @@ export default function useSeasons() {
     },
   });
 
-  const seasons = data?.seasons ?? [];
+  const seasons = useMemo(() => data?.seasons ?? [], [data?.seasons]);
 
   const seasonsAsOptions: Option[] = seasons.map((season) => {
     return {

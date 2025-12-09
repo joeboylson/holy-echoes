@@ -20,6 +20,7 @@ export function HeaderColorProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useHeaderColor() {
   const context = useContext(HeaderColorContext);
   if (context === undefined) {

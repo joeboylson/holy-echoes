@@ -1,5 +1,6 @@
 import { PrayerBlock, BlockTypeNames } from "@schema";
 import markdownit from "markdown-it";
+import clsx from "clsx";
 import LitanyBlock from "./LitanyBlock";
 import TwoColumnBlock from "./TwoColumnBlock";
 import AsyncImage from "../AsyncImage";
@@ -31,75 +32,130 @@ export default function Block({ prayerBlock }: _props) {
   const src = prayerBlock?.file?.url;
   const reference = prayerBlock.reference ?? "";
 
-  const baseClasses = "min-h-4 text-[#2c2c2c] text-[21px] leading-[27.3px] [&_*]:font-['Neuton',_serif]";
-  const spaceAbove = prayerBlock.spaceAbove ? "pt-6" : "";
-  const propsNoContent = {
-    className: prayerBlock.spaceAbove ? "space-above" : "",
-  };
+  const baseClasses =
+    "min-h-[16px] text-[#2c2c2c] font-['Neuton',_serif] ![&_*]:font-['Neuton',_serif] text-[21px] leading-[calc(21px*1.3)]";
+  const spaceAbove = prayerBlock.spaceAbove;
 
-  const htmlProps = {
-    dangerouslySetInnerHTML: { __html: md.render(text) },
-  };
+  if (blockTypeName === BODY) {
+    const className = clsx(baseClasses, { "pt-6": spaceAbove });
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: md.render(text) }}
+      />
+    );
+  }
 
-  if (blockTypeName === BODY)
-    return <div className={`${baseClasses} ${spaceAbove}`} {...htmlProps} />;
+  if (blockTypeName === BODY_CENTERED) {
+    const className = clsx(baseClasses, "text-center", { "pt-6": spaceAbove });
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: md.render(text) }}
+      />
+    );
+  }
 
-  if (blockTypeName === BODY_CENTERED)
-    return <div className={`${baseClasses} text-center ${spaceAbove}`} {...htmlProps} />;
-
-  if (blockTypeName === CENTERED_TITLE)
+  if (blockTypeName === CENTERED_TITLE) {
+    const className = clsx(
+      baseClasses,
+      "text-center text-[30px] font-bold leading-[calc(30px*1.1)]",
+      { "!pt-6": spaceAbove }
+    );
     return (
       <h1
         data-id="Centered Title"
-        className={`${baseClasses} text-center text-[30px] font-bold leading-[33px] ${spaceAbove}`}
-        {...htmlProps}
+        className={className}
+        dangerouslySetInnerHTML={{ __html: md.render(text) }}
       />
     );
+  }
 
-  if (blockTypeName === INFO_TEXT)
-    return <div className={`${baseClasses} text-[16px] leading-[20.8px] text-center ${spaceAbove}`} {...htmlProps} />;
+  if (blockTypeName === INFO_TEXT) {
+    const className = clsx(
+      baseClasses,
+      "text-[16px] leading-[calc(21px*1.3)] text-center",
+      { "pt-6": spaceAbove }
+    );
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: md.render(text) }}
+      />
+    );
+  }
 
-  if (blockTypeName === REFERENCE)
-    return <div className={`${baseClasses} text-[16px] leading-[20.8px] text-center italic font-light ${spaceAbove}`} {...htmlProps} />;
+  if (blockTypeName === REFERENCE) {
+    const className = clsx(
+      baseClasses,
+      "text-[16px] leading-[calc(21px*1.3)] text-center italic font-[100]",
+      { "pt-6": spaceAbove }
+    );
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: md.render(text) }}
+      />
+    );
+  }
 
   if (blockTypeName === QUOTE) {
+    const className = clsx(
+      baseClasses,
+      "text-[16px] leading-[calc(21px*1.3)] italic font-[100] grid [&>:nth-child(2)]:justify-self-end",
+      { "pt-6": spaceAbove }
+    );
     return (
-      <div className={`${baseClasses} text-[16px] leading-[20.8px] italic font-light grid [&>:nth-child(2)]:justify-self-end ${spaceAbove}`}>
+      <div className={className}>
         <div dangerouslySetInnerHTML={{ __html: md.render(`"${text}"`) }} />
         <p className="preview-quote-reference">— {reference}</p>
       </div>
     );
   }
 
-  if (blockTypeName === IMAGE && src)
+  if (blockTypeName === IMAGE && src) {
+    const className = clsx(baseClasses, "w-full", { "pt-6": spaceAbove });
     return (
-      <div className={`${baseClasses} w-full ${spaceAbove}`}>
+      <div className={className}>
         <AsyncImage src={src} alt="" />
       </div>
     );
+  }
 
-  if (blockTypeName === SMALL_IMAGE && src)
+  if (blockTypeName === SMALL_IMAGE && src) {
+    const className = clsx(baseClasses, "w-[68%] mx-auto", {
+      "pt-6": spaceAbove,
+    });
     return (
-      <div className={`${baseClasses} w-[68%] mx-auto ${spaceAbove}`}>
+      <div className={className}>
         <AsyncImage src={src} alt="" />
       </div>
     );
+  }
 
-  if (blockTypeName === ICON && src)
+  if (blockTypeName === ICON && src) {
+    const className = clsx(baseClasses, "w-9 mx-auto", { "pt-6": spaceAbove });
     return (
-      <div className={`${baseClasses} w-9 mx-auto ${spaceAbove}`}>
+      <div className={className}>
         <AsyncImage src={src} alt="" />
       </div>
     );
+  }
 
-  if (blockTypeName === LITANY)
-    return <LitanyBlock prayerBlock={prayerBlock} {...propsNoContent} />;
+  if (blockTypeName === LITANY) {
+    const className = spaceAbove ? "space-above" : "";
+    return <LitanyBlock prayerBlock={prayerBlock} className={className} />;
+  }
 
-  if (blockTypeName === TWO_COLUMN)
-    return <TwoColumnBlock prayerBlock={prayerBlock} {...propsNoContent} />;
+  if (blockTypeName === TWO_COLUMN) {
+    const className = spaceAbove ? "space-above" : "";
+    return <TwoColumnBlock prayerBlock={prayerBlock} className={className} />;
+  }
 
-  if (blockTypeName === SPACER)
-    return <div style={{ height: `${text}px` }} className={spaceAbove} />;
+  if (blockTypeName === SPACER) {
+    const className = clsx({ "pt-6": spaceAbove });
+    return <div style={{ height: `${text}px` }} className={className} />;
+  }
 
   return <span />;
 }

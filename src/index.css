@@ -7,7 +7,7 @@
 
 /* colors: https://designsystem.digital.gov/design-tokens/color/state-tokens/ */
 
-* {
+*:not(#StyledPrayerBlockPreview):not(#StyledPrayerBlockPreview *) {
   overscroll-behavior: none;
   font-family: Arial, Helvetica, sans-serif;
 }
