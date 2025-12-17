@@ -49,7 +49,7 @@ export default function PrayerBlockPreview({
       data-id="StyledPrayerBlockPreview"
       id="StyledPrayerBlockPreview"
       key={prayerId}
-      className="w-full max-w-[600px] mx-auto overflow-y-auto overflow-x-hidden p-6 pb-[20vh]"
+      className="w-full max-w-[600px] mx-auto overflow-y-auto overflow-x-hidden p-6 pb-[10vh]"
       style={{
         height: `calc(var(--header-height) - ${PRAYER_HEADER_HEIGHT}px)`,
       }}
@@ -60,7 +60,7 @@ export default function PrayerBlockPreview({
         enabled={enableReorder}
         renderItem={(item) => <Block data-id="Block" prayerBlock={item} />}
       />
-      <div className="flex justify-center pt-12 pb-12">
+      <div className="flex justify-center pt-6 pb-6">
         <img
           src={heIconBlue}
           alt="Holy Echoes"
