@@ -9,7 +9,7 @@ export default function HomeHeroImage() {
   return (
     <AspectRatio ratio={2 / 1}>
       <div
-        className="relative overflow-hidden w-full h-full"
+        className="relative overflow-hidden w-full h-full sm:rounded-lg"
         style={{
           backgroundImage: `url("${currentSeason.file.url}")`,
           backgroundSize: "cover",

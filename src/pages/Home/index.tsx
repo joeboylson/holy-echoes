@@ -22,10 +22,10 @@ export default function Home() {
   return (
     <LoggedInUserWrapper>
       <ScrollablePageLayout variant="100" header={<HomeHeader />}>
-        <div className="w-full max-w-[600px] mx-auto">
+        <div className="w-full max-w-[640px] mx-auto sm:pt-[24px] pt-0">
           <HomeHeroImage />
         </div>
-        <div className="px-6 w-full max-w-[600px] mx-auto">
+        <div className="px-6 w-full max-w-[640px] mx-auto">
           <div className="py-6 grid gap-[24px]">
             <div className="grid gap-4 grid-cols-2">
               <FavoriteHomeItem />

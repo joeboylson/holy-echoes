@@ -65,7 +65,7 @@ export default function Category() {
           />
         }
       >
-        <div className="px-6 w-full max-w-[600px] mx-auto">
+        <div className="px-6 w-full max-w-[640px] mx-auto">
           <div className="py-6 border-b">
             <h1 className="text-2xl font-bold text-center">{category.name}</h1>
           </div>

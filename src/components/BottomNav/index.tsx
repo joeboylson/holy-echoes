@@ -28,7 +28,7 @@ export default function BottomNav() {
       className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <div className="flex justify-around items-center h-16 max-w-[600px] mx-auto">
+      <div className="flex justify-around items-center h-16 max-w-[640px] mx-auto">
         {navItems.map(({ to, icon: Icon }) => (
           <Link
             key={to}

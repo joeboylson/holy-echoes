@@ -17,8 +17,11 @@ export default function AllPrayersCategory() {
 
   return (
     <LoggedInUserWrapper>
-      <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
-        <div className="px-6 w-full max-w-[600px] mx-auto">
+      <ScrollablePageLayout
+        variant="50"
+        header={<NavigationHeader backTo={Pages.HOME} />}
+      >
+        <div className="px-6 w-full max-w-[640px] mx-auto">
           <div className="py-6 border-b">
             <h1 className="text-2xl font-bold text-center">All Prayers</h1>
           </div>

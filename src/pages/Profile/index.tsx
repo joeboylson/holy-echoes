@@ -7,7 +7,13 @@ import { Pages } from "@/layout/App/router";
 import { db } from "@/database";
 import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function Profile() {
   const { setStatusBarColor } = useStatusBar();
@@ -24,8 +30,11 @@ export default function Profile() {
 
   return (
     <LoggedInUserWrapper>
-      <ScrollablePageLayout variant="50" header={<NavigationHeader backTo={Pages.HOME} />}>
-        <div className="px-6 w-full max-w-[600px] mx-auto">
+      <ScrollablePageLayout
+        variant="50"
+        header={<NavigationHeader backTo={Pages.HOME} />}
+      >
+        <div className="px-6 w-full max-w-[640px] mx-auto">
           <div className="py-6 border-b">
             <h1 className="text-2xl font-bold text-center">Profile</h1>
           </div>
@@ -53,7 +62,8 @@ export default function Profile() {
                 <CardHeader className="text-center">
                   <CardTitle>You are not signed in</CardTitle>
                   <CardDescription>
-                    Sign in to access your profile and save your favorite prayers.
+                    Sign in to access your profile and save your favorite
+                    prayers.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex justify-center">

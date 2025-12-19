@@ -107,7 +107,7 @@ export default function Search() {
 
   // Conditional class variables
   const containerClasses = clsx(
-    "w-full px-6 max-w-[600px] mx-auto",
+    "w-full px-6 max-w-[640px] mx-auto",
     "transition-transform duration-700 ease-in-out",
     {
       "translate-y-[30vh]": !hasSearched,
@@ -119,12 +119,9 @@ export default function Search() {
     "my-6": hasSearched,
   });
 
-  const inputClasses = clsx(
-    "w-full transition-all duration-700 ease-in-out",
-    {
-      "text-lg h-14": !hasSearched,
-    }
-  );
+  const inputClasses = clsx("w-full transition-all duration-700 ease-in-out", {
+    "text-lg h-14": !hasSearched,
+  });
 
   return (
     <LoggedInUserWrapper>
@@ -138,9 +135,7 @@ export default function Search() {
               <h1 className="text-3xl font-bold text-gray-900">
                 Search Prayers
               </h1>
-              <p className="text-gray-600">
-                Find prayers by name or content
-              </p>
+              <p className="text-gray-600">Find prayers by name or content</p>
             </div>
           )}
 

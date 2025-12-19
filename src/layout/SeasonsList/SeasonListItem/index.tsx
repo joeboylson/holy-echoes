@@ -146,7 +146,7 @@ export function SeasonListItem({
         <Alert className="grid items-center">
           <Info className="h-4 w-4" color="var(--color-hc-blue)" />
           <AlertDescription>
-            Use images in a 2:1 aspect ratio with a minimum size of 600×300px
+            Use images in a 2:1 aspect ratio with a minimum size of 640×320px
             for best display quality.
           </AlertDescription>
         </Alert>
@@ -196,7 +196,8 @@ export function SeasonListItem({
         <Alert className="grid items-center" variant="destructive">
           <Info className="h-4 w-4" />
           <AlertDescription>
-            The inputs below will not be displayed to users. They are used to help identify different seasons in the timeline above.
+            The inputs below will not be displayed to users. They are used to
+            help identify different seasons in the timeline above.
           </AlertDescription>
         </Alert>
 

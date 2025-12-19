@@ -49,7 +49,7 @@ export default function PrayerBlockPreview({
       data-id="StyledPrayerBlockPreview"
       id="StyledPrayerBlockPreview"
       key={prayerId}
-      className="w-full max-w-[600px] mx-auto overflow-y-auto overflow-x-hidden p-6 pb-[10vh]"
+      className="w-full max-w-[640px] mx-auto overflow-y-auto overflow-x-hidden p-6 pb-[10vh]"
       style={{
         height: `calc(var(--header-height) - ${PRAYER_HEADER_HEIGHT}px)`,
       }}

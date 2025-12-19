@@ -101,7 +101,7 @@ export default function UserLogin() {
       <div className="w-screen min-h-screen flex flex-col">
         <NavigationHeader backTo={returnTo || Pages.HOME} />
 
-        <div className="px-6 w-full max-w-[600px] mx-auto flex-1 flex items-center justify-center">
+        <div className="px-6 w-full max-w-[640px] mx-auto flex-1 flex items-center justify-center">
           <div className="w-full">
             <div className="bg-white border border-gray-200 rounded-lg shadow p-6">
               {step === LoginStep.ENTER_EMAIL ? (
