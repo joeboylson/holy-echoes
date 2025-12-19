@@ -135,6 +135,8 @@ ol {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-hc-blue: #0082cb;
+  --color-hc-blue-lighter: #a8cee3;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

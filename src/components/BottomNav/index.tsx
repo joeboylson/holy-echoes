@@ -1,5 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { House as HouseIcon, Heart as HeartIcon, MagnifyingGlass as MagnifyingGlassIcon, User as UserIcon } from "@phosphor-icons/react";
+import {
+  House as HouseIcon,
+  Heart as HeartIcon,
+  MagnifyingGlass as MagnifyingGlassIcon,
+  User as UserIcon,
+} from "@phosphor-icons/react";
 
 export default function BottomNav() {
   const location = useLocation();
@@ -30,7 +35,7 @@ export default function BottomNav() {
             to={to}
             className={`flex items-center justify-center flex-1 h-full no-underline transition-colors ${
               isActive(to)
-                ? "text-[#0082cb]"
+                ? "text-hc-blue"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >

@@ -6,7 +6,7 @@ import LoggedInUserWrapper from "@/layout/LoggedInUserWrapper";
 import { Link } from "react-router-dom";
 import FavoriteHomeItem from "@/layout/FavoriteHomeItem";
 import AllPrayersHomeItem from "@/layout/AllPrayersHomeItem";
-import FeaturedPrayersCarousel from "@/layout/FeaturedPrayersCarousel";
+import HomeHeroImage from "@/layout/HomeHeroImage";
 import ScrollablePageLayout from "@/components/ScrollablePageLayout";
 import HomeHeader from "@/layout/HomeHeader";
 
@@ -22,10 +22,9 @@ export default function Home() {
   return (
     <LoggedInUserWrapper>
       <ScrollablePageLayout variant="100" header={<HomeHeader />}>
+        <HomeHeroImage />
         <div className="px-6 w-full max-w-[600px] mx-auto">
-          <div className="py-6">
-            <FeaturedPrayersCarousel />
-
+          <div className="py-6 grid gap-[24px]">
             <div className="grid gap-4 grid-cols-2">
               <FavoriteHomeItem />
               <AllPrayersHomeItem />
@@ -34,7 +33,7 @@ export default function Home() {
                 <Link
                   key={category.id}
                   to={`/category/${category.id}`}
-                  className="flex flex-col justify-between p-4 bg-white border border-gray-200 rounded-lg shadow hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
+                  className="flex flex-col justify-between p-4 bg-white border border-hc-blue-lighter rounded-lg shadow hover:shadow-md transition-shadow no-underline text-gray-900 hover:text-gray-900"
                 >
                   <h2 className="text-lg font-semibold">{category.name}</h2>
                   <p className="text-sm text-gray-500 mt-1">

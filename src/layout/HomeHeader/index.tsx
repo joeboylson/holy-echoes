@@ -12,7 +12,7 @@ export default function HomeHeader() {
       <img
         src={Logo}
         alt="Holy Echoes App Logo"
-        className="w-full max-w-[250px]"
+        className="w-full max-w-[300px]"
       />
     </div>
   );

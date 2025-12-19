@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <header
-      className="bg-[#0082cb] px-6 grid grid-cols-[1fr_100px] items-center text-white"
+      className="bg-hc-blue px-6 grid grid-cols-[1fr_100px] items-center text-white"
       style={{ height: `${HEADER_HEIGHT}px` }}
       data-id="StyledHeader"
     >

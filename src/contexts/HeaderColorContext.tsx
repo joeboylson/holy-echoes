@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode } from "react";
-import useSeasons from "@/hooks/useSeasons";
+// import useSeasons from "@/hooks/useSeasons";
 
 interface HeaderColorContextType {
   headerColor: string;
@@ -10,8 +10,12 @@ const HeaderColorContext = createContext<HeaderColorContextType | undefined>(
 );
 
 export function HeaderColorProvider({ children }: { children: ReactNode }) {
-  const { currentSeason } = useSeasons();
-  const headerColor = currentSeason?.color ?? "#0082cb";
+  // NOTE: Season-based header color functionality commented out for now
+  // This might be used later to dynamically change header colors based on liturgical seasons
+  // const { currentSeason } = useSeasons();
+  // const headerColor = currentSeason?.color ?? "#0082cb";
+
+  const headerColor = "#0082cb";
 
   return (
     <HeaderColorContext.Provider value={{ headerColor }}>

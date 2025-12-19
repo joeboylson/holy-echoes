@@ -130,7 +130,7 @@ export default function UserLogin() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="your@email.com"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0082cb] focus:border-transparent text-lg"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-hc-blue focus:border-transparent text-lg"
                         disabled={isLoading}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -189,7 +189,7 @@ export default function UserLogin() {
                           setCode(value);
                         }}
                         placeholder="123456"
-                        className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0082cb] focus:border-transparent text-center text-3xl tracking-widest"
+                        className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-hc-blue focus:border-transparent text-center text-3xl tracking-widest"
                         disabled={isLoading}
                         maxLength={6}
                         onKeyDown={(e) => {
