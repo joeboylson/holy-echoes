@@ -16,17 +16,25 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
-    signingConfigs {
-        release {
-            storeFile file('holy-echoes-release.keystore')
-            storePassword System.getenv("KEYSTORE_PASSWORD") ?: ""
-            keyAlias "holy-echoes"
-            keyPassword System.getenv("KEY_PASSWORD") ?: ""
+    // Local keystore signing (only used for local builds, not Codemagic)
+    def keystoreFile = file('holy-echoes-release.keystore')
+    if (keystoreFile.exists()) {
+        signingConfigs {
+            release {
+                storeFile keystoreFile
+                storePassword System.getenv("KEYSTORE_PASSWORD") ?: ""
+                keyAlias "holy-echoes"
+                keyPassword System.getenv("KEY_PASSWORD") ?: ""
+            }
         }
     }
+
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            // Only apply local signing if keystore exists, otherwise Codemagic handles it
+            if (keystoreFile.exists()) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
