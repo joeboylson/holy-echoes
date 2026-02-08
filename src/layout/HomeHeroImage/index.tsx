@@ -7,7 +7,7 @@ export default function HomeHeroImage() {
   if (!currentSeason?.file?.url) return null;
 
   return (
-    <AspectRatio ratio={2 / 1}>
+    <AspectRatio ratio={16 / 9}>
       <div
         className="relative overflow-hidden w-full h-full sm:rounded-lg"
         style={{

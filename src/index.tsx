@@ -2,6 +2,7 @@ import "./index.css";
 import "@mdxeditor/editor/style.css";
 import { createRoot } from "react-dom/client";
 import MissingEnvError from "./components/MissingEnvError";
+import App from "./layout/App";
 
 const rootElement = document.getElementById("root");
 
@@ -14,10 +15,6 @@ if (rootElement) {
   if (!appId) {
     root.render(<MissingEnvError />);
   } else {
-    // Dynamically import App only if env var is present
-    import("./layout/App").then((module) => {
-      const App = module.default;
-      root.render(<App />);
-    });
+    root.render(<App />);
   }
 }

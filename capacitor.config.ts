@@ -10,6 +10,11 @@ const config: CapacitorConfig = {
       backgroundColor: "#ffffff",
       overlaysWebView: false,
     },
+    SplashScreen: {
+      launchAutoHide: true,
+      launchShowDuration: 2000,
+      showSpinner: false,
+    },
   },
 };
 

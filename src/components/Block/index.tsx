@@ -74,7 +74,7 @@ export default function Block({ prayerBlock }: _props) {
   if (blockTypeName === INFO_TEXT) {
     const className = clsx(
       baseClasses,
-      "text-[16px] leading-[calc(21px*1.3)] text-center",
+      "!text-[16px] leading-[calc(21px*1.3)] text-center",
       { "pt-6": spaceAbove }
     );
     return (
@@ -88,7 +88,7 @@ export default function Block({ prayerBlock }: _props) {
   if (blockTypeName === REFERENCE) {
     const className = clsx(
       baseClasses,
-      "text-[16px] leading-[calc(21px*1.3)] text-center italic font-[100]",
+      "!text-[16px] leading-[calc(21px*1.3)] text-center italic font-[100]",
       { "pt-6": spaceAbove }
     );
     return (
@@ -102,7 +102,7 @@ export default function Block({ prayerBlock }: _props) {
   if (blockTypeName === QUOTE) {
     const className = clsx(
       baseClasses,
-      "text-[16px] leading-[calc(21px*1.3)] italic font-[100] grid [&>:nth-child(2)]:justify-self-end",
+      "!text-[16px] leading-[calc(21px*1.3)] italic font-[100] grid [&>:nth-child(2)]:justify-self-end",
       { "pt-6": spaceAbove }
     );
     return (

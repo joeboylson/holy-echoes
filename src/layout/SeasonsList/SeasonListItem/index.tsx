@@ -96,13 +96,13 @@ export function SeasonListItem({
       {/* Featured Image - Left Side */}
       <div className="flex-shrink-0 w-[400px] space-y-4">
         {loading ? (
-          <AspectRatio ratio={2 / 1}>
+          <AspectRatio ratio={16 / 9}>
             <div className="w-full h-full flex items-center justify-center border rounded">
               <LoadingIcon />
             </div>
           </AspectRatio>
         ) : isEmpty(season?.file?.url) ? (
-          <AspectRatio ratio={2 / 1}>
+          <AspectRatio ratio={16 / 9}>
             <label className="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-gray-400 transition-colors">
               <div className="text-center px-4">
                 <span className="text-sm text-gray-500">
@@ -118,7 +118,7 @@ export function SeasonListItem({
             </label>
           </AspectRatio>
         ) : (
-          <AspectRatio ratio={2 / 1}>
+          <AspectRatio ratio={16 / 9}>
             <div className="relative w-full h-full group">
               {season?.file?.url && (
                 <AsyncImage
@@ -146,7 +146,7 @@ export function SeasonListItem({
         <Alert className="grid items-center">
           <Info className="h-4 w-4" color="var(--color-hc-blue)" />
           <AlertDescription>
-            Use images in a 2:1 aspect ratio with a minimum size of 640×320px
+            Use images in a 16:9 aspect ratio with a minimum size of 640×360px
             for best display quality.
           </AlertDescription>
         </Alert>
