@@ -16,23 +16,34 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
-    // Local keystore signing (only used for local builds, not Codemagic)
-    def keystoreFile = file('holy-echoes-release.keystore')
-    if (keystoreFile.exists()) {
+    // Signing configuration for both local and Codemagic builds
+    def keystorePropertiesFile = file('holy-echoes-release.keystore')
+    def useLocalKeystore = keystorePropertiesFile.exists()
+    def useCodemagicKeystore = System.getenv("CM_KEYSTORE_PATH") != null
+
+    if (useLocalKeystore || useCodemagicKeystore) {
         signingConfigs {
             release {
-                storeFile keystoreFile
-                storePassword System.getenv("KEYSTORE_PASSWORD") ?: ""
-                keyAlias "holy-echoes"
-                keyPassword System.getenv("KEY_PASSWORD") ?: ""
+                if (useCodemagicKeystore) {
+                    // Codemagic build - use environment variables
+                    storeFile file(System.getenv("CM_KEYSTORE_PATH"))
+                    storePassword System.getenv("CM_KEYSTORE_PASSWORD")
+                    keyAlias System.getenv("CM_KEY_ALIAS")
+                    keyPassword System.getenv("CM_KEY_PASSWORD")
+                } else {
+                    // Local build - use local keystore file
+                    storeFile keystorePropertiesFile
+                    storePassword System.getenv("KEYSTORE_PASSWORD") ?: ""
+                    keyAlias "holy-echoes"
+                    keyPassword System.getenv("KEY_PASSWORD") ?: ""
+                }
             }
         }
     }
 
     buildTypes {
         release {
-            // Only apply local signing if keystore exists, otherwise Codemagic handles it
-            if (keystoreFile.exists()) {
+            if (useLocalKeystore || useCodemagicKeystore) {
                 signingConfig signingConfigs.release
             }
             minifyEnabled false
