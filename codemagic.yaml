@@ -82,7 +82,7 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       android_signing:
-        - placelift-upload
+        - holy-echoes
       groups:
         - Holy Echoes # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS <-- Put CONTENTS of your Gloud crendentials file here)
       vars:

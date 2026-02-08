@@ -47,3 +47,5 @@ ref
 
 # env
 .env*
+
+ANDROID_DEPLOYMENT.md
