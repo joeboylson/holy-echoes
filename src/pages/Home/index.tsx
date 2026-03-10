@@ -43,6 +43,8 @@ export default function Home() {
                   </p>
                 </Link>
               ))}
+
+              <span style={{ height: "100px" }}></span>
             </div>
           </div>
         </div>
