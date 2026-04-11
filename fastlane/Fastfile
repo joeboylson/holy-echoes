@@ -6,6 +6,16 @@
 # Run locally: bundle exec fastlane android build
 #              bundle exec fastlane ios build
 
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+def version_name
+  File.readlines("VERSION.txt").last.strip
+end
+
+def version_code
+  Time.now.strftime("%y%j%H%M").to_i
+end
+
 # ── Android ───────────────────────────────────────────────────────────────────
 
 platform :android do
@@ -37,6 +47,8 @@ platform :android do
         "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias"      => ENV["KEY_ALIAS"],
         "android.injected.signing.key.password"   => ENV["KEY_PASSWORD"],
+        "versionCode"                             => version_code,
+        "versionName"                             => version_name,
       }
     )
   end
@@ -52,6 +64,8 @@ platform :android do
         "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
         "android.injected.signing.key.alias"      => ENV["KEY_ALIAS"],
         "android.injected.signing.key.password"   => ENV["KEY_PASSWORD"],
+        "versionCode"                             => version_code,
+        "versionName"                             => version_name,
       }
     )
     upload_to_play_store(
