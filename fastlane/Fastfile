@@ -53,15 +53,17 @@ end
 
 platform :ios do
 
-  # Phase 1: compile an unsigned archive (no Apple Developer account needed)
+  # Phase 1: verify the app compiles (no signing or archive needed)
   lane :build do
     cocoapods(podfile: "ios/App/Podfile")
-    build_app(
-      workspace: "ios/App/App.xcworkspace",
-      scheme: "App",
-      # Skip signing and IPA export for Phase 1 — just verify the archive compiles
-      xcargs: "CODE_SIGNING_ALLOWED=NO",
-      skip_package_ipa: true,
+    sh(
+      "xcodebuild",
+      "-workspace", "../ios/App/App.xcworkspace",
+      "-scheme", "App",
+      "-destination", "generic/platform=iOS Simulator",
+      "CODE_SIGNING_ALLOWED=NO",
+      "CODE_SIGNING_REQUIRED=NO",
+      "build"
     )
   end
 
