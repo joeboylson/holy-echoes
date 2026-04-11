@@ -9,7 +9,7 @@
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def version_name
-  File.readlines("VERSION.txt").last.strip
+  File.readlines("../VERSION.txt").last.strip
 end
 
 def version_code
