@@ -59,9 +59,9 @@ platform :ios do
     build_app(
       workspace: "ios/App/App.xcworkspace",
       scheme: "App",
-      export_method: "development",
-      # Skip signing entirely for Phase 1 — just verify the build compiles
+      # Skip signing and IPA export for Phase 1 — just verify the archive compiles
       xcargs: "CODE_SIGNING_ALLOWED=NO",
+      skip_package_ipa: true,
     )
   end
 
