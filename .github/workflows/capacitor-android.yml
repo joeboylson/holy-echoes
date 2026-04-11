@@ -43,7 +43,7 @@ jobs:
           client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
           project-slug: holy-echoes
           env-slug: production
-          site-url: https://joeboylson-infisical.up.railway.app
+          domain: https://joeboylson-infisical.up.railway.app
 
       - name: Build
         run: bash scripts/build/capacitor-android.sh
