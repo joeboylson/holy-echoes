@@ -44,6 +44,21 @@ npm run build
 info "Running cap sync android..."
 npx cap sync android
 
+# ── Generate debug keystore if missing ───────────────────────────────────────
+
+KEYSTORE_PATH="$HOME/.android/debug.keystore"
+if [ ! -f "$KEYSTORE_PATH" ]; then
+  info "Generating debug keystore..."
+  mkdir -p "$HOME/.android"
+  keytool -genkeypair -v \
+    -keystore "$KEYSTORE_PATH" \
+    -alias androiddebugkey \
+    -keyalg RSA -keysize 2048 -validity 10000 \
+    -storepass android -keypass android \
+    -dname "CN=Android Debug,O=Android,C=US" \
+    2>/dev/null
+fi
+
 # ── Build via Fastlane ────────────────────────────────────────────────────────
 
 info "Running Fastlane android build lane..."
