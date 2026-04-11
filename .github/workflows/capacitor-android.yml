@@ -53,12 +53,8 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > /tmp/holy-echoes-release.keystore
           echo "KEYSTORE_PATH=/tmp/holy-echoes-release.keystore" >> $GITHUB_ENV
 
-      - name: Sign
-        run: bundle exec fastlane android sign
-
-      # ── Phase 2b only: uncomment when Google Play service account is ready ──
-      # - name: Upload to Google Play
-      #   run: bundle exec fastlane android sign_and_dist
+      - name: Sign and upload to Google Play
+        run: bundle exec fastlane android sign_and_dist
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
