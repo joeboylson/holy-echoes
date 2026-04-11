@@ -26,7 +26,22 @@ platform :android do
     )
   end
 
-  # Phase 2: sign with real keystore and upload to Google Play internal track
+  # Phase 2a: sign with real keystore, produce a signed AAB (no upload)
+  lane :sign do
+    gradle(
+      project_dir: "android",
+      task: "bundle",
+      build_type: "Release",
+      properties: {
+        "android.injected.signing.store.file"     => ENV["KEYSTORE_PATH"],
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias"      => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password"   => ENV["KEY_PASSWORD"],
+      }
+    )
+  end
+
+  # Phase 2b: sign with real keystore and upload to Google Play internal track
   lane :sign_and_dist do
     gradle(
       project_dir: "android",

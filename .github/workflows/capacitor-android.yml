@@ -36,25 +36,33 @@ jobs:
           source config.sh
           echo "APP_ID=$APP_ID" >> $GITHUB_ENV
 
-      # ── Phase 2 only: uncomment when Infisical is running ──────────────────
-      # - name: Pull secrets from Infisical
-      #   uses: Infisical/secrets-action@v1
-      #   with:
-      #     client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
-      #     client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
-      #     project-slug: your-project-slug
-      #     env-slug: production
+      - name: Pull secrets from Infisical
+        uses: Infisical/secrets-action@v1
+        with:
+          client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
+          client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+          project-slug: holy-echoes
+          env-slug: production
+          site-url: https://joeboylson-infisical.up.railway.app
 
       - name: Build
         run: bash scripts/build/capacitor-android.sh
 
-      # ── Phase 2 only: uncomment when Infisical is running ──────────────────
-      # - name: Sign and distribute
-      #   run: bash scripts/ci/android-sign.sh
+      - name: Decode keystore
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > /tmp/holy-echoes-release.keystore
+          echo "KEYSTORE_PATH=/tmp/holy-echoes-release.keystore" >> $GITHUB_ENV
+
+      - name: Sign
+        run: bundle exec fastlane android sign
+
+      # ── Phase 2b only: uncomment when Google Play service account is ready ──
+      # - name: Upload to Google Play
+      #   run: bundle exec fastlane android sign_and_dist
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: holy-echoes-android-aab
+          name: holy-echoes-android-signed-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 7
