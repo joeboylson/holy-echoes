@@ -1,0 +1,65 @@
+# =============================================================================
+# capacitor-ios.yml
+#
+# Builds Holy Echoes for iOS.
+# Flow: npm build → cap sync → pod install → xcodebuild
+# Phase 1: unsigned xcarchive — no Apple Developer account needed.
+# Phase 2: fastlane match signs it, uploads to TestFlight.
+#
+# Must run on macos-latest — Docker not supported on macOS runners.
+# =============================================================================
+
+name: Capacitor iOS
+
+on:
+  push:
+    branches: [main, develop, feature/github-actions-ci]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.15.0'
+          cache: 'npm'
+
+      - name: Set up Ruby + Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.0'
+          bundler-cache: true
+
+      # ── Phase 2 only: uncomment when Infisical is running ──────────────────
+      # - name: Pull secrets from Infisical
+      #   uses: Infisical/secrets-action@v1
+      #   with:
+      #     client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
+      #     client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+      #     project-slug: your-project-slug
+      #     env-slug: production
+
+      - name: Build
+        run: bash scripts/build/capacitor-ios.sh
+
+      # ── Phase 2 only: uncomment when Infisical is running ──────────────────
+      # - name: Sign and distribute
+      #   run: bash scripts/ci/ios-sign.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: holy-echoes-ios-archive
+          path: ios/App/App.xcarchive
+          retention-days: 7

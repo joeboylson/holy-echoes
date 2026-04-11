@@ -1,0 +1,10 @@
+# Appfile — app identifiers for Fastlane
+# Values sourced from config.sh.
+
+app_identifier("com.holyechoes.app")       # Bundle ID / Application ID
+apple_id(ENV["APPLE_ID"])                  # Your Apple ID (set in Infisical, Phase 2)
+team_id(ENV["APPLE_TEAM_ID"])              # Apple Developer Team ID (set in Infisical, Phase 2)
+
+# Google Play (Android)
+json_key_file(ENV["GOOGLE_PLAY_JSON_KEY_PATH"])  # Path to service account JSON (Phase 2)
+package_name("com.holyechoes.app")

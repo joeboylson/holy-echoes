@@ -49,3 +49,11 @@ ref
 .env*
 
 ANDROID_DEPLOYMENT.md
+
+# CI / Fastlane
+vendor/bundle
+.secrets.local
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output

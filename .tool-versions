@@ -1,0 +1,16 @@
+# .tool-versions — pinned tool versions for asdf
+# https://asdf-vm.com
+#
+# Keep these in sync with config.sh and docker/android.Dockerfile.
+# Install asdf plugins:
+#   asdf plugin add nodejs
+#   asdf plugin add ruby
+#   asdf plugin add java
+#
+# Then run: asdf install
+
+nodejs 22.15.0
+ruby 3.3.0
+java temurin-21.0.7+6
+just 1.38.0
+act 0.2.74

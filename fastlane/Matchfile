@@ -1,0 +1,9 @@
+# Matchfile — fastlane match configuration for cert/profile storage
+# match stores certs and profiles in a private git repo or S3 bucket.
+# Set MATCH_GIT_URL in Infisical (Phase 2).
+
+git_url(ENV["MATCH_GIT_URL"])
+storage_mode("git")           # change to "s3" if using S3
+
+type("appstore")              # default type — override per lane call
+app_identifier(["com.holyechoes.app"])

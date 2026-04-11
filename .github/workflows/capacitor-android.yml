@@ -1,0 +1,60 @@
+# =============================================================================
+# capacitor-android.yml
+#
+# Builds Holy Echoes for Android.
+# Flow: npm build → cap sync → Gradle → AAB
+# Phase 1: debug-signed AAB — no secrets needed.
+# Phase 2: real signing + Google Play internal track upload (requires Infisical).
+#
+# Runs inside our custom Docker image (Node + Android SDK + Ruby pre-installed).
+# =============================================================================
+
+name: Capacitor Android
+
+on:
+  push:
+    branches: [main, develop, feature/github-actions-ci]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/holy-echoes-android:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Source config
+        run: |
+          source config.sh
+          echo "APP_ID=$APP_ID" >> $GITHUB_ENV
+
+      # ── Phase 2 only: uncomment when Infisical is running ──────────────────
+      # - name: Pull secrets from Infisical
+      #   uses: Infisical/secrets-action@v1
+      #   with:
+      #     client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
+      #     client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+      #     project-slug: your-project-slug
+      #     env-slug: production
+
+      - name: Build
+        run: bash scripts/build/capacitor-android.sh
+
+      # ── Phase 2 only: uncomment when Infisical is running ──────────────────
+      # - name: Sign and distribute
+      #   run: bash scripts/ci/android-sign.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: holy-echoes-android-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 7

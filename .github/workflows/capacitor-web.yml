@@ -1,0 +1,37 @@
+# =============================================================================
+# capacitor-web.yml
+#
+# Builds Holy Echoes for web.
+# Just npm ci + npm run build — no native tooling, no signing.
+# Uses a lightweight Node image rather than the full Android image.
+# =============================================================================
+
+name: Capacitor Web
+
+on:
+  push:
+    branches: [main, develop, feature/github-actions-ci]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      # Lightweight Node image — no Android tooling needed for web
+      # Using node:20 (Debian-based) instead of alpine — alpine lacks bash
+      image: node:20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: bash scripts/build/capacitor-web.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: holy-echoes-web
+          path: dist/
+          retention-days: 7

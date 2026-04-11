@@ -1,0 +1,83 @@
+# Fastfile — Holy Echoes build and distribution lanes
+#
+# Phase 1 lanes: build only, no signing
+# Phase 2 lanes: sign + distribute (requires Infisical secrets)
+#
+# Run locally: bundle exec fastlane android build
+#              bundle exec fastlane ios build
+
+# ── Android ───────────────────────────────────────────────────────────────────
+
+platform :android do
+
+  # Phase 1: compile a release AAB using the debug keystore (no real signing)
+  lane :build do
+    gradle(
+      project_dir: "android",
+      task: "bundle",
+      build_type: "Release",
+      # Use the debug keystore for Phase 1 — no secrets needed
+      properties: {
+        "android.injected.signing.store.file" => ENV["HOME"] + "/.android/debug.keystore",
+        "android.injected.signing.store.password" => "android",
+        "android.injected.signing.key.alias" => "androiddebugkey",
+        "android.injected.signing.key.password" => "android",
+      }
+    )
+  end
+
+  # Phase 2: sign with real keystore and upload to Google Play internal track
+  lane :sign_and_dist do
+    gradle(
+      project_dir: "android",
+      task: "bundle",
+      build_type: "Release",
+      properties: {
+        "android.injected.signing.store.file"     => ENV["KEYSTORE_PATH"],
+        "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+        "android.injected.signing.key.alias"      => ENV["KEY_ALIAS"],
+        "android.injected.signing.key.password"   => ENV["KEY_PASSWORD"],
+      }
+    )
+    upload_to_play_store(
+      track: "internal",
+      aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+      json_key_data: ENV["GOOGLE_PLAY_JSON_KEY"],
+      skip_upload_apk: true,
+    )
+  end
+
+end
+
+# ── iOS ───────────────────────────────────────────────────────────────────────
+
+platform :ios do
+
+  # Phase 1: compile an unsigned archive (no Apple Developer account needed)
+  lane :build do
+    cocoapods(podfile: "ios/App/Podfile")
+    build_app(
+      workspace: "ios/App/App.xcworkspace",
+      scheme: "App",
+      export_method: "development",
+      # Skip signing entirely for Phase 1 — just verify the build compiles
+      xcargs: "CODE_SIGNING_ALLOWED=NO",
+    )
+  end
+
+  # Phase 2: pull certs via match, sign, and upload to TestFlight
+  lane :sign_and_dist do
+    cocoapods(podfile: "ios/App/Podfile")
+    match(type: "appstore")
+    build_app(
+      workspace: "ios/App/App.xcworkspace",
+      scheme: "App",
+      export_method: "app-store",
+    )
+    upload_to_testflight(
+      api_key_path: ENV["APP_STORE_CONNECT_API_KEY_PATH"],
+      skip_waiting_for_build_processing: true,
+    )
+  end
+
+end

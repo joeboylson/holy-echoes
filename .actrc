@@ -1,0 +1,18 @@
+# .actrc — default flags for `act` (local GitHub Actions simulation)
+# https://github.com/nektos/act
+#
+# Run workflows locally:
+#   act push                              # simulate push event, all workflows
+#   act push -W .github/workflows/capacitor-android.yml   # one workflow
+#
+# The ubuntu-latest runner is mapped to our custom Android image (built locally).
+# Build it first with: just docker-build
+#
+# .secrets.local is gitignored — copy .secrets.local.example and fill in values.
+
+-P ubuntu-latest=holy-echoes-android:latest
+--secret-file .secrets.local
+--pull=false
+--env GITHUB_REPOSITORY_OWNER=joeboylson
+--env GITHUB_REPOSITORY=joeboylson/holy-echoes
+--artifact-server-path /tmp/act-artifacts
